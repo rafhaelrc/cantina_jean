@@ -1,0 +1,272 @@
+/* =========================
+   BASE
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    padding-bottom: 40px;
+    /* espaço pro rodapé fixo */
+}
+
+
+/* =========================
+   CONTAINER
+========================= */
+.container {
+    /*max-width: 1200px;*/
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* =========================
+   TOPO VERDE
+========================= */
+.header-verde {
+    background-color: #1b5e20;
+    padding: 20px 0;
+}
+
+.header-verde-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* LOGO */
+.logo-faculdade img {
+    height: 32px;
+    width: auto;
+    display: block;
+
+}
+
+.logo {
+    position: absolute;
+    top: 26px;
+    /* mesma altura que pesquisa */
+    left: 10px;
+    height: 0px;
+}
+
+/* PESQUISA */
+.pesquisa {
+    width: 560px;
+    padding: 6px 8px;
+    border: #000;
+    border-radius: 4px;
+    margin-left: -300px;
+}
+
+
+
+/* CARRINHO */
+.carrinho img {
+
+    height: 56px;
+    width: auto;
+    display: block;
+    cursor: pointer;
+}
+
+.carrinho {
+    position: absolute;
+    top: 13px;
+    /* mesma altura que pesquisa */
+    right: -2px;
+    height: 0px;
+}
+
+/* =========================
+   LINHA NORMAL (COLADA)
+========================= */
+.linha-topo {
+    border: none;
+    border-top: 2px solid #000;
+    margin: 0;
+}
+
+.nav-botoes {
+    display: flex;
+    gap: 20px;
+}
+
+/* BOTÕES */
+.nav-botoes button {
+    background-color: #1b5e20;
+    color: white;
+    padding: 8px 8px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 0 0 14px 14px;
+
+}
+
+
+
+.conteudo-principal {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+
+/* =========================
+   AVISO
+========================= */
+.aviso {
+    flex: 1;
+    /* menor que ofertas */
+    background-color: #fff9c4;
+    /* amarelo suave */
+    border: 1px solid #fbc02d;
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+    color: #5d4b00;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================
+   OFERTAS
+========================= */
+.ofertas {
+    flex: 2;
+    /* mais espaço que o aviso */
+    padding: 26px;
+}
+
+
+/* ========================= OFERTAS ========================= */
+.ofertas {
+    flex: 2;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.titulo-ofertas {
+    color: #af0c0c;
+    font-size: 28px;
+    font-weight: bold;
+    text-shadow: 1px 1px #5c0000;
+    margin-bottom: 15px;
+    text-decoration: underline;
+}
+
+/* =========================
+   CARROSSEL
+========================= */
+.carrossel {
+    display: flex;
+    align-items: center;
+    gap: 0px;
+}
+
+.carrossel-track {
+    display: flex;
+    gap: 12px;
+    overflow: hidden;
+    width: 75%;
+}
+
+/* ITENS */
+.item {
+    min-width: 170px;
+    height: 200px;
+    background-color: #ddd;
+    border: 2px solid #706c6c;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* SETAS */
+.seta {
+    background-color: #ffffff;
+    color: #af0c0c;
+    border: none;
+    font-size: 38px;
+    padding: 8px 12px;
+    border: 1px SOLID  #ddd;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+/* ========================= RODAPÉ ========================= */
+.rodape {
+    background: linear-gradient(90deg, #1b5e20, #2e7d32);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 14px;
+    letter-spacing: 1px;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+/* =========================
+   RESPONSIVO
+========================= */
+@media (max-width: 768px) {
+
+    /* TOPO */
+    .header-verde-content {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .pesquisa {
+        width: 80%;
+        /* diminui o tamanho*/
+        margin-left: 0;
+    }
+
+    /* NAV */
+    .nav-botoes {
+        flex-wrap: wrap;
+        gap: 10px;
+        padding-left: 17px;
+    }
+
+    .nav-botoes button {
+        width: 22%;
+    }
+
+    /* CONTEÚDO PRINCIPAL */
+    .conteudo-principal {
+        flex-direction: column;
+    }
+
+    .aviso,
+    .ofertas {
+        width: 100%;
+    }
+}
