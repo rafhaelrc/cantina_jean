@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
 
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <!-- TOPO VERDE (LOGO / PESQUISA / CARRINHO) -->
@@ -14,16 +16,14 @@
     <div class="container header-verde-content">
 
       <div class="logo-faculdade">
-        <img src="if_logo.png" alt="Logo IF">
+        <img src="if_logo.png" alt="Logo IF" class="logo">
       </div>
 
-      <input
-        class="pesquisa"
-        type="text"
-        placeholder="Pesquisar produto"
-      >
+      <input class="pesquisa" type="text" placeholder="Pesquisar produto">
 
-      <div class="carrinho">🛒</div>
+      <div class="carrinho">
+        <img src="images-removebg-preview.png" alt="Cestinha de Compras" class="">
+      </div>
 
     </div>
   </header>
@@ -38,45 +38,47 @@
     <button><strong>Pedido</strong></button>
     <button style="color: rgb(231, 231, 79);"><strong>Fale Conosco</strong></button>
   </nav>
-
-
-
-<div class="conteudo-principal container">
-
-  <!--Quadro de avisos do Jean-->
-
   
 
 
-  <!--Ofertas-->
+  <div class="conteudo-principal container">
 
-  <section class="ofertas">
-  <h2 class="titulo-ofertas">Ofertas</h2>
-
-  <div class="carrossel">
-    <button class="seta esquerda">&#10094;</button>
-
-    <div class="carrossel-track">
-      <div class="item">Coca 600ml</div>
-      <div class="item">Brigadeiro</div>
-      <div class="item">Pastel</div>
-      <div class="item">Café</div>
-    </div>
-
-
-    <button class="seta direita">&#10095;</button>
-  </div>
-  
+    <!--Quadro de avisos do Jean-->
+    <section class="aviso">
+      <p>Irei chegar somente às <strong>15 horas</strong></p>
     </section>
 
-    <section class="aviso">
-    <p>Irei chegar somente às <strong>15 horas</strong></p>
-  </section>
+    <!--Ofertas-->
+    <section class="ofertas">
+      <h2 class="titulo-ofertas">Ofertas</h2>
+
+      <div class="carrossel">
+        <button class="seta esquerda">&#10094;</button>
+
+        <div class="carrossel-track">
+          <div class="item">Coca 600ml</div>
+          <div class="item">Brigadeiro</div>
+          <div class="item">Pastel</div>
+          <div class="item">Café</div>
+        </div>
+
+        <button class="seta direita">&#10095;</button>
+      </div>
+
+    </section>
 
 
+  </div>
 
-</div>
+  <!-- Rodapé -->
+
+  <div>
+    <footer class="rodape">
+      <p>© 2026 - Cantina</p>
+    </footer>
+  </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>

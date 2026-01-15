@@ -1,5 +1,6 @@
-/* JAVASCRIPT do carrocel*/
-
+/* =========================
+   CARROSSEL
+========================= */
 const track = document.querySelector('.carrossel-track');
 const btnEsq = document.querySelector('.esquerda');
 const btnDir = document.querySelector('.direita');
@@ -21,4 +22,41 @@ btnEsq.addEventListener('click', () => {
     left: scroll,
     behavior: 'smooth'
   });
+});
+
+/* =========================
+   SPA NAVEGAÇÃO
+========================= */
+const botoes = document.querySelectorAll('.nav-botoes button');
+const paginas = document.querySelectorAll('.pagina');
+
+// Função para alternar páginas
+function navegar(paginaId) {
+  paginas.forEach(p => p.classList.remove('ativa'));
+  document.getElementById(paginaId).classList.add('ativa');
+}
+
+// Liga cada botão a uma página
+botoes[0].addEventListener('click', () => navegar('inicio'));
+botoes[1].addEventListener('click', () => navegar('cardapio'));
+botoes[2].addEventListener('click', () => navegar('pedido'));
+botoes[3].addEventListener('click', () => navegar('contato'));
+
+/* =========================
+   OPCIONAL: URL HASH
+========================= */
+// Isso permite que a URL mude (#cardapio) e o botão "voltar" funcione
+window.addEventListener('hashchange', () => {
+  const paginaId = location.hash.replace('#', '');
+  if (document.getElementById(paginaId)) {
+    navegar(paginaId);
+  }
+});
+
+// Se já tiver hash na URL ao carregar, abre direto
+window.addEventListener('load', () => {
+  const paginaId = location.hash.replace('#', '');
+  if (paginaId && document.getElementById(paginaId)) {
+    navegar(paginaId);
+  }
 });

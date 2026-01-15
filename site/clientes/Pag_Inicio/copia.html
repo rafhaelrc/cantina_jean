@@ -5,80 +5,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cantina Jean</title>
+    <link rel="stylesheet" href="copia.css">
+    <style>
+        /* SPA: controle de páginas */
+        .pagina {
+            display: none;
+        }
 
-    <link rel="stylesheet" href="copia2.css">
+        .pagina.ativa {
+            display: block;
+        }
+    </style>
 </head>
 
-<body>
-
-    <!-- TOPO VERDE (LOGO / PESQUISA / CARRINHO) -->
+<body> <!-- TOPO VERDE (LOGO / PESQUISA / CARRINHO) -->
     <header class="header-verde">
         <div class="container header-verde-content">
-
-            <div class="logo-faculdade">
-                <img src="if_logo.png" alt="Logo IF" class="logo">
-            </div>
-
-            <input class="pesquisa" type="text" placeholder="Pesquisar produto">
-
-            <div class="carrinho">
-                <img src="images-removebg-preview.png" alt="Cestinha de Compras" class="">
-            </div>
-
+            <div class="logo-faculdade"> <img src="if_logo.png" alt="Logo IF" class="logo"> </div> <input
+                class="pesquisa" type="text" placeholder="Pesquisar produto">
+            <div class="carrinho"> <img src="images-removebg-preview.png" alt="Cestinha de Compras"> </div>
         </div>
-    </header>
-
-    <!-- LINHA NORMAL (SEM ESPAÇO) -->
-    <hr class="linha-topo">
-
-    <!-- BOTÕES (FORA DO HEADER, MAS VERDES) -->
-    <nav class="nav-botoes">
-        <button><strong>Início</strong></button>
-        <button><strong>Cardápio</strong></button>
-        <button><strong>Pedido</strong></button>
-        <button style="color: rgb(231, 231, 79);"><strong>Fale Conosco</strong></button>
-    </nav>
-
-
-
-    <div class="conteudo-principal container">
-
-        <!--Quadro de avisos do Jean-->
-        <section class="aviso">
-            <p>Irei chegar somente às <strong>15 horas</strong></p>
-        </section>
-
-        <!--Ofertas-->
-        <section class="ofertas">
-            <h2 class="titulo-ofertas">Ofertas</h2>
-
-            <div class="carrossel">
-                <button class="seta esquerda">&#10094;</button>
-
-                <div class="carrossel-track">
-                    <div class="item">Coca 600ml</div>
-                    <div class="item">Brigadeiro</div>
-                    <div class="item">Pastel</div>
-                    <div class="item">Café</div>
-                </div>
-
-                <button class="seta direita">&#10095;</button>
+    </header> <!-- LINHA NORMAL (SEM ESPAÇO) -->
+    <hr class="linha-topo"> <!-- BOTÕES DE NAVEGAÇÃO -->
+    <nav class="nav-botoes"> <button><strong>Início</strong></button> <button><strong>Cardápio</strong></button>
+        <button><strong>Pedido</strong></button> <button style="color: rgb(231, 231, 79);"><strong>Fale
+                Conosco</strong></button>
+    </nav> <!-- CONTEÚDO PRINCIPAL -->
+    <div class="conteudo-principal container"> <!-- Página Início -->
+        <section id="inicio" class="pagina ativa">
+            <div class="aviso">
+                <p>Irei chegar somente às <strong>15 horas</strong></p>
             </div>
-
+            <div class="ofertas">
+                <h2 class="titulo-ofertas">Ofertas</h2>
+                <div class="carrossel"> <button class="seta esquerda">&#10094;</button>
+                    <div class="carrossel-track">
+                        <div class="item">Coca 600ml</div>
+                        <div class="item">Brigadeiro</div>
+                        <div class="item">Pastel</div>
+                        <div class="item">Café</div>
+                    </div> <button class="seta direita">&#10095;</button>
+                </div>
+            </div>
+        </section> <!-- Página Cardápio -->
+        <section id="cardapio" class="pagina">
+            <h2>Cardápio</h2>
+            <p>Lista de produtos e preços...</p>
+        </section> <!-- Página Pedido -->
+        <section id="pedido" class="pagina">
+            <h2>Pedido</h2>
+            <p>Monte seu pedido aqui...</p>
+        </section> <!-- Página Contato -->
+        <section id="contato" class="pagina">
+            <h2>Fale Conosco</h2>
+            <p>Formulário de contato...</p>
         </section>
-
-
-    </div>
-
-    <!-- Rodapé -->
-
-    <div>
-        <footer class="rodape">
-            <p>© 2026 - Cantina</p>
-        </footer>
-    </div>
+    </div> <!-- Rodapé -->
+    <footer class="rodape">
+        <p>© 2026 - Cantina</p>
+    </footer>
 
     <script src="script.js"></script>
+
 </body>
 
 </html>
