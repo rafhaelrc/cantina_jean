@@ -36,17 +36,49 @@
             <div class="aviso">
                 <p>Irei chegar somente às <strong>15 horas</strong></p>
             </div>
+
             <div class="ofertas">
+
                 <h2 class="titulo-ofertas">Ofertas</h2>
-                <div class="carrossel"> <button class="seta esquerda">&#10094;</button>
-                    <div class="carrossel-track">
-                        <div class="item">Coca 600ml</div>
-                        <div class="item">Brigadeiro</div>
-                        <div class="item">Pastel</div>
-                        <div class="item">Café</div>
-                    </div> <button class="seta direita">&#10095;</button>
-                </div>
-            </div>
+
+                <div class="carrossel">
+  <!-- seta esquerda -->
+  <button class="seta esquerda">‹</button>
+
+  <!-- trilho -->
+  <div class="carrossel-track">
+    
+    <div class="item">
+      <img src="img/brigadeiro.png" alt="Brigadeiro">
+      <span>Brigadeiro</span>
+      <span>R$ 6,00</span>
+    </div>
+
+    <div class="item">
+      <img src="img/cocacola.png" alt="coca cola 600ml">
+      <span>Coca-Cola 600ml</span>
+      <span>R$ 7,50</span>
+    </div>
+
+    <div class="item">
+      <img src="img/pastel.png" alt="Pastél">
+      <span>Patél</span>
+      <span>R$ 5,00</span>
+    </div>
+
+    <div class="item">
+      <img src="img/cafe.png" alt="café">
+      <span>Café</span>
+      <span>R$ 5,00</span>
+    </div>
+
+    <!-- repete os itens -->
+  </div>
+
+  <!-- seta direita -->
+  <button class="seta direita">›</button>
+</div>
+
         </section> <!-- Página Cardápio -->
         <section id="cardapio" class="pagina">
             <h2>Cardápio</h2>
@@ -64,6 +96,26 @@
     <footer class="rodape">
         <p>© 2026 - Cantina</p>
     </footer>
+
+    <!-- ABA DO CARRINHO -->
+<div id="drawer-carrinho" class="drawer-carrinho">
+    <div class="drawer-header">
+        <h3>Meu Carrinho</h3>
+        <button id="fecharDrawer">✖</button>
+    </div>
+
+    <div class="drawer-itens">
+        <p>Pastel — R$ 6,00</p>
+        <p>Coca 600ml — R$ 5,00</p>
+    </div>
+
+    <div class="drawer-total">
+        <strong>Total: R$ 11,00</strong>
+    </div>
+</div>
+
+<!-- FUNDO ESCURO -->
+<div id="overlay-carrinho"></div>
 
     <script src="script.js"></script>
 

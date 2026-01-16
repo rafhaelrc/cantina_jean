@@ -173,32 +173,46 @@ body {
    CARROSSEL
 ========================= */
 .carrossel {
-    display: flex;
-    align-items: center;
-    gap: 0px;
+    position: relative;
 }
+
 
 .carrossel-track {
     display: flex;
     gap: 12px;
     overflow: hidden;
-    width: 75%;
+    flex-wrap: nowrap;
 }
+
+
 
 /* ITENS */
 .item {
     min-width: 170px;
-    height: 200px;
-    background-color: #ddd;
+    height: 220px;
+    background-color: #fff;
     border: 2px solid #706c6c;
-    color: #000;
+    border-radius: 10px;
+
     display: flex;
+    flex-direction: column; /* 🔥 ISSO É O SEGREDO */
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
+
+    padding: 10px;
     font-weight: bold;
-    transition: transform 0.3s, box-shadow 0.3s;
+    gap: 8px;
 }
+
+
+.item img {
+    width: 100%;
+    max-width: 120px;
+    height: 100px;
+    object-fit: contain;
+}
+
+
 
 .item:hover {
     transform: translateY(-5px);
@@ -207,15 +221,29 @@ body {
 
 /* SETAS */
 .seta {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     background-color: #ffffff;
     color: #af0c0c;
-    border: none;
-    font-size: 38px;
-    padding: 8px 12px;
     border: 1px solid #ddd;
+    font-size: 32px;
+    padding: 6px 10px;
     cursor: pointer;
     border-radius: 8px;
+    z-index: 10;
 }
+
+/* esquerda */
+.seta.esquerda {
+    left: -10px;
+}
+
+/* direita */
+.seta.direita {
+    right: -10px;
+}
+
 
 /* =========================
    RODAPÉ
@@ -269,3 +297,76 @@ body {
         width: 100%;
     }
 }
+
+/* =========================
+   DRAWER CARRINHO
+========================= */
+
+.drawer-carrinho {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 85%;
+    max-width: 360px;
+    height: 100vh;
+    background: #fff;
+    z-index: 2000;
+    transition: right 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* quando abre */
+.drawer-carrinho.ativo {
+    right: 0;
+}
+
+/* header */
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+.drawer-header button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* itens */
+.drawer-itens {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+/* total */
+.drawer-total {
+    padding: 16px;
+    border-top: 1px solid #ddd;
+    font-size: 18px;
+}
+
+/* overlay */
+#overlay-carrinho {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.4);
+    z-index: 1999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#overlay-carrinho.ativo {
+    opacity: 1;
+    pointer-events: all;
+}
+

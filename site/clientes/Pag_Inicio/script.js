@@ -60,3 +60,29 @@ window.addEventListener('load', () => {
     navegar(paginaId);
   }
 });
+
+
+
+
+// CARINHO 
+
+const icone_Carrinho = document.querySelector(".carrinho img");
+const painel_oculto = document.getElementById("drawer-carrinho");
+const fecharPainel = document.getElementById("fecharDrawer");
+const overlay = document.getElementById("overlay-carrinho");//overlay melhora a UX do carrinho
+
+//ativa ao clicar 
+icone_Carrinho.addEventListener("click", () => {
+    painel_oculto.classList.add("ativo");
+    overlay.classList.add("ativo");
+});
+
+//Função que fecha o carrinho 
+
+function fecharCarrinho() {
+    painel_oculto.classList.remove("ativo");
+    overlay.classList.remove("ativo");
+}
+
+fecharPainel.addEventListener("click", fecharCarrinho);
+overlay.addEventListener("click", fecharCarrinho);
