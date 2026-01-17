@@ -42,29 +42,9 @@ botoes[1].addEventListener('click', () => navegar('cardapio'));
 botoes[2].addEventListener('click', () => navegar('pedido'));
 botoes[3].addEventListener('click', () => navegar('contato'));
 
-/* =========================
-   OPCIONAL: URL HASH
-========================= */
-// Isso permite que a URL mude (#cardapio) e o botão "voltar" funcione
-window.addEventListener('hashchange', () => {
-  const paginaId = location.hash.replace('#', '');
-  if (document.getElementById(paginaId)) {
-    navegar(paginaId);
-  }
-});
-
-// Se já tiver hash na URL ao carregar, abre direto
-window.addEventListener('load', () => {
-  const paginaId = location.hash.replace('#', '');
-  if (paginaId && document.getElementById(paginaId)) {
-    navegar(paginaId);
-  }
-});
 
 
-
-
-// CARINHO 
+// CARRINHO 
 
 const icone_Carrinho = document.querySelector(".carrinho img");
 const painel_oculto = document.getElementById("drawer-carrinho");
@@ -86,3 +66,26 @@ function fecharCarrinho() {
 
 fecharPainel.addEventListener("click", fecharCarrinho);
 overlay.addEventListener("click", fecharCarrinho);
+
+/* =========================
+   CARDÁPIO
+========================= */
+
+//Menu Expansivo
+
+function toggleSection(id) {
+  const section = document.getElementById(id);
+  section.classList.toggle('escondido');
+
+  // pega a barra anterior à seção
+  const bar = section.previousElementSibling;
+  const arrow = bar.querySelector('.menu-arrow');
+
+  // troca a seta conforme aberto/fechado
+  if (section.classList.contains('escondido')) {
+    arrow.textContent = '▼'; // fechado
+  } else {
+    arrow.textContent = '▲'; // aberto
+  }
+}
+
