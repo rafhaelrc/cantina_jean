@@ -1,0 +1,17 @@
+$GitHub
+- clonar repositório
+- Pasta no pc
+- Abrir vs code
+- Abrir pasta no vs code
+$Como clonar repositório
+- git clone https://github.com/rafhaelrc/cantina_jean.git
+$Como ver uma branch
+- git branch
+$Ver diferença da versão online e da verção local
+- git status
+$Baixar versão online
+- git pull
+$Salvar o que foi alterado licalmente
+- git commit -m "mensagem sobre a alteração"
+$Envia mudanças para nuvem
+- git push
