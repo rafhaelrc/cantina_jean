@@ -1,0 +1,79 @@
+:root {
+  --verde-principal: #004206;
+  --verde-secundario: #349a46;
+  --verde-vivo: #2ab442;
+}
+
+.botaoCadastrar {
+    background-color: var(--verde-secundario);
+    color: white;
+    font-weight: bold;
+    border-color: var(--verde-secundario);
+    border-radius: 30px;
+    padding: 5px 40px;
+    margin: 20px 70px;
+    filter: saturate(1);
+    transition: all 0.5s ease; 
+}
+
+.botaoCadastrar:hover {
+    background-color: var(--verde-vivo);
+    border-color: var(--verde-principal);
+
+}
+
+#asideTable {
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.table-custom thead tr {
+    background-color: var(--verde-secundario);
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table-custom tbody tr {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.areaBotoes {
+    display: flex;
+    justify-content: space-around;
+}
+
+.areaBotoes button {
+    border-radius: 7px;
+    border: none;
+    padding: 5px;
+    filter: saturate(1);
+    transition: all 0.5s ease;
+}
+
+.botaoVisualizar {
+    background-color: #00a1ff;
+}
+
+.botaoVisualizar:hover {
+    filter: saturate(5);
+}
+
+.botaoEditar {
+    background-color: #ffd600;
+}
+
+.botaoEditar:hover {
+    filter: saturate(10);
+}
+
+.botaoExcluir {
+    background-color: #ff0000;
+}
+
+.botaoExcluir:hover {
+    background-color: #ff7500;
+}
