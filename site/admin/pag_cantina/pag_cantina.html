@@ -23,7 +23,7 @@
     </nav>
 
     <aside>
-        <button class="botaoCadastrar">Cadastrar produto</button>
+        <a href="#popupVerificar"><button class="botaoCadastrar" onclick="Cadastrar()">Cadastrar produto</button></a>
     </aside>
 
     <aside id="asideTable">
@@ -42,6 +42,66 @@
         </table>
     </aside>
 
+    <div id="popupVerificar" class="popup">
+    <div class="popup-content">
+        <a href="#" class="fechar">&times;</a>
+        <p>Verificar - Criar e Editar</p>
+        <form action="" method="GET" class="formsPopup">
+            <p id="titulo" class="centalizadoForms">Título</p>
+            <div style="flex: 66%; display: flex; flex-wrap: wrap;">
+                <div class="containerForms">
+                    <label for="nome">Nome do produro</label>
+                    <input type="text" id="nome" maxlength="30">
+                </div>
+
+                <div class="containerForms">
+                    <label for="categoria">Categoria</label>
+                    <input type="text" id="categoria" maxlength="20">
+                </div>
+
+                <div class="containerForms">
+                    <label for="descricao">Descrição</label>
+                    <input type="text" id="descricao">
+                </div>
+                
+                <div class="containerForms">
+                    <input type="checkbox" id="disponibilidade">
+                    <label for="disponibilidade">Disponivel</label>
+                </div>
+
+                <div class="containerForms">
+                    <label for="enviarFoto" class="labelFoto">Foto do produto</label>
+                    <input type="file" id="enviarFoto" hidden>
+                </div>
+            </div>
+
+            <div style="flex: 33%;">
+                <div class="containerForms">
+                    <label for="preco">Preço</label>
+                    <input type="number" id="preco">
+                </div>
+
+                <div class="containerForms">
+                    <label for="foto">Vizualização da foto</label>
+                    <img src="Lapis.svg" width="200px">
+                </div>
+            </div>
+            
+            <div class="centalizadoForms">
+                <input type="submit" value="Salvar">
+            </div>
+
+        </form>
+    </div>
+    </div>
+
+    <div id="popupVisualizar" class="popup">
+    <div class="popup-content">
+        <a href="#" class="fechar">&times;</a>
+        <p>Vizualizar</p>
+    </div>
+    </div>
+
 
     <footer>
         
@@ -50,4 +110,3 @@
     <script src="pag_cantina.js"></script>
 </body>
 </html>
-

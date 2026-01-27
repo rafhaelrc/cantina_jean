@@ -11,7 +11,7 @@ $Ver diferença da versão online e da verção local
 - git status
 $Baixar versão online
 - git pull
-$Salvar o que foi alterado licalmente
+$Salvar o que foi alterado localmente
 - git commit -m "mensagem sobre a alteração"
 $Envia mudanças para nuvem
 - git push

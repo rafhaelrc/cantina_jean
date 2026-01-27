@@ -54,8 +54,8 @@ for (var i = 0; i < objetos.length; i++) {
         <td>${objetos[i].descricao}</td>
         <td class="table-active">${objetos[i].status}</td>
         <td class="areaBotoes">
-            <button class="botaoVisualizar" onclick="Verificar(${i})"><img src="Lupa.svg" alt="Visualizar" width="25px" height="25px"></button>
-            <button class="botaoEditar" onclick="Editar(${i})"><img src="Lapis.svg" alt="Editar" width="25px" height="25px"></button>
+            <a href="#popupVisualizar"><button class="botaoVisualizar" onclick="Visualizar(${i})"><img src="Lupa.svg" alt="Visualizar" width="25px" height="25px"></button></a>
+            <a href="#popupVerificar"><button class="botaoEditar" onclick="Editar(${i})"><img src="Lapis.svg" alt="Editar" width="25px" height="25px"></button></a>
             <button class="botaoExcluir" onclick="Excluir(${i})"><img src="Lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
         </td>
     </tr>`
@@ -63,6 +63,18 @@ for (var i = 0; i < objetos.length; i++) {
 
 tabela.innerHTML = objetos_html;
 
-function Verificar(num){
-    objetos[num].nome
+function Cadastrar(){
+    console.log(objetos[num].nome)
+}
+
+function Visualizar(num){
+    console.log(objetos[num].nome)
+}
+
+function Editar(num){
+    console.log(objetos[num].nome)
+}
+
+function Excluir(num){
+    console.log(objetos[num].nome)
 }

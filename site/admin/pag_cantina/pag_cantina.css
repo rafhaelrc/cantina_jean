@@ -1,9 +1,15 @@
+/* Variáveis de cores úteis */
 :root {
   --verde-principal: #004206;
   --verde-secundario: #349a46;
   --verde-vivo: #2ab442;
 }
 
+a, button {
+    cursor: pointer;
+}
+
+/* Estilo para o botão de cadastro */
 .botaoCadastrar {
     background-color: var(--verde-secundario);
     color: white;
@@ -19,9 +25,9 @@
 .botaoCadastrar:hover {
     background-color: var(--verde-vivo);
     border-color: var(--verde-principal);
-
 }
 
+/* Estilo para a tabela */
 #asideTable {
     width: 70%;
     margin: 0 auto;
@@ -41,6 +47,7 @@
     vertical-align: middle;
 }
 
+/* Centralização dos botões da tabela */
 .areaBotoes {
     display: flex;
     justify-content: space-around;
@@ -54,6 +61,7 @@
     transition: all 0.5s ease;
 }
 
+/* Estilização dos botões da tabela */
 .botaoVisualizar {
     background-color: #00a1ff;
 }
@@ -76,4 +84,81 @@
 
 .botaoExcluir:hover {
     background-color: #ff7500;
+}
+
+/* Estilos do popup */
+.popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+.popup:target {
+    opacity: 1;
+    visibility: visible;
+}
+.popup-content {
+    position: relative;
+    background: white;
+    max-width: 700px;
+    margin: 100px auto;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.fechar {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    text-decoration: none;
+    font-size: 30px;
+    color: #333;
+}
+
+.fechar:hover {
+    color: red;
+}
+
+.formsPopup {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+input[type='text'] {
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+}
+
+.containerForms {
+    margin: 10px auto;
+    flex: 50%;
+    text-align: center;
+}
+
+#descricao {
+    width: 420px;
+}
+
+.labelFoto {
+    cursor: pointer;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.centalizadoForms {
+    color: #333;
+    flex: 100%;
+    display: flex;
+    justify-content: center;
 }
