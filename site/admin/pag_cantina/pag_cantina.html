@@ -61,16 +61,19 @@
 
                 <div class="containerForms">
                     <label for="descricao">Descrição</label>
-                    <input type="text" id="descricao">
+                    <input type="text" id="descricao" maxlength="60">
                 </div>
                 
                 <div class="containerForms">
-                    <input type="checkbox" id="disponibilidade">
-                    <label for="disponibilidade">Disponivel</label>
+                    <label for="disponibilidade">Disponibilidade</label>
+                    <select id="disponibilidade">
+                        <option value="1">Ativo</option>
+                        <option value="0">Inativo</option>
+                    </select>
                 </div>
 
                 <div class="containerForms">
-                    <label for="enviarFoto" class="labelFoto">Foto do produto</label>
+                    <label for="enviarFoto" class="labelFoto">Colocar Foto do produto</label>
                     <input type="file" id="enviarFoto" hidden>
                 </div>
             </div>
@@ -82,13 +85,13 @@
                 </div>
 
                 <div class="containerForms">
-                    <label for="foto">Vizualização da foto</label>
-                    <img src="Lapis.svg" width="200px">
+                    <label>Vizualização da foto</label>
+                    <img src="fotoPadraoProduto.svg" width="200px" id="imgCadastrada">
                 </div>
             </div>
-            
             <div class="centalizadoForms">
                 <input type="submit" value="Salvar">
+                <button onclick="Salvar()">Salvar</button>
             </div>
 
         </form>
@@ -96,12 +99,11 @@
     </div>
 
     <div id="popupVisualizar" class="popup">
-    <div class="popup-content">
-        <a href="#" class="fechar">&times;</a>
-        <p>Vizualizar</p>
+        <div class="popup-content">
+            <a href="#" class="fechar">&times;</a>
+            <p>Vizualizar</p>
+        </div>
     </div>
-    </div>
-
 
     <footer>
         

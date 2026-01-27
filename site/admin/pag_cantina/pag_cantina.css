@@ -47,10 +47,20 @@ a, button {
     vertical-align: middle;
 }
 
+/* Estilização do status da tabela */
+.areaStatus span {
+    /* background-color presente no js da coluna de status */
+    border-radius: 17px;
+    padding: 10px 12px;
+    color: white;
+}
+
 /* Centralização dos botões da tabela */
 .areaBotoes {
-    display: flex;
     justify-content: space-around;
+    min-width: 140px;
+    height: 100%;
+    margin: auto;
 }
 
 .areaBotoes button {
@@ -103,11 +113,11 @@ a, button {
 }
 .popup-content {
     position: relative;
-    background: white;
+    background: #ebebeb;
     max-width: 700px;
     margin: 100px auto;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 10px;
     text-align: left;
 }
 
@@ -129,10 +139,13 @@ a, button {
     flex-wrap: wrap;
 }
 
-input[type='text'] {
+input[type='text'], input[type='number'] {
     display: block;
     width: 200px;
     margin: 0 auto;
+    border-radius: 10px;
+    border-color: black;
+    padding: 1px 7px;
 }
 
 .containerForms {
@@ -143,6 +156,41 @@ input[type='text'] {
 
 #descricao {
     width: 420px;
+}
+
+select, ::picker(select) {
+    appearance: base-select;
+    width: 150px;
+}
+
+select {
+    border: 2px solid #dddddd;
+    background: #eeeeee;
+    padding: 10px;
+}
+
+::picker(select) {
+    border: none;
+}
+
+option {
+    border: 2px solid #dddddd;
+    background: #eeeeee;
+    padding: 10px;
+}
+
+option:first-of-type {
+    background-color: var(--verde-secundario);
+    border-radius: 8px 8px 0 0;
+}
+
+option:last-of-type {
+    background-color: #00a1ff;
+    border-radius: 0 0 8px 8px;
+}
+
+option:not(option:last-of-type) {
+    border-bottom: none;
 }
 
 .labelFoto {
