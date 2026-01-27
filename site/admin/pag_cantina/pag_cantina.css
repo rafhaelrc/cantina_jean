@@ -52,7 +52,7 @@ a, button {
     /* background-color presente no js da coluna de status */
     border-radius: 17px;
     padding: 10px 12px;
-    color: white;
+    font-weight: bold;
 }
 
 /* Centralização dos botões da tabela */
@@ -134,17 +134,17 @@ a, button {
     color: red;
 }
 
-.formsPopup {
+.formsPopup, .visualizadorPopup {
     display: flex;
     flex-wrap: wrap;
 }
 
-input[type='text'], input[type='number'] {
+input[type='text'], input[type='number'], .containerForms p {
     display: block;
     width: 200px;
     margin: 0 auto;
+    border: 2px solid black;
     border-radius: 10px;
-    border-color: black;
     padding: 1px 7px;
 }
 
@@ -154,7 +154,7 @@ input[type='text'], input[type='number'] {
     text-align: center;
 }
 
-#descricao {
+#descricao, #labelDescricao {
     width: 420px;
 }
 
@@ -185,7 +185,7 @@ option:first-of-type {
 }
 
 option:last-of-type {
-    background-color: #00a1ff;
+    background-color: #ffd600;
     border-radius: 0 0 8px 8px;
 }
 

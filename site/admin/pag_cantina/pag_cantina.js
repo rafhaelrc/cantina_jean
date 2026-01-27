@@ -51,25 +51,10 @@ let objetos = {
     },
 };
 
-let objetos_html = ``;
-
-for (var i = 0; i < Object.keys(objetos).length; i++) {
-    objetos_html += `<tr>
-        <input type="number" value='${i}' id="idProduto${i}" hidden>
-        <td>${objetos[i].nome}</td>
-        <td>${objetos[i].descricao}</td>
-        <td class="areaStatus"><span style="background-color: ${objetos[i].status ? "var(--verde-secundario)" : "#ffd600"};">${objetos[i].status ? "Ativo" : "Inativo"}</span></td>
-        <td class="areaBotoes">
-            <a href="#popupVisualizar"><button class="botaoVisualizar" onclick="Visualizar(${i})"><img src="Lupa.svg" alt="Visualizar" width="25px" height="25px"></button></a>
-            <a href="#popupVerificar"><button class="botaoEditar" onclick="Editar(${i})"><img src="Lapis.svg" alt="Editar" width="25px" height="25px"></button></a>
-            <button class="botaoExcluir" onclick="Excluir(${i})"><img src="Lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
-        </td>
-    </tr>`
-};
-
-tabela.innerHTML = objetos_html;
+AtualizarTabela();
 
 function Cadastrar(){
+    id = document.getElementById('idVisualizado');
     nome = document.getElementById('nome');
     categoria = document.getElementById('categoria');
     descricao = document.getElementById('descricao');
@@ -78,6 +63,7 @@ function Cadastrar(){
     preco = document.getElementById('preco');
     imgCadastrada = document.getElementById('imgCadastrada');
 
+    id.value = Object.keys(objetos).length;
     nome.value = '';
     categoria.value = '';
     descricao.value = '';
@@ -87,11 +73,23 @@ function Cadastrar(){
 }
 
 function Visualizar(num){
-    disponibilidade = document.getElementById('disponibilidade');
-    console.log(disponibilidade.value);
+    nome = document.getElementById('labelNome');
+    categoria = document.getElementById('labelCategoria');
+    descricao = document.getElementById('labelDescricao');
+    disponibilidade = document.getElementById('labelDisponibilidade'); // => 0 ou 1: Representa status
+    preco = document.getElementById('labelPreco');
+    imgCadastrada = document.getElementById('visualizarImgCadastrada');
+
+    nome.innerText = objetos[num].nome;
+    categoria.innerText = objetos[num].categoria;
+    descricao.innerText = objetos[num].descricao;
+    disponibilidade.innerText = objetos[num].status ? "Ativo" : "Inativo";
+    preco.innerText = objetos[num].preco;
+    imgCadastrada.src = objetos[num].foto;
 }
 
 function Editar(num){
+    id = document.getElementById('idVisualizado');
     nome = document.getElementById('nome');
     categoria = document.getElementById('categoria');
     descricao = document.getElementById('descricao');
@@ -100,18 +98,63 @@ function Editar(num){
     preco = document.getElementById('preco');
     imgCadastrada = document.getElementById('imgCadastrada');
 
+    id.value = num;
     nome.value = objetos[num].nome;
     categoria.value = objetos[num].categoria;
     descricao.value = objetos[num].descricao;
     disponibilidade.value = objetos[num].status;
     preco.value = objetos[num].preco;
     imgCadastrada.src = objetos[num].foto;
+
 }
 
 function Excluir(num){
-    console.log(objetos[num].nome);
+    delete objetos[num];
+    a = document.getElementById('idLinha'+num);
+    a.innerHTML = '';
 }
 
 function Salvar() {
-    
+    num = document.getElementById('idVisualizado');
+    nome = document.getElementById('nome');
+    categoria = document.getElementById('categoria');
+    descricao = document.getElementById('descricao');
+    disponibilidade = document.getElementById('disponibilidade'); // => 0 ou 1: Representa status
+    enviarFoto = document.getElementById('enviarFoto');
+    preco = document.getElementById('preco');
+    imgCadastrada = document.getElementById('imgCadastrada');
+
+    objetos[parseInt(num.value)] = {
+        id: parseInt(num.value),
+        nome: nome.value,
+        categoria: categoria.value ,
+        descricao: descricao.value ,
+        foto: imgCadastrada.src,
+        status: parseInt(disponibilidade.value),
+        preco: parseFloat(preco.value),
+    }
+
+    window.location.assign("#");
+
+    AtualizarTabela();
+}
+
+function AtualizarTabela() {
+    let objetos_html = ``;
+
+    for (var i = 0; i < Object.keys(objetos).length; i++) {
+        objetos_html += `<tr id="idLinha${i}">
+            <input type="number" value='${i}' id="idProduto${i}" hidden>
+            <td>${objetos[i].nome}</td>
+            <td>${objetos[i].descricao}</td>
+            <td class="areaStatus"><span style="background-color: ${objetos[i].status ? "var(--verde-secundario)" : "#ffd600"};">${objetos[i].status ? "Ativo" : "Inativo"}</span></td>
+            <td class="areaBotoes">
+                <a href="#popupVisualizar"><button class="botaoVisualizar" onclick="Visualizar(${i})"><img src="Lupa.svg" alt="Visualizar" width="25px" height="25px"></button></a>
+                <a href="#popupVerificar"><button class="botaoEditar" onclick="Editar(${i})"><img src="Lapis.svg" alt="Editar" width="25px" height="25px"></button></a>
+                <button class="botaoExcluir" onclick="Excluir(${i})"><img src="Lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
+            </td>
+        </tr>`
+    };
+
+    tabela.innerHTML = objetos_html;
 }

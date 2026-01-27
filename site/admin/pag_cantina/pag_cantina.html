@@ -36,7 +36,7 @@
                     <th>Ações</th>
                 </tr>
             </thead>
-            <tbody  id="bodyTabela">
+            <tbody id="bodyTabela">
                 
             </tbody>
         </table>
@@ -48,6 +48,7 @@
         <p>Verificar - Criar e Editar</p>
         <form action="" method="GET" class="formsPopup">
             <p id="titulo" class="centalizadoForms">Título</p>
+            <input type="number" value='0' id="idVisualizado" hidden>
             <div style="flex: 66%; display: flex; flex-wrap: wrap;">
                 <div class="containerForms">
                     <label for="nome">Nome do produro</label>
@@ -90,8 +91,7 @@
                 </div>
             </div>
             <div class="centalizadoForms">
-                <input type="submit" value="Salvar">
-                <button onclick="Salvar()">Salvar</button>
+                <a href="#"><button onclick="Salvar()">Salvar</button></a>
             </div>
 
         </form>
@@ -99,10 +99,46 @@
     </div>
 
     <div id="popupVisualizar" class="popup">
-        <div class="popup-content">
-            <a href="#" class="fechar">&times;</a>
-            <p>Vizualizar</p>
+    <div class="popup-content">
+        <a href="#" class="fechar">&times;</a>
+        <p>Vizualizar</p>
+        <div class="visualizadorPopup">
+            <p id="titulo" class="centalizadoForms">Título</p>
+            <div style="flex: 66%; display: flex; flex-wrap: wrap;">
+                <div class="containerForms">
+                    <label>Nome do produro</label>
+                    <p id="labelNome"></p>
+                </div>
+
+                <div class="containerForms">
+                    <label>Categoria</label>
+                    <p id="labelCategoria"></p>
+                </div>
+
+                <div class="containerForms">
+                    <label>Descrição</label>
+                    <p id="labelDescricao"></p>
+                </div>
+                
+                <div class="containerForms">
+                    <label>Disponibilidade</label>
+                    <p id="labelDisponibilidade"></p>
+                </div>
+            </div>
+
+            <div style="flex: 33%;">
+                <div class="containerForms">
+                    <label>Preço</label>
+                    <p id="labelPreco"></p>
+                </div>
+
+                <div class="containerForms">
+                    <label>Vizualização da foto</label>
+                    <img src="fotoPadraoProduto.svg" width="200px" id="visualizarImgCadastrada">
+                </div>
+            </div>
         </div>
+    </div>
     </div>
 
     <footer>
