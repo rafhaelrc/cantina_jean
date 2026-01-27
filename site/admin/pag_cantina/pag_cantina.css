@@ -5,7 +5,7 @@
   --verde-vivo: #2ab442;
 }
 
-a, button {
+a, button, #labelImgCadastrada, select {
     cursor: pointer;
 }
 
@@ -113,8 +113,8 @@ a, button {
 }
 .popup-content {
     position: relative;
-    background: #ebebeb;
-    max-width: 700px;
+    background-color: var(--verde-principal);
+    max-width: 740px;
     margin: 100px auto;
     padding: 20px;
     border-radius: 10px;
@@ -124,7 +124,7 @@ a, button {
 .fechar {
     position: absolute;
     top: 10px;
-    right: 15px;
+    right: 25px;
     text-decoration: none;
     font-size: 30px;
     color: #333;
@@ -137,6 +137,9 @@ a, button {
 .formsPopup, .visualizadorPopup {
     display: flex;
     flex-wrap: wrap;
+    padding: 20px;
+    border-radius: 10px;
+    background: #bebebea5;
 }
 
 input[type='text'], input[type='number'], .containerForms p {
@@ -156,6 +159,21 @@ input[type='text'], input[type='number'], .containerForms p {
 
 #descricao, #labelDescricao {
     width: 420px;
+}
+
+#labelImgCadastrada {
+    background-color: var(--verde-secundario);
+    border-radius: 20px;
+    padding: 10px;
+    transition: transform 0.2s ease;
+}
+
+#labelImgCadastrada:hover {
+    transform: scale(1.05);
+}
+
+#visualizarImgCadastrada {
+    width: 200px;
 }
 
 select, ::picker(select) {
@@ -193,20 +211,25 @@ option:not(option:last-of-type) {
     border-bottom: none;
 }
 
-.labelFoto {
-    cursor: pointer;
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-}
-
 .centalizadoForms {
     color: #333;
     flex: 100%;
     display: flex;
     justify-content: center;
+}
+
+.salvarVerificacao {
+    background-color: var(--verde-secundario);
+    color: white;
+    font-weight: bold;
+    border-color: var(--verde-secundario);
+    border-radius: 30px;
+    padding: 5px 40px;
+    filter: saturate(1);
+    transition: all 0.5s ease; 
+}
+
+.salvarVerificacao:hover {
+    background-color: var(--verde-vivo);
+    border-color: var(--verde-principal);
 }

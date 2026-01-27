@@ -1,4 +1,7 @@
 let tabela = document.getElementById('bodyTabela');
+let numero_objetos = 5;
+
+// Lista fictícia de objetos representando os produtos
 let objetos = {
     0: {
         id: 0,
@@ -53,6 +56,20 @@ let objetos = {
 
 AtualizarTabela();
 
+// Evento que coloca a imagem recem recebida do upload visivel durante a edição
+document.getElementById('enviarFoto').addEventListener('change', function(event) {
+    const arquivo = event.target.files[0];
+    const apresentador = document.getElementById('imgCadastrada');
+
+    if (!arquivo.type.startsWith('image/')) {
+        alert('Selecione um arquivo de imagem válido.');
+        event.target.value = '';
+        return;
+    } else {
+        apresentador.src = arquivo.name; 
+    }
+});
+
 function Cadastrar(){
     id = document.getElementById('idVisualizado');
     nome = document.getElementById('nome');
@@ -62,14 +79,19 @@ function Cadastrar(){
     enviarFoto = document.getElementById('enviarFoto');
     preco = document.getElementById('preco');
     imgCadastrada = document.getElementById('imgCadastrada');
+    titulo = document.getElementById('tituloVerificar');
 
-    id.value = Object.keys(objetos).length;
+    id.value = numero_objetos;
     nome.value = '';
     categoria.value = '';
     descricao.value = '';
     disponibilidade.value = 1;
     preco.value = 0;
     imgCadastrada.src = 'fotoPadraoProduto.svg';
+    titulo.innerText = 'Cadastrar novo produto';
+    
+    window.location.assign("#popupVerificar");
+
 }
 
 function Visualizar(num){
@@ -79,6 +101,7 @@ function Visualizar(num){
     disponibilidade = document.getElementById('labelDisponibilidade'); // => 0 ou 1: Representa status
     preco = document.getElementById('labelPreco');
     imgCadastrada = document.getElementById('visualizarImgCadastrada');
+    titulo = document.getElementById('tituloVisualizar');
 
     nome.innerText = objetos[num].nome;
     categoria.innerText = objetos[num].categoria;
@@ -86,6 +109,9 @@ function Visualizar(num){
     disponibilidade.innerText = objetos[num].status ? "Ativo" : "Inativo";
     preco.innerText = objetos[num].preco;
     imgCadastrada.src = objetos[num].foto;
+    titulo.innerText = `Visualização do produto ${objetos[num].nome}`;
+
+    window.location.assign("#popupVisualizar");
 }
 
 function Editar(num){
@@ -97,6 +123,7 @@ function Editar(num){
     enviarFoto = document.getElementById('enviarFoto');
     preco = document.getElementById('preco');
     imgCadastrada = document.getElementById('imgCadastrada');
+    titulo = document.getElementById('tituloVerificar');
 
     id.value = num;
     nome.value = objetos[num].nome;
@@ -105,7 +132,9 @@ function Editar(num){
     disponibilidade.value = objetos[num].status;
     preco.value = objetos[num].preco;
     imgCadastrada.src = objetos[num].foto;
+    titulo.innerText = `Edição do produto ${objetos[num].nome}`;
 
+    window.location.assign("#popupVerificar");
 }
 
 function Excluir(num){
@@ -134,6 +163,10 @@ function Salvar() {
         preco: parseFloat(preco.value),
     }
 
+    if (numero_objetos == parseInt(num.value)) {
+        numero_objetos++;
+    }
+
     window.location.assign("#");
 
     AtualizarTabela();
@@ -142,15 +175,17 @@ function Salvar() {
 function AtualizarTabela() {
     let objetos_html = ``;
 
-    for (var i = 0; i < Object.keys(objetos).length; i++) {
+    for (let key in Object.keys(objetos)) {
+        let i = Object.keys(objetos)[key];
+
         objetos_html += `<tr id="idLinha${i}">
             <input type="number" value='${i}' id="idProduto${i}" hidden>
             <td>${objetos[i].nome}</td>
             <td>${objetos[i].descricao}</td>
             <td class="areaStatus"><span style="background-color: ${objetos[i].status ? "var(--verde-secundario)" : "#ffd600"};">${objetos[i].status ? "Ativo" : "Inativo"}</span></td>
             <td class="areaBotoes">
-                <a href="#popupVisualizar"><button class="botaoVisualizar" onclick="Visualizar(${i})"><img src="Lupa.svg" alt="Visualizar" width="25px" height="25px"></button></a>
-                <a href="#popupVerificar"><button class="botaoEditar" onclick="Editar(${i})"><img src="Lapis.svg" alt="Editar" width="25px" height="25px"></button></a>
+                <button class="botaoVisualizar" onclick="Visualizar(${i})"><img src="Lupa.svg" alt="Visualizar" width="25px" height="25px"></button>
+                <button class="botaoEditar" onclick="Editar(${i})"><img src="Lapis.svg" alt="Editar" width="25px" height="25px"></button>
                 <button class="botaoExcluir" onclick="Excluir(${i})"><img src="Lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
             </td>
         </tr>`

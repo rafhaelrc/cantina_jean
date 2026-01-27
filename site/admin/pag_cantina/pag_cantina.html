@@ -23,7 +23,7 @@
     </nav>
 
     <aside>
-        <a href="#popupVerificar"><button class="botaoCadastrar" onclick="Cadastrar()">Cadastrar produto</button></a>
+        <button class="botaoCadastrar" onclick="Cadastrar()">Cadastrar produto</button>
     </aside>
 
     <aside id="asideTable">
@@ -43,102 +43,100 @@
     </aside>
 
     <div id="popupVerificar" class="popup">
-    <div class="popup-content">
-        <a href="#" class="fechar">&times;</a>
-        <p>Verificar - Criar e Editar</p>
-        <form action="" method="GET" class="formsPopup">
-            <p id="titulo" class="centalizadoForms">Título</p>
-            <input type="number" value='0' id="idVisualizado" hidden>
-            <div style="flex: 66%; display: flex; flex-wrap: wrap;">
-                <div class="containerForms">
-                    <label for="nome">Nome do produro</label>
-                    <input type="text" id="nome" maxlength="30">
+        <div class="popup-content">
+            <a href="#" class="fechar">&times;</a>
+            <form action="" method="GET" class="formsPopup">
+                <p id="tituloVerificar" class="centalizadoForms">Título</p>
+                <input type="number" value='0' id="idVisualizado" hidden>
+                <div style="flex: 66%; display: flex; flex-wrap: wrap;">
+                    <div class="containerForms">
+                        <label for="nome">Nome do produro</label>
+                        <input type="text" id="nome" maxlength="30">
+                    </div>
+
+                    <div class="containerForms">
+                        <label for="categoria">Categoria</label>
+                        <input type="text" id="categoria" maxlength="20">
+                    </div>
+
+                    <div class="containerForms">
+                        <label for="descricao">Descrição</label>
+                        <input type="text" id="descricao" maxlength="60">
+                    </div>
+                    
+                    <div class="containerForms">
+                        <label for="disponibilidade">Disponibilidade</label><br>
+                        <select id="disponibilidade">
+                            <option value="1">Ativo</option>
+                            <option value="0">Inativo</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="containerForms">
-                    <label for="categoria">Categoria</label>
-                    <input type="text" id="categoria" maxlength="20">
+                <div style="flex: 33%;">
+                    <div class="containerForms">
+                        <label for="preco">Preço</label>
+                        <input type="number" id="preco">
+                    </div>
+
+                    <div class="containerForms">
+                        <label for="enviarFoto" id="labelImgCadastrada">
+                            Vizualização da foto<br>
+                            <img src="fotoPadraoProduto.svg" width="200px" id="imgCadastrada"><br>
+                            Clique para alterar
+                        </label>
+                        <input type="file" id="enviarFoto" accept="image/*" hidden>
+                    </div>
+                </div>
+                <div class="centalizadoForms">
+                   <button class="salvarVerificacao" onclick="Salvar()">Salvar</button>
                 </div>
 
-                <div class="containerForms">
-                    <label for="descricao">Descrição</label>
-                    <input type="text" id="descricao" maxlength="60">
-                </div>
-                
-                <div class="containerForms">
-                    <label for="disponibilidade">Disponibilidade</label>
-                    <select id="disponibilidade">
-                        <option value="1">Ativo</option>
-                        <option value="0">Inativo</option>
-                    </select>
-                </div>
-
-                <div class="containerForms">
-                    <label for="enviarFoto" class="labelFoto">Colocar Foto do produto</label>
-                    <input type="file" id="enviarFoto" hidden>
-                </div>
-            </div>
-
-            <div style="flex: 33%;">
-                <div class="containerForms">
-                    <label for="preco">Preço</label>
-                    <input type="number" id="preco">
-                </div>
-
-                <div class="containerForms">
-                    <label>Vizualização da foto</label>
-                    <img src="fotoPadraoProduto.svg" width="200px" id="imgCadastrada">
-                </div>
-            </div>
-            <div class="centalizadoForms">
-                <a href="#"><button onclick="Salvar()">Salvar</button></a>
-            </div>
-
-        </form>
-    </div>
+            </form>
+        </div>
     </div>
 
     <div id="popupVisualizar" class="popup">
-    <div class="popup-content">
-        <a href="#" class="fechar">&times;</a>
-        <p>Vizualizar</p>
-        <div class="visualizadorPopup">
-            <p id="titulo" class="centalizadoForms">Título</p>
-            <div style="flex: 66%; display: flex; flex-wrap: wrap;">
-                <div class="containerForms">
-                    <label>Nome do produro</label>
-                    <p id="labelNome"></p>
+        <div class="popup-content">
+            <a href="#" class="fechar">&times;</a>
+            <div class="visualizadorPopup">
+                <p id="tituloVisualizar" class="centalizadoForms">Título</p>
+                <div style="flex: 66%; display: flex; flex-wrap: wrap;">
+                    <div class="containerForms">
+                        <label>Nome do produro</label>
+                        <p id="labelNome"></p>
+                    </div>
+
+                    <div class="containerForms">
+                        <label>Categoria</label>
+                        <p id="labelCategoria"></p>
+                    </div>
+
+                    <div class="containerForms">
+                        <label>Descrição</label>
+                        <p id="labelDescricao"></p>
+                    </div>
+                    
+                    <div class="containerForms">
+                        <label>Disponibilidade</label>
+                        <p id="labelDisponibilidade"></p>
+                    </div>
                 </div>
 
-                <div class="containerForms">
-                    <label>Categoria</label>
-                    <p id="labelCategoria"></p>
-                </div>
+                <div style="flex: 33%;">
+                    <div class="containerForms">
+                        <label>Preço</label>
+                        <p id="labelPreco"></p>
+                    </div>
 
-                <div class="containerForms">
-                    <label>Descrição</label>
-                    <p id="labelDescricao"></p>
-                </div>
-                
-                <div class="containerForms">
-                    <label>Disponibilidade</label>
-                    <p id="labelDisponibilidade"></p>
-                </div>
-            </div>
-
-            <div style="flex: 33%;">
-                <div class="containerForms">
-                    <label>Preço</label>
-                    <p id="labelPreco"></p>
-                </div>
-
-                <div class="containerForms">
-                    <label>Vizualização da foto</label>
-                    <img src="fotoPadraoProduto.svg" width="200px" id="visualizarImgCadastrada">
+                    <div class="containerForms">
+                        <label>Vizualização da foto
+                            <img src="fotoPadraoProduto.svg" id="visualizarImgCadastrada">
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <footer>
