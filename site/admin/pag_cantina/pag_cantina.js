@@ -70,6 +70,7 @@ document.getElementById('enviarFoto').addEventListener('change', function(event)
     }
 });
 
+
 function Cadastrar(){
     id = document.getElementById('idVisualizado');
     nome = document.getElementById('nome');
@@ -91,7 +92,6 @@ function Cadastrar(){
     titulo.innerText = 'Cadastrar novo produto';
     
     window.location.assign("#popupVerificar");
-
 }
 
 function Visualizar(num){
