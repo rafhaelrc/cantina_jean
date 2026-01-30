@@ -1,0 +1,41 @@
+ * {
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            /* remove espaço do topo */
+        }
+
+        .navbar {
+            background: #004206;
+            font-family: Arial;
+            width: 100%;
+        }
+
+        .navdiv {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 10vh;
+            padding: 15px;
+        }
+
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo a {
+            font-size: 35px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
