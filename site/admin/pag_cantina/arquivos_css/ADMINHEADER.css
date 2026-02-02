@@ -37,7 +37,16 @@ body {
 }
 
 .logo img {
-
     height: 50px;
+    align-self: center;
     width: auto;
+}
+
+.logo a#btnVoltar {
+    margin-right: auto;
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    align-self: center;
+    font-family: Arial;
 }

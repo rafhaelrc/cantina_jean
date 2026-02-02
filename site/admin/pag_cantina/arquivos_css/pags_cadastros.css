@@ -3,6 +3,7 @@
   --verde-principal: #004206;
   --verde-secundario: #349a46;
   --verde-vivo: #2ab442;
+  --branco: #FFFFFF
 }
 
 a, button, #labelImgCadastrada, select {
@@ -113,7 +114,7 @@ a, button, #labelImgCadastrada, select {
 }
 .popup-content {
     position: relative;
-    background-color: var(--verde-principal);
+    background-color: var(--branco);
     max-width: 740px;
     margin: 100px auto;
     padding: 20px;
@@ -198,7 +199,7 @@ option {
 }
 
 option:first-of-type {
-    background-color: var(--verde-secundario);
+    background-color: var(--branco);
     border-radius: 8px 8px 0 0;
 }
 

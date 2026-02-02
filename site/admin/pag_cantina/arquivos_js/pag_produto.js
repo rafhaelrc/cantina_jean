@@ -57,7 +57,7 @@ let objetos = {
 AtualizarTabela();
 
 // Evento que coloca a imagem recem recebida do upload visivel durante a edição
-document.getElementById('enviarFoto').addEventListener('change', function(event) {
+document.getElementById('enviarFoto').addEventListener('change', function (event) {
     const arquivo = event.target.files[0];
     const apresentador = document.getElementById('imgCadastrada');
 
@@ -66,11 +66,11 @@ document.getElementById('enviarFoto').addEventListener('change', function(event)
         event.target.value = '';
         return;
     } else {
-        apresentador.src = arquivo.name; 
+        apresentador.src = arquivo.name;
     }
 });
 
-function Cadastrar(){
+function Cadastrar() {
     id = document.getElementById('idVisualizado');
     nome = document.getElementById('nome');
     categoria = document.getElementById('categoria');
@@ -89,11 +89,11 @@ function Cadastrar(){
     preco.value = 0;
     imgCadastrada.src = 'imgs/fotoPadraoProduto.svg';
     titulo.innerText = 'Cadastrar novo produto';
-    
+
     window.location.assign("#popupVerificar");
 }
 
-function Visualizar(num){
+function Visualizar(num) {
     nome = document.getElementById('labelNome');
     categoria = document.getElementById('labelCategoria');
     descricao = document.getElementById('labelDescricao');
@@ -113,7 +113,7 @@ function Visualizar(num){
     window.location.assign("#popupVisualizar");
 }
 
-function Editar(num){
+function Editar(num) {
     id = document.getElementById('idVisualizado');
     nome = document.getElementById('nome');
     categoria = document.getElementById('categoria');
@@ -136,12 +136,13 @@ function Editar(num){
     window.location.assign("#popupVerificar");
 }
 
-function Excluir(num){
-    delete objetos[num];
-    a = document.getElementById('idLinha'+num);
-    a.innerHTML = '';
+function Excluir(num) {
+    if (confirm("Tem certeza que deseja excluir isso?")) {
+        delete objetos[num];
+        a = document.getElementById('idLinha' + num);
+        a.innerHTML = '';
+    }
 }
-
 function Salvar() {
     num = document.getElementById('idVisualizado');
     nome = document.getElementById('nome');
@@ -155,8 +156,8 @@ function Salvar() {
     objetos[parseInt(num.value)] = {
         id: parseInt(num.value),
         nome: nome.value,
-        categoria: categoria.value ,
-        descricao: descricao.value ,
+        categoria: categoria.value,
+        descricao: descricao.value,
         foto: imgCadastrada.src,
         status: parseInt(disponibilidade.value),
         preco: parseFloat(preco.value),
