@@ -154,7 +154,7 @@ function Cadastrar(){
     descricao.value = '';
     disponibilidade.value = 1;
     preco.value = 5;
-    imgCadastrada.src = 'fotoPadraoPromocao.svg';
+    imgCadastrada.src = 'imgs/fotoPadraoPromocao.svg';
     titulo.innerText = 'Cadastrar nova promoção';
     validade.value = 1;
 

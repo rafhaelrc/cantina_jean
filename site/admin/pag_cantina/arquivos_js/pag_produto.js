@@ -87,7 +87,7 @@ function Cadastrar(){
     descricao.value = '';
     disponibilidade.value = 1;
     preco.value = 0;
-    imgCadastrada.src = 'fotoPadraoProduto.svg';
+    imgCadastrada.src = 'imgs/fotoPadraoProduto.svg';
     titulo.innerText = 'Cadastrar novo produto';
     
     window.location.assign("#popupVerificar");
