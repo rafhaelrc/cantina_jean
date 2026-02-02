@@ -8,7 +8,7 @@ let objetos = {
         nome: 'COCA 600 ML',
         categoria: 'Bebidas',
         descricao: 'Garrafa de Coca-Cola de 600 ml',
-        foto: 'Lapis.svg',
+        foto: 'imgs/Lapis.svg',
         status: 1,
         preco: 10,
     },
@@ -18,7 +18,7 @@ let objetos = {
         nome: 'Torrada completa',
         categoria: 'Categoria',
         descricao: 'Torrada com ovo, queijo, presunto, salada e tomate',
-        foto: 'Lupa.svg',
+        foto: 'imgs/Lupa.svg',
         status: 1,
         preco: 0,
     },
@@ -28,7 +28,7 @@ let objetos = {
         nome: 'Coxinha de frango',
         categoria: 'Categoria',
         descricao: 'Coxinha de frango frita',
-        foto: 'Lapis.svg',
+        foto: 'imgs/Lapis.svg',
         status: 1,
         preco: 0,
     },
@@ -38,7 +38,7 @@ let objetos = {
         nome: 'Brigadeiro',
         categoria: 'Categoria',
         descricao: 'Brigadeiro caseiro',
-        foto: 'fotoPadraoProduto.svg',
+        foto: 'imgs/fotoPadraoProduto.svg',
         status: 1,
         preco: 0,
     },
@@ -48,7 +48,7 @@ let objetos = {
         nome: 'Morango do amor',
         categoria: 'Categoria',
         descricao: 'Morango com Cobertura caramelizada',
-        foto: 'fotoPadraoProduto.svg',
+        foto: 'imgs/fotoPadraoProduto.svg',
         status: 0,
         preco: 0,
     },
@@ -69,7 +69,6 @@ document.getElementById('enviarFoto').addEventListener('change', function(event)
         apresentador.src = arquivo.name; 
     }
 });
-
 
 function Cadastrar(){
     id = document.getElementById('idVisualizado');
@@ -184,9 +183,9 @@ function AtualizarTabela() {
             <td>${objetos[i].descricao}</td>
             <td class="areaStatus"><span style="background-color: ${objetos[i].status ? "var(--verde-secundario)" : "#ffd600"};">${objetos[i].status ? "Ativo" : "Inativo"}</span></td>
             <td class="areaBotoes">
-                <button class="botaoVisualizar" onclick="Visualizar(${i})"><img src="Lupa.svg" alt="Visualizar" width="25px" height="25px"></button>
-                <button class="botaoEditar" onclick="Editar(${i})"><img src="Lapis.svg" alt="Editar" width="25px" height="25px"></button>
-                <button class="botaoExcluir" onclick="Excluir(${i})"><img src="Lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
+                <button class="botaoVisualizar" onclick="Visualizar(${i})"><img src="imgs/Lupa.svg" alt="Visualizar" width="25px" height="25px"></button>
+                <button class="botaoEditar" onclick="Editar(${i})"><img src="imgs/Lapis.svg" alt="Editar" width="25px" height="25px"></button>
+                <button class="botaoExcluir" onclick="Excluir(${i})"><img src="imgs/Lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
             </td>
         </tr>`
     };

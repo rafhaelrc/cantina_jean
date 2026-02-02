@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <link rel="stylesheet" type="text/css" href="ADMINHEADER.css">
-    <link rel="stylesheet" type="text/css" href="pag_cantina.css">
+    <link rel="stylesheet" type="text/css" href="../ADMINHEADER.css">
+    <link rel="stylesheet" type="text/css" href="arquivos_css/pag_produto.css">
     
     <title>Produtos - Admin</title>
 
@@ -47,10 +47,10 @@
             <a href="#" class="fechar">&times;</a>
             <form action="" method="GET" class="formsPopup">
                 <p id="tituloVerificar" class="centalizadoForms">Título</p>
-                <input type="number" value='0' id="idVisualizado" hidden>
+                <input type="number" id="idVisualizado" hidden>
                 <div style="flex: 66%; display: flex; flex-wrap: wrap;">
                     <div class="containerForms">
-                        <label for="nome">Nome do produro</label>
+                        <label for="nome">Nome do produto</label>
                         <input type="text" id="nome" maxlength="30">
                     </div>
 
@@ -82,7 +82,7 @@
                     <div class="containerForms">
                         <label for="enviarFoto" id="labelImgCadastrada">
                             Vizualização da foto<br>
-                            <img src="fotoPadraoProduto.svg" width="200px" id="imgCadastrada"><br>
+                            <img src="imgs/fotoPadraoProduto.svg" width="200px" id="imgCadastrada"><br>
                             Clique para alterar
                         </label>
                         <input type="file" id="enviarFoto" accept="image/*" hidden>
@@ -131,7 +131,7 @@
 
                     <div class="containerForms">
                         <label>Vizualização da foto
-                            <img src="fotoPadraoProduto.svg" id="visualizarImgCadastrada">
+                            <img src="imgs/fotoPadraoProduto.svg" id="visualizarImgCadastrada">
                         </label>
                     </div>
                 </div>
@@ -143,6 +143,6 @@
         
     </footer>
 
-    <script src="pag_cantina.js"></script>
+    <script src="arquivos_js/pag_produto.js"></script>
 </body>
 </html>
