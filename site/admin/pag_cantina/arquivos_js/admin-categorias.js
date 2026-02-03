@@ -150,9 +150,9 @@ function AtualizarTabela() {
             <td>${categorias[i].descricao}</td>
             <td class="areaStatus"><span style="background-color: ${categorias[i].status ? "var(--verde-secundario)" : "#ffd600"};">${categorias[i].status ? "Ativo" : "Inativo"}</span></td>
             <td class="areaBotoes">
-                <button class="botaoVisualizar" onclick="Visualizar(${i})"><img src="imgs/Lupa.svg" alt="Visualizar" width="25px" height="25px"></button>
-                <button class="botaoEditar" onclick="Editar(${i})"><img src="imgs/Lapis.svg" alt="Editar" width="25px" height="25px"></button>
-                <button class="botaoExcluir" onclick="Excluir(${i})"><img src="imgs/Lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
+                <button class="botaoVisualizar" onclick="Visualizar(${i})"><img src="../imgs/icone-lupa.svg" alt="Visualizar" width="25px" height="25px"></button>
+                <button class="botaoEditar" onclick="Editar(${i})"><img src="../imgs/icone-lapis.svg" alt="Editar" width="25px" height="25px"></button>
+                <button class="botaoExcluir" onclick="Excluir(${i})"><img src="../imgs/icone-lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
             </td>
         </tr>`
     };

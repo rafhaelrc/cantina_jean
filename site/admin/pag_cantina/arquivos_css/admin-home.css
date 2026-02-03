@@ -1,0 +1,44 @@
+ /* Área principal do dashboard */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(2, 35%);
+            gap: 30px;
+            justify-content: center;
+            align-content: center;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        /* Cards, se mexer altera todos os outros cards */
+        .card {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        /* Controla todas as imagens dentro dos cards */
+        .card img {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+            border-radius: 10px;
+            border: 2px solid #004206;
+        }
+
+        /* Botões dentro dos cards */
+        .card-btn {
+            background: #004206;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* Efeito hover dos botões */
+        .card-btn:hover {
+            background: #006b0a;
+        }

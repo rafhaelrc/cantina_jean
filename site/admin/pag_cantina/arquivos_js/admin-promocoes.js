@@ -9,7 +9,7 @@ let produtos = {
         nome: 'COCA 600 ML',
         categoria: 2,
         descricao: 'Garrafa de Coca-Cola de 600 ml',
-        foto: 'imgs/Lapis.svg',
+        foto: '../imgs/icone-lapis.svg',
         status: 1,
         preco: 5,
     },
@@ -19,7 +19,7 @@ let produtos = {
         nome: 'Torrada completa',
         categoria: 0,
         descricao: 'Torrada com ovo, queijo, presunto, salada e tomate',
-        foto: 'imgs/Lupa.svg',
+        foto: '../imgs/icone-lupa.svg',
         status: 1,
         preco: 6,
     },
@@ -29,7 +29,7 @@ let produtos = {
         nome: 'Coxinha de frango',
         categoria: 0,
         descricao: 'Coxinha de frango frita',
-        foto: 'imgs/Lapis.svg',
+        foto: '../imgs/icone-lapis.svg',
         status: 1,
         preco: 5,
     },
@@ -39,7 +39,7 @@ let produtos = {
         nome: 'Brigadeiro',
         categoria: 1,
         descricao: 'Brigadeiro caseiro',
-        foto: 'imgs/fotoPadraoProduto.svg',
+        foto: '../imgs/foto-padrao-produto.svg',
         status: 1,
         preco: 3,
     },
@@ -49,7 +49,7 @@ let produtos = {
         nome: 'Morango do amorcocacola + refl',
         categoria: 1,
         descricao: 'Morango com Cobertura caramelizada',
-        foto: 'imgs/fotoPadraoProduto.svg',
+        foto: '../imgs/foto-padrao-produto.svg',
         status: 0,
         preco: 7,
     },
@@ -63,7 +63,7 @@ let promocoes = {
         descricao: 'Garrafa de Coca-Cola de 200 ml com torrada completa',
         produtos_lista: ['0','1'], // Lista de produtos da promoção por id
         validade: 1, // Valor em horas
-        foto: 'imgs/Lapis.svg',
+        foto: '../imgs/icone-lapis.svg',
         status: 1,
         preco: 10,
     },
@@ -74,7 +74,7 @@ let promocoes = {
         descricao: 'Torrada com ovo, queijo, presunto, salada e tomate',
         produtos_lista: ['2','4'], // Lista de produtos da promoção
         validade: 1, // Valor em horas
-        foto: 'imgs/Lupa.svg',
+        foto: '../imgs/icone-lupa.svg',
         status: 1,
         preco: 10,
     },
@@ -85,7 +85,7 @@ let promocoes = {
         descricao: 'Coxinha de frango frita',
         produtos_lista: ['4'], // Lista de produtos da promoção
         validade: 1, // Valor em horas
-        foto: 'imgs/Lapis.svg',
+        foto: '../imgs/icone-lapis.svg',
         status: 1,
         preco: 5,
     },
@@ -96,7 +96,7 @@ let promocoes = {
         descricao: 'Brigadeiro caseiro',
         produtos_lista: ['3'], // Lista de produtos da promoção
         validade: 1, // Valor em horas
-        foto: 'imgs/fotoPadraoPromocao.svg',
+        foto: '../imgs/foto-padrao-promocao.svg',
         status: 1,
         preco: 2,
     },
@@ -107,7 +107,7 @@ let promocoes = {
         descricao: 'Morango com Cobertura caramelizada',
         produtos_lista: ['3','4'], // Lista de produtos da promoção
         validade: 1, // Valor em horas
-        foto: 'imgs/fotoPadraoPromocao.svg',
+        foto: '../imgs/foto-padrao-promocao.svg',
         status: 0,
         preco: 4,
     },
@@ -154,7 +154,7 @@ function Cadastrar() {
     descricao.value = '';
     disponibilidade.value = 1;
     preco.value = 5;
-    imgCadastrada.src = 'imgs/fotoPadraoPromocao.svg';
+    imgCadastrada.src = '../imgs/foto-padrao-promocao.svg';
     titulo.innerText = 'Cadastrar nova promoção';
     validade.value = 1;
 
@@ -325,9 +325,9 @@ function AtualizarTabela() {
             <td class="areaProdutos">${produtos_html}</td>
             <td class="areaStatus"><span style="background-color: ${promocoes[i].status ? "var(--verde-secundario)" : "#ffd600"};">${promocoes[i].status ? "Ativo" : "Inativo"}</span></td>
             <td class="areaBotoes">
-                <button class="botaoVisualizar" onclick="Visualizar(${i})"><img src="imgs/Lupa.svg" alt="Visualizar" width="25px" height="25px"></button>
-                <button class="botaoEditar" onclick="Editar(${i})"><img src="imgs/Lapis.svg" alt="Editar" width="25px" height="25px"></button>
-                <button class="botaoExcluir" onclick="Excluir(${i})"><img src="imgs/Lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
+                <button class="botaoVisualizar" onclick="Visualizar(${i})"><img src="../imgs/icone-lupa.svg" alt="Visualizar" width="25px" height="25px"></button>
+                <button class="botaoEditar" onclick="Editar(${i})"><img src="../imgs/icone-lapis.svg" alt="Editar" width="25px" height="25px"></button>
+                <button class="botaoExcluir" onclick="Excluir(${i})"><img src="../imgs/icone-lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
             </td>
         </tr>`
     };

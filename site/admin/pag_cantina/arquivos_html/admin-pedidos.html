@@ -7,10 +7,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <link rel="stylesheet" type="text/css" href="arquivos_css/ADMINHEADER.css">
-    <link rel="stylesheet" type="text/css" href="arquivos_css/pags_cadastros.css">
+    <link rel="stylesheet" type="text/css" href="..\arquivos_css\admin-header.css">
+    <link rel="stylesheet" type="text/css" href="..\arquivos_css\admin-pages.css">
 
-    <title>Categorias - Admin</title>
+    <title>Pedidos - Admin</title>
 
 </head>
 
@@ -19,26 +19,29 @@
         <div class="navdiv">
             <div class="logo">
                 <a href="#"><img
-                        src="https://ifrs.edu.br/vacaria/wp-content/themes/ifrs-portal-theme/favicons/favicon-194x194.png"
+                        src="..\imgs\if_logo.png"
                         alt="Logo IF"></a>
-                <p href="#">CANTINA - ADMIN</p>
+                <p>CANTINA - ADMIN</p>
             </div>
         </div>
-        <div><a id="btnVoltar" href="ADMINHOME.html">VOLTAR</a></div>
+        <div><a id="btnVoltar" href="admin-home.html">VOLTAR</a></div>
     </nav>
 
     <aside>
-        <button class="botaoCadastrar" onclick="Cadastrar()">Cadastrar categoria</button>
+        <button class="botaoCadastrar" onclick="">Filtro</button>
     </aside>
 
     <aside id="asideTable">
         <table class="table table-hover table-custom" border="1">
             <thead>
                 <tr>
-                    <th>Nome da categoria</th>
-                    <th>Descrição da categoria</th>
+                    <th>Nº Pedido</th>
+                    <th>Nome</th>
+                    <th>Itens</th>
+                    <th>Observações</th>
+                    <th>Forma de Pagamento</th>
+                    <th>Status do pagamento</th>
                     <th>Status</th>
-                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody id="bodyTabela">
@@ -46,7 +49,7 @@
             </tbody>
         </table>
     </aside>
-
+    <!-- 
     <div id="popupVerificar" class="popup">
         <div class="popup-content">
             <a href="#" class="fechar">&times;</a>
@@ -55,13 +58,30 @@
                 <input type="number" id="idVisualizado" hidden>
                 <div style="flex: 66%; display: flex; flex-wrap: wrap;">
                     <div class="containerForms">
-                        <label for="nome">Nome da categoria</label>
+                        <label for="nome">Nome da promoção</label>
                         <input type="text" id="nome" maxlength="50">
+                    </div>
+
+                    <div class="containerForms">
+                        <label for="validade">Validade (em horas)</label>
+                        <input type="number" id="validade" maxlength="4">
                     </div>
 
                     <div class="containerForms">
                         <label for="descricao">Descrição</label>
                         <input type="text" id="descricao" maxlength="60">
+                    </div>
+                    
+                    <div class="containerForms">
+                        <label for="listaProdutos">Produtos</label><br>
+                        <select id="listaProdutos" multiple>
+
+                        </select>
+                    </div>
+
+                    <div class="containerForms">
+                        <label for="preco">Preço</label>
+                        <input type="number" id="preco">
                     </div>
                 </div>
 
@@ -73,9 +93,18 @@
                             <option value="0">Inativo</option>
                         </select>
                     </div>
+
+                    <div class="containerForms">
+                        <label for="enviarFoto" id="labelImgCadastrada">
+                            Vizualização da foto<br>
+                            <img src="imgs/fotoPadraoPromocao.svg" width="200px" id="imgCadastrada"><br>
+                            Clique para alterar
+                        </label>
+                        <input type="file" id="enviarFoto" accept="image/*" hidden>
+                    </div>
                 </div>
                 <div class="centalizadoForms">
-                    <button class="salvarVerificacao" onclick="Salvar()">Salvar</button>
+                   <button class="salvarVerificacao" onclick="Salvar()">Salvar</button>
                 </div>
 
             </form>
@@ -94,8 +123,25 @@
                     </div>
 
                     <div class="containerForms">
+                        <label>Validade (em horas)</label>
+                        <p id="labelValidade"></p>
+                    </div>
+
+                    <div class="containerForms">
                         <label>Descrição</label>
                         <p id="labelDescricao"></p>
+                    </div>
+                    
+                    <div class="containerForms">
+                        <label>Produtos</label><br>
+                        <div id="labelListaProdutos">
+
+                        </div>
+                    </div>
+                    
+                    <div class="containerForms">
+                        <label>Preço</label>
+                        <p id="labelPreco"></p>
                     </div>
                 </div>
 
@@ -104,16 +150,22 @@
                         <label>Disponibilidade</label>
                         <p id="labelDisponibilidade"></p>
                     </div>
+
+                    <div class="containerForms">
+                        <label>Vizualização da foto
+                            <img src="imgs/fotoPadraoPromocao.svg" id="visualizarImgCadastrada">
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
+ -->
     <footer>
 
     </footer>
 
-    <script src="arquivos_js/pag_categoria.js"></script>
+    <script src="..\arquivos_js\admin-pedidos.js"></script>
 </body>
 
 </html>

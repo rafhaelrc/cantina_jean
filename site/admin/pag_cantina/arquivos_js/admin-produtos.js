@@ -9,7 +9,7 @@ let produtos = {
         nome: 'COCA 600 ML',
         categoria: 2,
         descricao: 'Garrafa de Coca-Cola de 600 ml',
-        foto: 'imgs/Lapis.svg',
+        foto: '../imgs/icone-lapis.svg',
         status: 1,
         preco: 5,
     },
@@ -19,7 +19,7 @@ let produtos = {
         nome: 'Torrada completa',
         categoria: 0,
         descricao: 'Torrada com ovo, queijo, presunto, salada e tomate',
-        foto: 'imgs/Lupa.svg',
+        foto: '../imgs/icone-lupa.svg',
         status: 1,
         preco: 6,
     },
@@ -29,7 +29,7 @@ let produtos = {
         nome: 'Coxinha de frango',
         categoria: 0,
         descricao: 'Coxinha de frango frita',
-        foto: 'imgs/Lapis.svg',
+        foto: '../imgs/icone-lapis.svg',
         status: 1,
         preco: 5,
     },
@@ -39,7 +39,7 @@ let produtos = {
         nome: 'Brigadeiro',
         categoria: 1,
         descricao: 'Brigadeiro caseiro',
-        foto: 'imgs/fotoPadraoProduto.svg',
+        foto: '../imgs/foto-padrao-produto.svg',
         status: 1,
         preco: 3,
     },
@@ -49,7 +49,7 @@ let produtos = {
         nome: 'Morango do amorcocacola + refl',
         categoria: 1,
         descricao: 'Morango com Cobertura caramelizada',
-        foto: 'imgs/fotoPadraoProduto.svg',
+        foto: '../imgs/foto-padrao-produto.svg',
         status: 0,
         preco: 7,
     },
@@ -126,7 +126,7 @@ function Cadastrar() {
     descricao.value = '';
     disponibilidade.value = 1;
     preco.value = 0;
-    imgCadastrada.src = 'imgs/fotoPadraoProduto.svg';
+    imgCadastrada.src = '../imgs/foto-padrao-produto.svg';
     categoria.value = -1;
     titulo.innerText = 'Cadastrar novo produto';
 
@@ -256,9 +256,9 @@ function AtualizarTabela() {
             <td>${produtos[i].descricao}</td>
             <td class="areaStatus"><span style="background-color: ${produtos[i].status ? "var(--verde-secundario)" : "#ffd600"};">${produtos[i].status ? "Ativo" : "Inativo"}</span></td>
             <td class="areaBotoes">
-                <button class="botaoVisualizar" onclick="Visualizar(${i})"><img src="imgs/Lupa.svg" alt="Visualizar" width="25px" height="25px"></button>
-                <button class="botaoEditar" onclick="Editar(${i})"><img src="imgs/Lapis.svg" alt="Editar" width="25px" height="25px"></button>
-                <button class="botaoExcluir" onclick="Excluir(${i})"><img src="imgs/Lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
+                <button class="botaoVisualizar" onclick="Visualizar(${i})"><img src="../imgs/icone-lupa.svg" alt="Visualizar" width="25px" height="25px"></button>
+                <button class="botaoEditar" onclick="Editar(${i})"><img src="../imgs/icone-lapis.svg" alt="Editar" width="25px" height="25px"></button>
+                <button class="botaoExcluir" onclick="Excluir(${i})"><img src="../imgs/icone-lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
             </td>
         </tr>`
     };
