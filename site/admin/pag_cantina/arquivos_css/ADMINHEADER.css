@@ -42,11 +42,10 @@ body {
     width: auto;
 }
 
-.logo a#btnVoltar {
-    margin-right: auto;
+#btnVoltar {
+    align-self: center;
     text-decoration: none;
     color: white;
     font-size: 20px;
-    align-self: center;
     font-family: Arial;
 }
