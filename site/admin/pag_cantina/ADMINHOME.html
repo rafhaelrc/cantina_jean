@@ -10,11 +10,11 @@
     <style>
         .dashboard {
             display: grid;
-            grid-template-columns: repeat(3, 30%);
+            grid-template-columns: repeat(2, 35%);
             gap: 30px;
             justify-content: center;
             align-content: center;
-            min-height: calc(100vh - 10vh);
+            min-height: calc(100vh + 40vh);
         }
 
         .card {
@@ -30,9 +30,7 @@
             object-fit: cover;
             border-radius: 10px;
             border: 2px solid #004206;
-
         }
-
 
         .ofertas {
             height: 260px;
@@ -58,7 +56,6 @@
         }
 
         .card-btn:hover {
-
             background: #006b0a;
         }
     </style>
@@ -99,6 +96,11 @@
             <button id="btnPromocoes" class="card-btn">PROMOÇÕES</button>
         </div>
 
+        <div class="card">
+            <img src="categorias.png" alt="Categorias">
+            <button id="btnCategorias" class="card-btn">CATEGORIAS</button>
+        </div>
+
     </main>
 
 
@@ -106,13 +108,11 @@
 
         document.getElementById("btnProdutos").addEventListener("click", () => { window.location.href = "pag_produto.html"; });
 
-        document.getElementById("btnPedidos").addEventListener("click", () => { window.location.href = "pedidos.html"; });
+        document.getElementById("btnPedidos").addEventListener("click", () => { window.location.href = "pag_pedido.html"; });
 
         document.getElementById("btnPromocoes").addEventListener("click", () => { window.location.href = "pag_promocao.html"; });
 
-
-
-
+        document.getElementById("btnCategorias").addEventListener("click", () => { window.location.href = "pag_categoria.html"; });
 
     </script>
 
