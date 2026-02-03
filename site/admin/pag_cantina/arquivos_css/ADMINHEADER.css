@@ -43,9 +43,39 @@ body {
 }
 
 #btnVoltar {
+    background: linear-gradient(135deg, #005f08, #017401);
+    margin-right: 20px;
     align-self: center;
     text-decoration: none;
     color: white;
     font-size: 20px;
     font-family: Arial;
+
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+#btnVoltar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  background: linear-gradient(135deg, #008f00, #007009);
+}
+
+#btnVoltar:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+}
+
+#btnVoltar:focus {
+  outline: none;
 }
