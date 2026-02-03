@@ -7,7 +7,7 @@ let produtos = {
     0: {
         id: 0,
         nome: 'COCA 600 ML',
-        categoria: 'Bebidas',
+        categoria: 2,
         descricao: 'Garrafa de Coca-Cola de 600 ml',
         foto: 'imgs/Lapis.svg',
         status: 1,
@@ -17,7 +17,7 @@ let produtos = {
     1: {
         id: 1,
         nome: 'Torrada completa',
-        categoria: 'Categoria',
+        categoria: 0,
         descricao: 'Torrada com ovo, queijo, presunto, salada e tomate',
         foto: 'imgs/Lupa.svg',
         status: 1,
@@ -27,7 +27,7 @@ let produtos = {
     2: {
         id: 2,
         nome: 'Coxinha de frango',
-        categoria: 'Categoria',
+        categoria: 0,
         descricao: 'Coxinha de frango frita',
         foto: 'imgs/Lapis.svg',
         status: 1,
@@ -37,7 +37,7 @@ let produtos = {
     3: {
         id: 3,
         nome: 'Brigadeiro',
-        categoria: 'Categoria',
+        categoria: 1,
         descricao: 'Brigadeiro caseiro',
         foto: 'imgs/fotoPadraoProduto.svg',
         status: 1,
@@ -47,7 +47,7 @@ let produtos = {
     4: {
         id: 4,
         nome: 'Morango do amorcocacola + refl',
-        categoria: 'Categoria',
+        categoria: 1,
         descricao: 'Morango com Cobertura caramelizada',
         foto: 'imgs/fotoPadraoProduto.svg',
         status: 0,
@@ -136,7 +136,7 @@ document.getElementById('enviarFoto').addEventListener('change', function(event)
 
 /* Função chamada ao clicar no botão Cadastrar promoção
    Responsável por identificar os campos e zerar os valores para cadastrar uma promoção */
-function Cadastrar(){
+function Cadastrar() {
     // Pega os campos dos Pupup Verificar
     id = document.getElementById('idVisualizado');
     nome = document.getElementById('nome');
@@ -160,14 +160,14 @@ function Cadastrar(){
 
     // Reseta a lista de produtos selecionados
     ResetarListaProdutos(produtos_lista.options);
-    
+
     // Abre o Pupup Verificar
     window.location.assign("#popupVerificar");
 }
 
 /* Função chamada ao clicar no botão de ação da lupa
    Responsável por identificar os campos e apresentar os valores cadastrados da promoção */
-function Visualizar(num){
+function Visualizar(num) {
     // Pega os campus dos Pupup Visualizar
     nome = document.getElementById('labelNome');
     descricao = document.getElementById('labelDescricao');
@@ -200,7 +200,8 @@ function Visualizar(num){
 
 /* Função chamada ao clicar no botão de ação do lápis
    Responsável por identificar os campos e colocar os valores cadastrados nos campos da promoção */
-function Editar(num){
+function Editar(num) {
+    // Pega os campos dos Pupup Verificar
     id = document.getElementById('idVisualizado');
     nome = document.getElementById('nome');
     descricao = document.getElementById('descricao');
@@ -237,17 +238,20 @@ function Editar(num){
     window.location.assign("#popupVerificar");
 }
 
-/* Função ...
-   Responsável .. */
-function Excluir(num){
-    delete promocoes[num];
-    a = document.getElementById('idLinha'+num);
-    a.innerHTML = '';
+/* Função chamada ao clicar no botão de ação da lixeira
+   Responsável por deletar uma promoção selecionada */
+function Excluir(num) {
+    if (confirm("Tem certeza que deseja excluir essa promoção?")) {
+        delete promocoes[num];
+        a = document.getElementById('idLinha' + num);
+        a.innerHTML = '';
+    }
 }
 
-/* Função ...
-   Responsável .. */
+/* Função chamada ao clicar no botão salvar de uma edição ou criação de uma promoção
+   Responsável por salvar os dados da promoção editada ou criada */
 function Salvar() {
+    // Pega os campos dos Pupup Verificar
     num = document.getElementById('idVisualizado');
     nome = document.getElementById('nome');
     descricao = document.getElementById('descricao');
@@ -273,7 +277,7 @@ function Salvar() {
     // Verifica se o preço escolhido é maior que o preço maximo da promoção 
     } else if (preco.value > preco_maximo){
         alert(`O preço escolhido é maior que a soma dos valores dos produtos da promoção (R$ ${parseFloat(preco_maximo)}).`);
-    // Se as condições forem aceiras, cadastra os dados da promoção na lista fictícia de promoções
+    // Se as condições forem aceitas, cadastra os dados da promoção na lista fictícia de promoções
     } else {
         promocoes[parseInt(num.value)] = {
             id: parseInt(num.value),
@@ -284,9 +288,9 @@ function Salvar() {
             preco: parseFloat(preco.value),
             produtos_lista: produtosSelecionados,
             validade: parseFloat(validade.value),
-        }
+        };
 
-        // Aumenta o contador de quantidade de promoções se for uma criação de promoções
+        // Aumenta o contador de quantidade de promoções se for uma criação de promoção
         if (numero_promocoes == parseInt(num.value)) {
             numero_promocoes++;
         }
@@ -328,6 +332,7 @@ function AtualizarTabela() {
         </tr>`
     };
 
+    // Passagem do texto gerado das linhas da tebela para o html
     tabela.innerHTML = promocoes_html;
 }
 

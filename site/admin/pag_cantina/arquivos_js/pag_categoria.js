@@ -37,7 +37,7 @@ AtualizarTabela();
 
 /* Função chamada ao clicar no botão Cadastrar categoria
    Responsável por identificar os campos e zerar os valores para cadastrar uma categoria */
-function Cadastrar(){
+function Cadastrar() {
     // Pega os campos dos Pupup Verificar
     id = document.getElementById('idVisualizado');
     nome = document.getElementById('nome');
@@ -58,7 +58,7 @@ function Cadastrar(){
 
 /* Função chamada ao clicar no botão de ação da lupa
    Responsável por identificar os campos e apresentar os valores cadastrados da categoria */
-function Visualizar(num){
+function Visualizar(num) {
     // Pega os campus dos Pupup Visualizar
     nome = document.getElementById('labelNome');
     descricao = document.getElementById('labelDescricao');
@@ -77,7 +77,8 @@ function Visualizar(num){
 
 /* Função chamada ao clicar no botão de ação do lápis
    Responsável por identificar os campos e colocar os valores cadastrados nos campos da categoria */
-function Editar(num){
+function Editar(num) {
+    // Pega os campos dos Pupup Verificar
     id = document.getElementById('idVisualizado');
     nome = document.getElementById('nome');
     descricao = document.getElementById('descricao');
@@ -98,29 +99,31 @@ function Editar(num){
 /* Função chamada ao clicar no botão de ação da lixeira
    Responsável por deletar uma categoria selecionada */
 function Excluir(num) {
-    if (confirm("Tem certeza que deseja excluir isso?")) {
+    if (confirm("Tem certeza que deseja excluir essa categoria?")) {
         delete categorias[num];
         a = document.getElementById('idLinha' + num);
         a.innerHTML = '';
     }
 }
 
-/* Função chamada ao crilar no botão salvar de uma edição ou criação de uma categoria
-   Responsável por salvar os dados da categoria editado ou criada */
+/* Função chamada ao clicar no botão salvar de uma edição ou criação de uma categoria
+   Responsável por salvar os dados da categoria editada ou criada */
 function Salvar() {
+    // Pega os campos dos Pupup Verificar
     num = document.getElementById('idVisualizado');
     nome = document.getElementById('nome');
     descricao = document.getElementById('descricao');
     disponibilidade = document.getElementById('disponibilidade'); // => 0 ou 1: Representa status
 
+    // Cadastra os dados da categoria na lista fictícia de categorias
     categorias[parseInt(num.value)] = {
         id: parseInt(num.value),
         nome: nome.value,
         descricao: descricao.value ,
         status: parseInt(disponibilidade.value),
-    }
+    };
 
-    // Aumenta o contador de quantidade de promoções se for uma criação de categorias
+    // Aumenta o contador de quantidade de categorias se for uma criação de categoria
     if (numero_categorias == parseInt(num.value)) {
         numero_categorias++;
     }
@@ -154,5 +157,6 @@ function AtualizarTabela() {
         </tr>`
     };
 
+    // Passagem do texto gerado das linhas da tebela para o html
     tabela.innerHTML = promocoes_html;
 }

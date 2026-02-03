@@ -198,7 +198,7 @@ option {
     padding: 10px;
 }
 
-option:first-of-type {
+/*option:first-of-type {
     background-color: var(--branco);
     border-radius: 8px 8px 0 0;
 }
@@ -207,10 +207,10 @@ option:last-of-type {
     background-color: #ffd600;
     border-radius: 0 0 8px 8px;
 }
-
+// Tirar
 option:not(option:last-of-type) {
     border-bottom: none;
-}
+}*/
 
 .centalizadoForms {
     color: #333;
@@ -269,4 +269,19 @@ select[multiple] option:first-of-type {
 
 select[multiple] option:last-of-type {
     border-radius: 0 0 8px 8px;
+}
+
+/* Estilização dos produtos da tabela de promoções */
+.areaProdutos {
+    justify-items: center;
+
+}
+
+.areaProdutos p {
+    background-color: var(--verde-vivo);
+    padding: 5px 6px;
+    margin: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    line-height: 1;
 }
