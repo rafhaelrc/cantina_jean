@@ -198,19 +198,13 @@ option {
     padding: 10px;
 }
 
-/*option:first-of-type {
-    background-color: var(--branco);
-    border-radius: 8px 8px 0 0;
+#disponibilidade option:first-of-type {
+    background-color: var(--verde-secundario);
 }
 
-option:last-of-type {
+#disponibilidade option:last-of-type {
     background-color: #ffd600;
-    border-radius: 0 0 8px 8px;
 }
-// Tirar
-option:not(option:last-of-type) {
-    border-bottom: none;
-}*/
 
 .centalizadoForms {
     color: #333;
