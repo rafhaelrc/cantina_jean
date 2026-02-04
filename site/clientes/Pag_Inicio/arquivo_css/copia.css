@@ -103,7 +103,6 @@ body {
     justify-content: center;
     /* centraliza os botões */
 
-
 }
 
 .nav-botoes button {
@@ -282,7 +281,6 @@ body {
     cursor: pointer;
     border-radius: 8px;
     z-index: 10;
-
 }
 
 .btn-carrinho {
@@ -334,7 +332,6 @@ body {
     letter-spacing: 1px;
     box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
 }
-
 
 /* =========================
    DRAWER CARRINHO
