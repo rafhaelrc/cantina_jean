@@ -79,7 +79,7 @@ let pedidos = [
         ],
         descricao: 'Texto escrito por quem pediu',
         pagamento: id_referente_à_forma_de_pagamento, // ['Pix', 'Balcão', 'Fiado']
-        status_pagamento: id_referente_ao_status_pagamento,
+        status_pagamento: id_referente_ao_status_pagamento, // ['Pendente', 'Pago']
         status: id_referente_ao_status_do_pedido, // ['Aguardando', 'Pronto', 'Retirado', 'Cancelado']
         editavel: 1, // Represent se foi pago pelo app ou será pago depois
     },
@@ -100,7 +100,7 @@ let pedidos = [
             },
         ],
         descricao: 'Torrada sem queijo',
-        pagamento: 0,
+        pagamento: 1,
         status_pagamento: 0,
         status: 0,
         editavel: 1, // Represent se foi pago pelo app ou será pago depois
@@ -133,7 +133,7 @@ let pedidos = [
         ],
         descricao: 'Torrada sem queijo',
         pagamento: 1,
-        status_pagamento: 1,
+        status_pagamento: 0,
         status: 0,
         editavel: 1, // Represent se foi pago pelo app ou será pago depois
     },
@@ -215,8 +215,6 @@ function AtualizarTabela() {
         let lista_formas_pagamento = document.getElementById('listaFormasPagamento'+i);
         let lista_status_pagamento_possiveis = document.getElementById('listaStatusPagamentoPossiveis'+i);
         let status_possiveis = document.getElementById('listaStatusPossiveis'+i);
-        
-        console.log(lista_formas_pagamento,i);
 
         if (pedidos[i].editavel) {
             lista_formas_pagamento.value = pedidos[i].pagamento;

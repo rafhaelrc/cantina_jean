@@ -214,7 +214,9 @@ function Salvar() {
     if (categoria.value == -1) {
         alert('Nenhuma categoria selecionada para o produto, selecione uma categoria antes de salvar.');
     // Verifica se foi selecionado um preço para o produto
-    } else if (preco.value > 0) {
+    } else if (preco.value < 1) {
+        alert('O preço do produto não pode ser 0, selecione um preço valido antes de salvar.');
+    } else {
         // Se as condições forem aceitas, cadastra os dados do produto na lista fictícia de produtos
         produtos[parseInt(num.value)] = {
             id: parseInt(num.value),
@@ -236,8 +238,6 @@ function Salvar() {
 
         // Atualiza as promoções cadastradas para apresentação
         AtualizarTabela();
-    } else {
-        alert('O preço do produto não pode ser 0, selecione um preço valido antes de salvar.');
     }
 }
 
