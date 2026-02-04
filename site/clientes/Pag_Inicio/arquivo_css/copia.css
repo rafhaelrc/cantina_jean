@@ -38,7 +38,8 @@ body {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    justify-content: space-between; /* distribui melhor os itens */
+    justify-content: space-between;
+    /* distribui melhor os itens */
     gap: 10px;
     padding: 0 15px;
     width: 100%;
@@ -101,8 +102,8 @@ body {
     gap: 10px;
     justify-content: center;
     /* centraliza os botões */
-    
-    
+
+
 }
 
 .nav-botoes button {
@@ -134,7 +135,7 @@ body {
 ========================= */
 .conteudo-principal {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     gap: 20px;
     padding: 15px;
     width: 100%;
@@ -205,7 +206,7 @@ body {
     background-color: #b1b1b1;
     border-radius: 22px;
     overflow: hidden;
-    border: 1px solid rgba(0,0,0,0.25);
+    border: 1px solid rgba(0, 0, 0, 0.25);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -408,17 +409,14 @@ body {
 }
 
 
-/* =========================
-   CARDÁPIO
-========================= */
-
+/* ========================= CARDÁPIO ========================= */
 .escondido {
     display: none;
 }
 
 /* Seção geral */
 .menu-section {
-    margin-bottom: 20px;
+    margin-bottom: px;
 }
 
 /* Barra de categoria (Lanches, Doces, Bebidas) */
@@ -434,13 +432,14 @@ body {
     border-radius: 4px;
     margin-bottom: 8px;
     transition: background-color 0.3s ease;
-    position: relative;
     width: 100%;
+    /* ocupa toda a largura do container */ 
+    box-sizing: border-box;
 }
+
 
 .menu-bar:hover {
     background-color: #30a538;
-    /* tom mais claro ao passar o mouse */
 }
 
 .menu-title {
@@ -464,35 +463,32 @@ body {
     margin: 10px;
     position: relative;
     /* permite posicionar elementos dentro */
+    min-height: 120px;
+    /* garante espaço pro ícone */
+    overflow: hidden;
+    /* evita vazar conteúdo */
 }
 
-/* Leve destaque ao clicar */
 .itemcardapio:hover {
     background-color: #c7dad1;
-
 }
 
-/* Deixar o texto ao lado da img */
 .itemcardapio-texto {
     flex: 1;
-    padding-right: 30px;
 }
 
-/* Título */
 .itemcardapio-texto h3 {
     margin: 0;
     font-size: 21px;
     color: #333333;
 }
 
-/* Descrição */
 .itemcardapio-texto p {
     margin: 5px 0;
     font-size: 18px;
     color: #2e2e2e;
 }
 
-/* Preço */
 .itemcardapio-texto span {
     font-weight: bold;
     font-size: 19px;
@@ -508,25 +504,113 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Ícone de carrinho dentro do item */
+.botao-adicionar {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 1;
+    /* abaixo do header */
+}
 
 .botao-adicionar img {
     width: 28px;
-    height: 40px;
+    height: 28px;
+    object-fit: contain;
+    transition: transform 0.2s ease;
 }
 
 .botao-adicionar:hover img {
     transform: scale(1.1);
-    /* efeito de destaque ao clicar */
 }
 
-.botao-adicionar {
-    position: absolute;
-    bottom: 2px;
-    right: 15px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
+/* =========================
+   STATUS DE PEDIDOS 
+========================= */
+
+.painel-status {
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
 }
+
+.coluna-pedidos {
+    flex: 1;
+    background: #000000;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    text-align: center;
+}
+
+.coluna-pedidos h3 {
+    color: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.coluna-pedidos ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.coluna-pedidos li {
+    color: white;
+    margin: 8px 0;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+/* Botões iguais ao painel */
+.botoes-status {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    margin: 10px;
+}
+
+.botao-cancelar {
+    background: #dc3545;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    text-align: center;
+}
+
+.botao-info {
+    background: #6c757d;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.botao-cancelar:hover,
+.botao-info:hover {
+    opacity: 0.9;
+}
+
+
 
 /* =========================
    RESPONSIVO
