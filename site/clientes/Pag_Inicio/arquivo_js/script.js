@@ -53,8 +53,16 @@ const overlay = document.getElementById("overlay-carrinho");//overlay melhora a 
 
 //ativa ao clicar 
 icone_Carrinho.addEventListener("click", () => {
-    painel_oculto.classList.add("ativo");
-    overlay.classList.add("ativo");
+    if (painel_oculto.classList.contains("ativo")) {
+        // Fecha se está aberto
+        painel_oculto.classList.remove("ativo");
+        overlay.classList.remove("ativo");
+    }
+    else {
+        // Abre se está fechado
+        painel_oculto.classList.add("ativo");
+        overlay.classList.add("ativo");
+    }
 });
 
 //Função que fecha o carrinho 
@@ -88,4 +96,43 @@ function toggleSection(id) {
     arrow.textContent = '▲'; // aberto
   }
 }
+
+/* =========================
+   PEDIDO - STATUS
+========================= */
+
+document.getElementById("btn-info").addEventListener("click", () => {
+    alert("Mostrando informações do pedido...");
+});
+
+/* =========================
+   MODAL CANCELAR PEDIDO
+========================= */
+const btnCancelar = document.getElementById("btn-cancelar");
+const modalCancelar = document.getElementById("modal-cancelar");
+const btnSair = document.getElementById("btn-sair");
+const btnConfirmar = document.getElementById("btn-confirmar");
+
+// Abrir modal ao clicar em "Cancelar Pedido"
+btnCancelar.addEventListener("click", () => {
+  modalCancelar.style.display = "flex";
+});
+
+// Fechar modal ao clicar em "Sair"
+btnSair.addEventListener("click", () => {
+  modalCancelar.style.display = "none";
+});
+
+// Confirmar cancelamento
+btnConfirmar.addEventListener("click", () => {
+  const numero = document.getElementById("numero-pedido").value;
+  const chave = document.getElementById("palavra-chave").value;
+
+  if (numero && chave) {
+    alert(`Pedido ${numero} cancelado com sucesso!`);
+    modalCancelar.style.display = "none";
+  } else {
+    alert("Preencha todos os campos!");
+  }
+});
 

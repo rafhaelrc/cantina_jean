@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cantina Jean</title>
-    <link rel="stylesheet" href="../arquivo_css/copia.css">
+    <link rel="stylesheet" href="../arquivo_css/ver_anterior.css">
     <style>
         /* SPA: controle de páginas */
         .pagina {
@@ -78,19 +78,19 @@
                             <span class="preco-item">R$ 6,00</span>
 
                             <button class="btn-carrinho">
-                        <img src="img/carrinho.png" alt="Adicionar ao carrinho">
+                                <img src="img/carrinho.png" alt="Adicionar ao carrinho">
                             </button>
                         </div>
 
                         <div class="item">
                             <img src="img/cocacola.png" alt="coca cola 600ml">
                             <div class="separador"></div>
-                            
+
                             <span class="nome-item"><strong>Coca-Cola 600ml</strong></span>
                             <span class="preco-item">R$ 7,50</span>
 
                             <button class="btn-carrinho">
-                        <img src="img/carrinho.png" alt="Adicionar ao carrinho">
+                                <img src="img/carrinho.png" alt="Adicionar ao carrinho">
                             </button>
                         </div>
 
@@ -102,7 +102,7 @@
                             <span class="preco-item">R$ 5,00</span>
 
                             <button class="btn-carrinho">
-                        <img src="img/carrinho.png" alt="Adicionar ao carrinho">
+                                <img src="img/carrinho.png" alt="Adicionar ao carrinho">
                             </button>
 
                         </div>
@@ -115,7 +115,7 @@
                             <span class="preco-item">R$ 5,00</span>
 
                             <button class="btn-carrinho">
-                        <img src="img/carrinho.png" alt="Adicionar ao carrinho">
+                                <img src="img/carrinho.png" alt="Adicionar ao carrinho">
                             </button>
 
                         </div>
@@ -159,7 +159,7 @@
                         <button class="botao-adicionar"> <img src="img/carrinho.png" alt="Carrinho"> </button>
                     </div>
 
-                    
+
 
                 </div>
 
@@ -199,16 +199,61 @@
 
 
     <!-- Página Pedido -->
-
     <section id="pedido" class="pagina">
-        <h2>Pedido</h2>
-        <p>Monte seu pedido aqui...</p>
 
-        <!-- Página Contato -->
-    </section>
-    <section id="contato" class="pagina">
-        <h2>Fale Conosco</h2>
-        <p>Formulário de contato...</p>
+        <!-- Painel de status dos pedidos -->
+        <div class="painel-status">
+            <!-- Coluna PREPARANDO -->
+            <div class="coluna-pedidos preparando">
+                <h3>PREPARANDO</h3>
+                <ul id="lista-preparo">
+                    <li>132</li>
+                    <li>312</li>
+                    <li>847</li>
+                    <li>213</li>
+                    <li>384</li>
+                    <li>948</li>
+                </ul>
+            </div>
+
+            <!-- Coluna PRONTO -->
+            <div class="coluna-pedidos pronto">
+                <h3>PRONTO</h3>
+                <ul id="lista-pronto">
+                    <li>142</li>
+                    <li>612</li>
+                    <li>828</li>
+                    <li>280</li>
+                    <li>839</li>
+                    <li>248</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Botões iguais ao painel -->
+        <div class="botoes-status"> <button id="btn-cancelar" class="botao-cancelar">Cancelar Pedido</button> <button
+                id="btn-info" class="botao-info">Informações do Pedido</button> </div>
+        <!-- Modal de Cancelamento -->
+        <div id="modal-cancelar" class="modal-cancelar">
+            <div class="modal-conteudo">
+                <div class="modal-header">
+                    <h2>Cancelamento do pedido</h2>
+                </div>
+                <p>Para cancelar o pedido digite seu número de retirada e sua palavra chave</p>
+
+                <label for="numero-pedido">Número do pedido</label>
+                <input type="text" id="numero-pedido" placeholder="Digite o número">
+
+                <label for="palavra-chave">Palavra chave</label>
+                <input type="password" id="palavra-chave" placeholder="Digite a palavra chave">
+
+                <div class="modal-botoes">
+                    <button id="btn-sair" class="btn-sair">✖ Sair</button>
+                    <button id="btn-confirmar" class="btn-confirmar">✔ Confirmar</button>
+                </div>
+            </div>
+        </div>
+    
     </section>
 
     <!-- Rodapé -->
