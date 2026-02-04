@@ -1,0 +1,36 @@
+Recomendações de melhorias
+
+Explicação da estrutura das recomendações:
+nome-arquivo.html
+ Alteração (ação - tipo de ação) // [Criação, Edição, Correção] - [Funcionalidade, Estilo, Organização]
+ // Comentário do objetivo da alteração
+  Paços da alteração ou sub alteração
+
+admin-promocoes.js
+ Adicionar lógica de datas e de tempo (Criação - Funcionalidade)
+  // Para organizar a validade das promoções
+
+admin-pedidos.js
+ Adicionar coluna de de valor total do pedido (Criação - Funcionalidade e Estilo)
+  // Garantir controle de valores
+ Adicionar PupUp de vizualização detalhada do pedido (Criação - Funcionalidade e Estilo)
+  // Garantir melhor entendimento da venda
+ Adicionar cores e estilos dos selects (Criação - Estilo)
+ Arrumar estilo dos itens dos pedidos (Edição - Estilo)
+ Adicionar evento que ao selecionar 'retirado' ou 'canselado' pede uma confirmação para retira o item da vizualização (Criação - Funcionalidade)
+ Adicionar lógica de datas (Criação - Funcionalidade)
+  // Para poder organizar o filtro e as promoções
+ Criar filtro (Criação - Funcionalidade)
+  De tempo
+   Dia -> mostra os pedidos atuais do dia
+   Semana -> vizualização semanal
+   Mês -> Vizualização de todo o mês
+   Tudo -> Todos os pedidos em relação ao tempo
+  De características
+   Forma de Pagamento -> Pix, Balcão, Fiado
+   Status do pagamento -> Pendente, Pago
+   Status do pedido -> Aguardando, Pronto, Retirado, Cancelado
+ Adicionar lógica e apresentação para quando for uma promoção (Criação - Funcionalidade e Estilo)
+  // Garantir a percepção de que é uma promoção
+ Adicionar função para enviar os dados de tempo em tempo para salvar no banco de dados (Criação - Funcionalidade)
+  // Garantir o salvamento dos dados alterados pelo Jean na tabela
