@@ -136,3 +136,26 @@ btnConfirmar.addEventListener("click", () => {
   }
 });
 
+
+//Modal do footer qe exibe a equipe de desenvolvimento
+
+document.addEventListener("DOMContentLoaded", () => {
+    const abrirEquipe = document.getElementById("abrirEquipe");
+    const modalEquipe = document.getElementById("modal-equipe");
+    const fecharEquipe = document.getElementById("fecharEquipe");
+
+    abrirEquipe.addEventListener("click", () => {
+        modalEquipe.classList.add("ativo");
+    });
+
+    fecharEquipe.addEventListener("click", () => {
+        modalEquipe.classList.remove("ativo");
+    });
+
+    modalEquipe.addEventListener("click", (e) => {
+        if (e.target === modalEquipe) {
+            modalEquipe.classList.remove("ativo");
+        }
+    });
+});
+
