@@ -1,5 +1,5 @@
-
-// BACKEND - CONFIGURAÇÕES      
+//Existe apartir da linha
+    
 
 
 const API_BASE = "https://cantina-api-rlqm.onrender.com";
@@ -155,8 +155,34 @@ function toggleSection(id) {
    PEDIDO - STATUS
 ========================= */
 
-document.getElementById("btn-info").addEventListener("click", () => {
-    alert("Mostrando informações do pedido...");
+
+//  A função consulta no backend o status real de um pedido 
+// usando o número de retirada.
+
+
+document.getElementById("btn-info").addEventListener("click", async () => {
+  const numero = document.getElementById("numero-pedido").value;
+
+  if (!numero) {
+    alert("Informe o número do pedido!");
+    return;
+  }
+
+  try {
+    const resposta = await fetch(
+      `${API_BASE}/api/public/pedidos/${numero}`
+    );
+
+    if (!resposta.ok) {
+      alert("Pedido não encontrado!");
+      return;
+    }
+
+    const pedido = await resposta.json();
+    alert(`Status do pedido: ${pedido.status}`);
+  } catch (erro) {
+    console.error("Erro ao consultar pedido:", erro);
+  }
 });
 
 /* =========================
@@ -177,18 +203,41 @@ btnSair.addEventListener("click", () => {
   modalCancelar.style.display = "none";
 });
 
-// Confirmar cancelamento
-btnConfirmar.addEventListener("click", () => {
+
+
+
+// Confirmar cancelamento  (atualizado pra API)
+
+btnConfirmar.addEventListener("click", async () => {
   const numero = document.getElementById("numero-pedido").value;
   const chave = document.getElementById("palavra-chave").value;
 
-  if (numero && chave) {
-    alert(`Pedido ${numero} cancelado com sucesso!`);
-    modalCancelar.style.display = "none";
-  } else {
+  if (!numero || !chave) {
     alert("Preencha todos os campos!");
+    return;
+  }
+
+  try {
+    const resposta = await fetch(
+      `${API_BASE}/api/public/pedidos/${numero}/cancelar`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ palavraChave: chave })
+      }
+    );
+
+    if (resposta.ok) {
+      alert("Pedido cancelado com sucesso!");
+      modalCancelar.style.display = "none";
+    } else {
+      alert("Não foi possível cancelar o pedido.");
+    }
+  } catch (erro) {
+    console.error("Erro ao cancelar pedido:", erro);
   }
 });
+
 
 
 //Modal do footer que exibe a equipe de desenvolvimento
@@ -223,7 +272,10 @@ const trackCarrossel = document.querySelector('.carrossel-track');
 trackCarrossel.innerHTML = ''; // Limpa os itens estáticos
 
 produtos.forEach(prod => {
-    // Se o produto estiver em promoção (ou apenas para preencher o carrossel)
+
+    // Se o produto estiver em promoção
+    //  (ou apenas para preencher o carrossel)
+
     if (prod.promocao === true || prod.preco < 10) { 
         const htmlOferta = `
             <div class="item">
@@ -266,7 +318,7 @@ produtos.forEach(prod => {
         `;
 
         //  Qual a Lógica ?Se o produto for da categoria 1, vai para lanches, etc.
-        // Verifique no seu banco/manual quais são os nomes ou IDs das categorias
+        // Verifique no  banco quais são os nomes ou IDs das categorias
         if (prod.categoria.nome === 'Lanches') {
             containerLanches.innerHTML += htmlItem;
         } else if (prod.categoria.nome === 'Doces') {
@@ -283,11 +335,11 @@ produtos.forEach(prod => {
 // Função para buscar produtos da API
 async function carregarProdutosCardapio() {
     try {
-        // Conforme o manual: URL pública para listar produtos
+        //  URL pública para listar produtos
         const resposta = await fetch(`${API_BASE}/api/public/produtos`);
         const dados = await resposta.json();
         
-        // Agora passamos os dados recebidos para a função que você já criou
+        //  Passamos os dados recebidos para a função  "renderizarProdutosNoMenu"
         renderizarProdutosNoMenu(dados);
     } catch (erro) {
         console.error("Erro ao carregar cardápio:", erro);
@@ -299,7 +351,7 @@ document.addEventListener("DOMContentLoaded", carregarProdutosCardapio);
 
 
 
-
+//Função que envia o pedido pro BACK
 
 
 async function enviarPedidoParaAPI() {
@@ -308,7 +360,7 @@ async function enviarPedidoParaAPI() {
         return;
     }
 
-    // Montando o objeto conforme o Manual ( da pág. 4)
+    // Montando o objeto conforme o Manual 
 
     const pedido = 
     {
