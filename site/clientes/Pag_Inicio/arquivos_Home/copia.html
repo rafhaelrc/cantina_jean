@@ -224,7 +224,7 @@
     </div>
 </footer>
 
-<!--CARRINHO SEM NADA DE TEXTO ilustrativo -->
+<!--CARRINHO teve tudo de ilustrativo ilustrativo removido -->
 
     <!-- ABA DO CARRINHO -->
     <div id="drawer-carrinho" class="drawer-carrinho">
@@ -232,14 +232,19 @@
         <h3>Meu Carrinho</h3>
         <button id="fecharDrawer">✖</button>
     </div>
+
     <div class="drawer-itens"></div>
+
+    
+    <div class="drawer-total">
+        <strong id="valor-total-carrinho">Total: R$ 0,00</strong>
     </div>
 
-<div class="drawer-total">
-    <strong id="valor-total-carrinho">Total: R$ 0,00</strong>
+    <button onclick="enviarPedidoParaAPI()" class="btn-finalizar">
+        Finalizar Pedido
+    </button>
 </div>
 
-<button onclick="enviarPedidoParaAPI()" class="btn-finalizar">Finalizar Pedido</button>
 
     <!-- FUNDO ESCURO -->
     <div id="overlay-carrinho"></div>

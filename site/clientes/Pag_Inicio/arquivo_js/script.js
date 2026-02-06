@@ -309,7 +309,7 @@ produtos.forEach(prod => {
                 <div class="itemcardapio-texto">
                     <h3>${prod.nome}</h3>
                     <p>${prod.descricao}</p>
-                    <span>R$ ${prod.preco.toFixed(2)}</span>
+                    
                 </div>
                 <button class="botao-adicionar" onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome}', ${prod.preco})"> 
                     <img src="img/carrinho.png" alt="Carrinho"> 
