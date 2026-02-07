@@ -1,4 +1,20 @@
-//Existe apartir da linha
+/*
+*----------Algumas informações--------:
+ onde há # deve-se ser revisado e talvez reajustado 
+*
+ Os produtos  vêm do banco de dados através da API, usando um endpoint
+público com método GET (para leitura). 
+O front consome esses dados e monta o HTML dinamicamente com JavaScript.
+
+O carrinho  só serve pra organizar 
+os itens antes de enviar o pedido completo para a API.
+
+ o pedido só é salvo no POST,quando o usuário confirma o pedido.
+ Antes disso, nada é salvo.”
+
+ Cancelamento de pedidos esta na linha ~= 225
+*
+*/
     
 
 
@@ -206,7 +222,7 @@ btnSair.addEventListener("click", () => {
 
 
 
-// Confirmar cancelamento  (atualizado pra API)
+// # Confirmar cancelamento  (atualizado pra API)
 
 btnConfirmar.addEventListener("click", async () => {
   const numero = document.getElementById("numero-pedido").value;
@@ -263,7 +279,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-
+/**
+ * # Funções  de renderizar produtos , gerar pedidos e o obj estão abaixo 
+ * 
+ */
 
 function renderizarProdutosNoMenu(produtos) {
 
@@ -271,6 +290,9 @@ function renderizarProdutosNoMenu(produtos) {
 const trackCarrossel = document.querySelector('.carrossel-track');
 trackCarrossel.innerHTML = ''; // Limpa os itens estáticos
 
+
+//# Aqui talvez tenha que ser alterado para exibir oq esta só em ofertas
+//no carrinho
 produtos.forEach(prod => {
 
     // Se o produto estiver em promoção
@@ -317,8 +339,9 @@ produtos.forEach(prod => {
             </div>
         `;
 
-        //  Qual a Lógica ?Se o produto for da categoria 1, vai para lanches, etc.
-        // Verifique no  banco quais são os nomes ou IDs das categorias
+
+        //  Qual a Lógica  do if? Se o produto for da categoria 1, vai para lanches, etc.
+        // *** NOTA: Verificar no  banco quais são os nomes ou IDs das categorias ***
         if (prod.categoria.nome === 'Lanches') {
             containerLanches.innerHTML += htmlItem;
         } else if (prod.categoria.nome === 'Doces') {
@@ -333,6 +356,7 @@ produtos.forEach(prod => {
 
 
 // Função para buscar produtos da API
+
 async function carregarProdutosCardapio() {
     try {
         //  URL pública para listar produtos
@@ -352,7 +376,6 @@ document.addEventListener("DOMContentLoaded", carregarProdutosCardapio);
 
 
 //Função que envia o pedido pro BACK
-
 
 async function enviarPedidoParaAPI() {
     if (carrinho.length === 0) {
