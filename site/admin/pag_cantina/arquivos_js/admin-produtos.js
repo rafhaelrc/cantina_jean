@@ -1,90 +1,15 @@
+const API_URL = 'https://cantina-api-rlqm.onrender.com/api/admin';
+
+const AUTH_HEADER = {
+    'Authorization': 'Basic ' + btoa('admin:123'),
+    'Content-Type': 'application/json'
+};
+
+let dados_produtos;
+let dados_categorias;
+
 let tabela = document.getElementById('bodyTabela');
 const select = document.getElementById('categoria');
-let numero_produtos = 5;
-
-// Lista fictícia de objetos representando os produtos já cadastrados
-let produtos = {
-    0: {
-        id: 0,
-        nome: 'COCA 600 ML',
-        categoria: 2,
-        descricao: 'Garrafa de Coca-Cola de 600 ml',
-        foto: '../imgs/icone-lapis.svg',
-        status: 1,
-        preco: 5,
-    },
-
-    1: {
-        id: 1,
-        nome: 'Torrada completa',
-        categoria: 0,
-        descricao: 'Torrada com ovo, queijo, presunto, salada e tomate',
-        foto: '../imgs/icone-lupa.svg',
-        status: 1,
-        preco: 6,
-    },
-
-    2: {
-        id: 2,
-        nome: 'Coxinha de frango',
-        categoria: 0,
-        descricao: 'Coxinha de frango frita',
-        foto: '../imgs/icone-lapis.svg',
-        status: 1,
-        preco: 5,
-    },
-
-    3: {
-        id: 3,
-        nome: 'Brigadeiro',
-        categoria: 1,
-        descricao: 'Brigadeiro caseiro',
-        foto: '../imgs/foto-padrao-produto.svg',
-        status: 1,
-        preco: 3,
-    },
-
-    4: {
-        id: 4,
-        nome: 'Morango do amorcocacola + refl',
-        categoria: 1,
-        descricao: 'Morango com Cobertura caramelizada',
-        foto: '../imgs/foto-padrao-produto.svg',
-        status: 0,
-        preco: 7,
-    },
-};
-
-// Lista fictícia de objetos representando as categorias já cadastradas
-let categorias = {
-    0: {
-        id: 0,
-        nome: 'Lanches',
-        descricao: 'Categoria de lanches',
-        status: 1,
-    },
-
-    1: {
-        id: 1,
-        nome: 'Doces',
-        descricao: 'Categoria de doces',
-        status: 1,
-    },
-
-    2: {
-        id: 2,
-        nome: 'Bebidas',
-        descricao: 'Categoria de bebidas',
-        status: 1,
-    },
-
-    3: {
-        id: 4,
-        nome: 'Sobremesas',
-        descricao: 'Categoria de sobremesas',
-        status: 0,
-    },
-};
 
 // Coloca as promoções já cadastradas para apresentação
 AtualizarTabela();
@@ -121,7 +46,7 @@ function Cadastrar() {
     titulo = document.getElementById('tituloVerificar');
 
     // Coloca os valores do Pupup como iniciais
-    id.value = numero_produtos;
+    id.value = '';
     nome.value = '';
     descricao.value = '';
     disponibilidade.value = 1;
@@ -147,13 +72,13 @@ function Visualizar(num) {
     titulo = document.getElementById('tituloVisualizar');
 
     // Escreve os dados da promoção no Pupup
-    nome.innerText = produtos[num].nome;
-    descricao.innerText = produtos[num].descricao;
-    disponibilidade.innerText = produtos[num].status ? "Ativo" : "Inativo";
-    preco.innerText = produtos[num].preco;
-    imgCadastrada.src = produtos[num].foto;
-    categoria.innerHTML = categorias[produtos[num].categoria].nome;
-    titulo.innerText = `Visualização do produto ${produtos[num].nome}`;
+    nome.innerText = dados_produtos[num].nome;
+    descricao.innerText = dados_produtos[num].descricao;
+    disponibilidade.innerText = dados_produtos[num].ativo ? "Ativo" : "Inativo";
+    preco.innerText = dados_produtos[num].preco;
+    imgCadastrada.src = dados_produtos[num].imagemUrl;
+    categoria.innerHTML = dados_produtos[num].categoria.nome;
+    titulo.innerText = `Visualização do produto ${dados_produtos[num].nome}`;
 
     // Abre o Pupup Visualizar
     window.location.assign("#popupVisualizar");
@@ -173,15 +98,17 @@ function Editar(num) {
     categoria = document.getElementById('categoria');
     titulo = document.getElementById('tituloVerificar');
 
-    // Escreve os dados da promoção nos campos do Pupup
-    id.value = num;
-    nome.value = produtos[num].nome;
-    descricao.value = produtos[num].descricao;
-    disponibilidade.value = produtos[num].status;
-    preco.value = produtos[num].preco;
-    imgCadastrada.src = produtos[num].foto;
-    categoria.value = produtos[num].categoria
-    titulo.innerText = `Edição do produto ${produtos[num].nome}`;
+    let dado = dados_produtos[num].categoria;
+
+    // Escreve os dados do produto nos campos do Pupup
+    id.value = dados_produtos[num].id;
+    nome.value = dados_produtos[num].nome;
+    descricao.value = dados_produtos[num].descricao;
+    disponibilidade.value = dados_produtos[num].ativo ? 1 : 0;
+    preco.value = parseFloat(dados_produtos[num].preco);
+    imgCadastrada.src = dados_produtos[num].imagemUrl;
+    categoria.value = `{ "ativo": ${dado.ativo}, "id": ${dado.id}, "nome": "${dado.nome}" }`;
+    titulo.innerText = `Edição do produto ${dados_produtos[num].nome}`;
 
     // Abre o Pupup Verificar
     window.location.assign("#popupVerificar");
@@ -189,48 +116,55 @@ function Editar(num) {
 
 /* Função chamada ao clicar no botão de ação da lixeira
    Responsável por deletar um produto selecionado */
-function Excluir(num) {
+async function Excluir(num) {
     if (confirm("Tem certeza que deseja excluir esse produto?")) {
-        delete produtos[num];
-        a = document.getElementById('idLinha' + num);
-        a.innerHTML = '';
+        await fetch(`${API_URL}/produtos/${dados_produtos[num].id}`, {
+            method: 'DELETE',
+            headers: AUTH_HEADER
+        });
+        AtualizarTabela();
     }
 }
 
 /* Função chamada ao clicar no botão salvar de uma edição ou criação de um produto
    Responsável por salvar os dados do produto editado ou criado */
-function Salvar() {
-    // Pega os campos dos Pupup Verificar
-    num = document.getElementById('idVisualizado');
-    nome = document.getElementById('nome');
-    descricao = document.getElementById('descricao');
-    disponibilidade = document.getElementById('disponibilidade'); // => 0 ou 1: Representa status
-    enviarFoto = document.getElementById('enviarFoto');
-    preco = document.getElementById('preco');
-    categoria = document.getElementById('categoria');
-    imgCadastrada = document.getElementById('imgCadastrada');
+async function Salvar() {
+    let botao_salvar = document.getElementById('salvarVerificacao').innerHTML;
 
+    // Pega os campos dos Pupup Verificar
+    id = document.getElementById('idVisualizado').value;
+    nome = document.getElementById('nome').value;
+    descricao = document.getElementById('descricao').value;
+    ativo = parseInt(document.getElementById('disponibilidade').value) ? true : false; // => 0 ou 1: Representa status
+    enviarFoto = document.getElementById('enviarFoto');
+    preco = parseFloat(document.getElementById('preco').value);
+    categoria = JSON.parse(document.getElementById('categoria').value); //////
+    imagemUrl = document.getElementById('imgCadastrada').src;
+    
     // Verifica se foi selecionada uma categoria para o produto
-    if (categoria.value == -1) {
+    if (categoria < 0) {
         alert('Nenhuma categoria selecionada para o produto, selecione uma categoria antes de salvar.');
     // Verifica se foi selecionado um preço para o produto
-    } else if (preco.value < 1) {
+    } else if (preco < 1) {
         alert('O preço do produto não pode ser 0, selecione um preço valido antes de salvar.');
     } else {
-        // Se as condições forem aceitas, cadastra os dados do produto na lista fictícia de produtos
-        produtos[parseInt(num.value)] = {
-            id: parseInt(num.value),
-            nome: nome.value,
-            descricao: descricao.value,
-            foto: imgCadastrada.src,
-            status: parseInt(disponibilidade.value),
-            preco: parseFloat(preco.value),
-            categoria: parseInt(categoria.value),
-        };
+        const metodo = id ? 'PUT' : 'POST';
+        const url = id ? `${API_URL}/produtos/${id}` : API_URL+'/produtos';
 
-        // Aumenta o contador de quantidade de produtos se for uma criação de produto
-        if (numero_produtos == parseInt(num.value)) {
-            numero_produtos++;
+        try {
+            resposta = await fetch(url, {
+                method: metodo,
+                headers: AUTH_HEADER,
+                body: JSON.stringify({ nome, descricao, ativo, preco, categoria, imagemUrl })
+            });
+
+            if (resposta.ok) {
+                AtualizarTabela();
+            } else {
+                alert("Erro ao salvar!");
+            }
+        } catch (error) {
+            console.error(error);
         }
 
         // Fecha o Pupup atual
@@ -242,37 +176,65 @@ function Salvar() {
 }
 
 // Função de atualização dos dados da tabela
-function AtualizarTabela() {
+async function AtualizarTabela() {
+    tabela.innerHTML = 'A carregar ...';
+
+    const resposta = await fetch(API_URL+'/produtos', { 
+        method: 'GET', 
+        headers: AUTH_HEADER 
+    });
+
+    dados_produtos = await resposta.json();
+
     let produtos_html = ``;
+    let contador_linhas = 0;
 
-    // Geração das linhas da tabela
-    for (let key in Object.keys(produtos)) {
-        let i = Object.keys(produtos)[key];
-
-        // Html da linha de um produto
-        produtos_html += `<tr id="idLinha${i}">
-            <input type="number" value='${i}' id="idProduto${i}" hidden>
-            <td>${produtos[i].nome}</td>
-            <td>${produtos[i].descricao}</td>
-            <td class="areaStatus"><span style="background-color: ${produtos[i].status ? "var(--verde-secundario)" : "#ffd600"};">${produtos[i].status ? "Ativo" : "Inativo"}</span></td>
+    dados_produtos.forEach((dado) => {
+        // Html da linha de uma categoria
+        produtos_html += `<tr id="idLinha${dado.id}">
+            <input type="number" value='${contador_linhas}' id="idProduto${dado.id}" hidden>
+            <td>${dado.nome}</td>
+            <td>${dado.descricao}</td>
+            <td class="areaStatus"><span style="background-color: ${dado.ativo ? "var(--verde-secundario)" : "#ffd600"};">${dado.ativo ? "Ativo" : "Inativo"}</span></td>
             <td class="areaBotoes">
-                <button class="botaoVisualizar" onclick="Visualizar(${i})"><img src="../imgs/icone-lupa.svg" alt="Visualizar" width="25px" height="25px"></button>
-                <button class="botaoEditar" onclick="Editar(${i})"><img src="../imgs/icone-lapis.svg" alt="Editar" width="25px" height="25px"></button>
-                <button class="botaoExcluir" onclick="Excluir(${i})"><img src="../imgs/icone-lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
+                <button class="botaoVisualizar" onclick="Visualizar(${contador_linhas})"><img src="../imgs/icone-lupa.svg" alt="Visualizar" width="25px" height="25px"></button>
+                <button class="botaoEditar" onclick="Editar(${contador_linhas})"><img src="../imgs/icone-lapis.svg" alt="Editar" width="25px" height="25px"></button>
+                <button class="botaoExcluir" onclick="Excluir(${contador_linhas})"><img src="../imgs/icone-lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
             </td>
         </tr>`
-    };
+
+        contador_linhas++;
+    });
 
     // Passagem do texto gerado das linhas da tebela para o html
     tabela.innerHTML = produtos_html;
 }
 
 // Busca e apresenta as categorias já cadastradas
-function ListarCategorias() {
-    for (let kay in Object.keys(categorias)) {
+async function ListarCategorias() {
+    const resposta = await fetch(API_URL+'/categorias', { 
+        method: 'GET', 
+        headers: AUTH_HEADER 
+    });
+
+    dados_categorias = await resposta.json();
+
+    let promocoes_html = ``;
+    let contador_linhas = 0;
+
+    // Geração das linhas da tabela
+    dados_categorias.forEach((dado) => {
         const option = document.createElement("option");
-        option.value = categorias[kay].id;
-        option.textContent = categorias[kay].nome;
+        option.value = `{ "ativo": ${dado.ativo}, "id": ${dado.id}, "nome": "${dado.nome}" }`;
+
+        option.textContent = dado.nome;
+        if (dado.ativo) {
+            option.style.backgroundColor = 'var(--verde-secundario)';
+        } else {
+            option.style.backgroundColor = '#ffd600';
+        };
         select.appendChild(option);
-    }
+       
+        contador_linhas++;
+    });
 }
