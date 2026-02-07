@@ -74,7 +74,14 @@ let carrinho = [];
 
 function adicionarAoCarrinho(id, nome, preco) {
     // Adiciona o item ao array (memória)
-    carrinho.push({ id, nome, preco });
+    const itemExistente = carrinho.find(item => item.id === id);
+
+if (itemExistente) {
+    itemExistente.quantidade++;
+} else {
+    carrinho.push({ id, nome, preco, quantidade: 1 });
+}
+
     
     // Atualiza a interface (desenha no drawer)
     atualizarInterfaceCarrinho();
@@ -91,15 +98,19 @@ function atualizarInterfaceCarrinho() {
     containerItens.innerHTML = "";
     let total = 0;
 
-    carrinho.forEach((item, index) => {
-        total += item.preco;
-        containerItens.innerHTML += `
-            <div class="item-no-carrinho">
-                <p>${item.nome} - R$ ${item.preco.toFixed(2)}</p>
-                <button onclick="removerDoCarrinho(${index})">❌</button>
-            </div>
-        `;
-    });
+   carrinho.forEach((item, index) => {
+    total += item.preco * item.quantidade;
+
+    containerItens.innerHTML += `
+        <div class="item-no-carrinho">
+            <p>
+                ${item.nome} <br>
+                ${item.quantidade}x R$ ${item.preco.toFixed(2)}
+            </p>
+            <button onclick="removerDoCarrinho(${index})">❌</button>
+        </div>
+    `;
+});
 
     totalTexto.innerText = `Total: R$ ${total.toFixed(2)}`;
 }
@@ -118,6 +129,7 @@ const icone_Carrinho = document.querySelector(".carrinho img");
 const painel_oculto = document.getElementById("drawer-carrinho");
 const fecharPainel = document.getElementById("fecharDrawer");
 const overlay = document.getElementById("overlay-carrinho");//overlay melhora a UX do carrinho
+
 
 //ativa ao clicar 
 icone_Carrinho.addEventListener("click", () => {
@@ -292,7 +304,7 @@ trackCarrossel.innerHTML = ''; // Limpa os itens estáticos
 
 
 //# Aqui talvez tenha que ser alterado para exibir oq esta só em ofertas
-//no carrinho
+//no carrocel
 produtos.forEach(prod => {
 
     // Se o produto estiver em promoção
