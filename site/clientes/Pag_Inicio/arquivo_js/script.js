@@ -311,16 +311,19 @@ produtos.forEach(prod => {
     //  (ou apenas para preencher o carrossel)
 
     if (prod.promocao === true || prod.preco < 10) { 
-        const htmlOferta = `
-            <div class="item">
-                <img src="${prod.imagemUrl || 'img/default.png'}" alt="${prod.nome}" style="width:100px">
-                <p>${prod.nome}</p>
-                <div class="separador"></div>
-                <button class="btn-carrinho" onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome}', ${prod.preco})">
-                    <img src="img/carrinho.png" alt="Adicionar">
-                </button>
-            </div>
-        `;
+       const htmlOferta = `
+  <div class="item">
+    <img src="${prod.imagemUrl || 'img/default.png'}" alt="${prod.nome}" style="width:100px">
+
+    <div class="separador"></div>
+
+    <p class="legenda-item">${prod.nome}</p>
+
+    <button class="btn-carrinho" onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome}', ${prod.preco})">
+      <img src="img/carrinho.png">
+    </button>
+  </div>
+`;
         trackCarrossel.innerHTML += htmlOferta;
     }
     
