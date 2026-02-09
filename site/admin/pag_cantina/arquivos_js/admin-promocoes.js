@@ -92,8 +92,8 @@ let promocoes = {
 
     3: {
         id: 3,
-        nome: 'Brigadeiro',
-        descricao: 'Brigadeiro caseiro',
+        nome: 'cocacola + torrada por 10 reais',
+        descricao: 'Lata de Coca-Cola de 200 ml com torrada completa',
         produtos_lista: ['3'], // Lista de produtos da promoção
         validade: 1, // Valor em horas
         foto: '../imgs/foto-padrao-promocao.svg',
@@ -118,6 +118,32 @@ AtualizarTabela();
 
 // Busca e apresenta os produtos já cadastrados
 ListarProdutos();
+
+const pesquisarProduto = document.getElementById('pesquisarProduto');
+const listaProdutos = document.getElementById('listaProdutos');
+const opcoes = Array.from(listaProdutos.getElementsByTagName('option'));
+
+// Evento que possibilita pesquisa de itens
+pesquisarProduto.addEventListener('input', function() {
+    const texto_pesquisado = this.value.toLowerCase();
+    let com_resultados = false;
+    let semResultado = document.getElementById('semResultado');
+
+    opcoes.forEach(opcao => {
+        if (opcao.textContent.toLowerCase().includes(texto_pesquisado)) {
+            opcao.style.display = '';
+            com_resultados = true;
+        } else {
+            opcao.style.display = 'none';
+        }
+    });
+
+    if (!com_resultados && pesquisarProduto !== '') {
+        semResultado.style.display = '';
+    } else {
+        semResultado.style.display = 'none';
+    }
+});
 
 // Evento que coloca a imagem recem recebida do upload visivel durante uma edição
 document.getElementById('enviarFoto').addEventListener('change', function(event) {
@@ -153,7 +179,7 @@ function Cadastrar() {
     nome.value = '';
     descricao.value = '';
     disponibilidade.value = 1;
-    preco.value = 5;
+    preco.value = 0;
     imgCadastrada.src = '../imgs/foto-padrao-promocao.svg';
     titulo.innerText = 'Cadastrar nova promoção';
     validade.value = 1;
@@ -190,7 +216,7 @@ function Visualizar(num) {
     // Escreve específicamente os produtos da promoção no Pupup
     let produtos_html = '';
     promocoes[num].produtos_lista.forEach((produto) => {
-        produtos_html += `<p>${produtos[produto].nome}</p>`;
+        produtos_html += `<p class="itensListados">${produtos[produto].nome}</p>`;
     });
     produtos_lista.innerHTML= produtos_html;
 

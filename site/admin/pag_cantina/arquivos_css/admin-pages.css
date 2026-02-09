@@ -103,9 +103,10 @@ a, button, #labelImgCadastrada, select {
     top: 0; left: 0;
     width: 100%; height: 100%;
     background: rgba(0,0,0,0.6);
+    align-content: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease;
+    transition: all 0.5s ease;
 }
 
 .popup:target {
@@ -116,7 +117,7 @@ a, button, #labelImgCadastrada, select {
     position: relative;
     background-color: var(--branco);
     max-width: 740px;
-    margin: 100px auto;
+    margin: auto;
     padding: 20px;
     border-radius: 10px;
     text-align: left;
@@ -143,17 +144,39 @@ a, button, #labelImgCadastrada, select {
     background: #bebebea5;
 }
 
-input[type='text'], input[type='number'], .containerForms p {
-    display: block;
+.containerForms p {
     width: 200px;
-    margin: 2px auto;
+    padding: 10px;
     border: 2px solid black;
-    border-radius: 10px;
-    padding: 1px 7px;
+    border-radius: 5px;
+    margin: 10px auto;
+}
+
+.containerForms .itensListados {
+    margin-bottom: 10px;
+}
+
+input[type='text'], input[type='number']{
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus, input[type='number']:focus {
+    border-color: #007BFF;
+}
+
+#pesquisarProduto {
+    width: 300px;
+}
+
+#pesquisarProduto:focus {
+    border-color: #007BFF;
 }
 
 .containerForms {
-    margin: 10px auto;
     flex: 50%;
     text-align: center;
 }
@@ -163,6 +186,7 @@ input[type='text'], input[type='number'], .containerForms p {
 }
 
 #labelImgCadastrada {
+    margin-top: 10px;
     background-color: var(--verde-secundario);
     border-radius: 20px;
     padding: 10px;
@@ -183,9 +207,10 @@ select, ::picker(select) {
 }
 
 select {
-    border: 2px solid #dddddd;
-    background: #eeeeee;
+    background: white;
     padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
 }
 
 ::picker(select) {
@@ -193,8 +218,7 @@ select {
 }
 
 option {
-    border: 2px solid #dddddd;
-    background: #eeeeee;
+    border: 2px solid #ccc;
     padding: 10px;
 }
 
@@ -213,7 +237,7 @@ option {
     justify-content: center;
 }
 
-.salvarVerificacao {
+#salvarVerificacao {
     background-color: var(--verde-secundario);
     color: white;
     font-weight: bold;
@@ -221,16 +245,17 @@ option {
     border-radius: 30px;
     padding: 5px 40px;
     filter: saturate(1);
-    transition: all 0.5s ease; 
+    transition: background-color 0.5s; 
+    transition: border-color 0.5s; 
 }
 
-.salvarVerificacao:hover {
+#salvarVerificacao:hover {
     background-color: var(--verde-vivo);
     border-color: var(--verde-principal);
 }
 
 select[multiple] {
-    width: 290px;
+    width: 300px;
     height: 110px;
     padding: 10px;
     border: 4px solid #dddddd;
@@ -254,21 +279,11 @@ select[multiple] option:checked {
 
 select[multiple] option:hover {
     background-color: #aaa;
-    /*color: black;*/
 }
 
-select[multiple] option:first-of-type {
-    border-radius: 8px 8px 0 0;
-}
-
-select[multiple] option:last-of-type {
-    border-radius: 0 0 8px 8px;
-}
-
-/* Estilização dos produtos da tabela de promoções */
+/* Estilização dos produtos da tabela de promoções e pedidos */
 .areaProdutos {
     justify-items: center;
-
 }
 
 .areaProdutos p {
@@ -278,4 +293,17 @@ select[multiple] option:last-of-type {
     border-radius: 20px;
     font-size: 14px;
     line-height: 1;
+}
+
+/* Estilização dos selects da tabela de pedidos */
+.formasPagamento {
+    width: 110px;
+}
+
+.statusPagamento {
+    width: 110px;
+}
+
+.statusPedido {
+    width: 130px;
 }

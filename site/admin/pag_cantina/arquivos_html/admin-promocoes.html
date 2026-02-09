@@ -68,18 +68,19 @@
                     
                     <div class="containerForms">
                         <label for="listaProdutos">Produtos</label><br>
+                        <input type="text" id="pesquisarProduto" placeholder="Pesquisar...">
                         <select id="listaProdutos" multiple>
-
+                            <span id="semResultado" style="display: none;">Nenhum resultado encontrado</span>
                         </select>
-                    </div>
-
-                    <div class="containerForms">
-                        <label for="preco">Preço</label>
-                        <input type="number" id="preco">
                     </div>
                 </div>
 
                 <div style="flex: 33%;">
+                    <div class="containerForms">
+                        <label for="preco">Preço</label>
+                        <input type="number" id="preco">
+                    </div>
+                    
                     <div class="containerForms">
                         <label for="disponibilidade">Disponibilidade</label><br>
                         <select id="disponibilidade">
@@ -98,7 +99,7 @@
                     </div>
                 </div>
                 <div class="centalizadoForms">
-                   <button class="salvarVerificacao" onclick="Salvar()">Salvar</button>
+                   <button id="salvarVerificacao" onclick="Salvar()">Salvar</button>
                 </div>
 
             </form>
@@ -162,3 +163,91 @@
     <script src="..\arquivos_js\admin-promocoes.js"></script>
 </body>
 </html>
+
+
+<!-- 
+<style>
+    /*.search-container {
+        max-width: 400px;
+        margin: auto;
+    }
+
+    select[multiple] {
+        list-style: none;
+        padding: 0;
+        margin-top: 10px;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }*/
+
+    /*option {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+    }*/
+
+    /*option:hover {
+        background: #f0f0f0;
+    }
+
+    option:last-child {
+        border-bottom: none;
+    }*/
+
+    /*.no-results {
+        padding: 10px;
+        color: #888;
+        text-align: center;
+    }*/
+</style>
+
+<div class="search-container">
+    <input type="text" id="search" placeholder="Pesquisar...">
+    <select id="results" multiple>
+        <option>HTML</option>
+        <option>CSS</option>
+        <option>JavaScript</option>
+        <option>Python</option>
+        <option>Java</option>
+        <option>C++</option>
+        <option>PHP</option>
+        <option>Ruby</option>
+    </select>
+</div>
+
+<script>
+    const pesquisarProduto = document.getElementById('pesquisarProduto');
+    const listaProdutos = document.getElementById('listaProdutos');
+    const opcoes = Array.from(listaProdutos.getElementsByTagName('option'));
+
+    pesquisarProduto.addEventListener('input', function() {
+        const texto_pesquisado = this.value.toLowerCase();
+        let com_resultados = false;
+        let semResultado = document.getElementById('semResultado');
+
+        opcoes.forEach(opcao => {
+            if (opcao.textContent.toLowerCase().includes(texto_pesquisado)) {
+                opcao.style.display = '';
+                com_resultados = true;
+            } else {
+                opcao.style.display = 'none';
+            }
+        });
+
+        // Mensagem se não encontrar resultados
+        if (!com_resultados && pesquisarProduto !== '') {
+            if (semResultado.style.display == 'none') {
+                // const noResults = document.createElement('option');
+                // noResults.textContent = 'Nenhum resultado encontrado';
+                // noResults.classList.add('no-results');
+                // listaProdutos.appendChild(noResults);
+                semResultado.style.display = ''
+            }
+        } else {
+            // const noResults = document.querySelector('.no-results');
+            // if (noResults) noResults.remove();
+            semResultado.style.display = 'none'
+        }
+    });
+</script> -->

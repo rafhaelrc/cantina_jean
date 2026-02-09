@@ -55,8 +55,13 @@
                 <input type="number" id="idVisualizado" hidden>
                 <div style="flex: 66%; display: flex; flex-wrap: wrap;">
                     <div class="containerForms">
-                        <label for="nome">Nome do produto</label>
+                        <label for="nome">Nome do produto</label><br>
                         <input type="text" id="nome" maxlength="30">
+                    </div>
+
+                    <div class="containerForms">
+                        <label for="preco">Preço</label><br>
+                        <input type="number" id="preco">
                     </div>
 
                     <div class="containerForms">
@@ -82,11 +87,6 @@
                 </div>
 
                 <div style="flex: 33%;">
-                    <div class="containerForms">
-                        <label for="preco">Preço</label>
-                        <input type="number" id="preco">
-                    </div>
-
                     <div class="containerForms">
                         <label for="enviarFoto" id="labelImgCadastrada">
                             Vizualização da foto<br>
@@ -114,10 +114,10 @@
                         <label>Nome do produro</label>
                         <p id="labelNome"></p>
                     </div>
-
+                    
                     <div class="containerForms">
-                        <label>Categoria</label>
-                        <p id="labelCategoria"></p>
+                        <label>Preço</label>
+                        <p id="labelPreco"></p>
                     </div>
 
                     <div class="containerForms">
@@ -129,14 +129,14 @@
                         <label>Disponibilidade</label>
                         <p id="labelDisponibilidade"></p>
                     </div>
+
+                    <div class="containerForms">
+                        <label>Categoria</label>
+                        <p id="labelCategoria"></p>
+                    </div>
                 </div>
 
                 <div style="flex: 33%;">
-                    <div class="containerForms">
-                        <label>Preço</label>
-                        <p id="labelPreco"></p>
-                    </div>
-
                     <div class="containerForms">
                         <label>Vizualização da foto
                             <img src="" id="visualizarImgCadastrada">

@@ -36,7 +36,7 @@ async function AtualizarTabela() {
             <td>${dado.nomeAluno}</td>
             <td class="areaProdutos">`;
 
-        let segundo_html = ''
+        let segundo_html = '';
         dado.itens.forEach((produto) => {
             segundo_html += `<p><b>${produto.quantidade} x</b> ${produto.produto.nome}</p>`;
         });
@@ -44,10 +44,10 @@ async function AtualizarTabela() {
         let terceiro_html = `</td>
             <td>${dado.observacoes}</td>`;
 
-        let quarto_html = ''
+        let quarto_html = '';
         if (!dado.idTransacaoExterna) {
             quarto_html = `<td>
-                <select id="listaFormasPagamento${dado.id}">
+                <select class="" id="listaFormasPagamento${dado.id}">
                     <option value="PIX">Pix</option>
                     <option value="DINHEIRO">Dinheiro</option>
                     <option value="FIADO">Fiado</option>
@@ -80,7 +80,7 @@ async function AtualizarTabela() {
                     <option value="CANCELADO">Cancelado</option>
                 </select>
             </td>
-        </tr>`
+        </tr>`;
 
         pedidos_html += primeiro_html + segundo_html + terceiro_html + quarto_html + cinco_html;
     });
@@ -124,5 +124,3 @@ async function CarregarEventos() {
 // Criar filtro
 
 // Arrumar cores dos selects
-
-// Adicionar função para salvar os dados de tempo em tempo para o envio no banco de dados
