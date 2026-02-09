@@ -46,10 +46,10 @@ body {
 }
 
 .pesquisa {
-    min-width: 200px;
-    max-width: 560px;
+    width: 50%;
     padding: 6px 8px;
-    border-radius: 4px;
+    border-radius: 20px;
+    border: 1px solid #ffffff;
     margin: auto;
     display: flex;
 }
@@ -107,11 +107,18 @@ body {
 .nav-botoes button {
     background-color: #1b5e20;
     color: white;
-    padding: 1px 1px;
+
+    padding: 12px 22px;      /* MAIS RESPIRO */
+    min-height: 44px;        /* UX padrão ) */
+
     font-size: 16px;
+    line-height: 1.2;        /* texto não gruda */
+    
     border-radius: 0 0 14px 14px;
-    border: 2px solid black
+    border: 2px solid black;
+    cursor: pointer;
 }
+
 
 .nav-botoes button:hover {
     background-color: #2e7d32;
@@ -945,5 +952,3 @@ MODAL CANCELAR PEDIDO
     text-align: center;
     background: #fafafa;
 }
-
-
