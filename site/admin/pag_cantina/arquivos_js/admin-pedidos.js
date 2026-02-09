@@ -47,14 +47,14 @@ async function AtualizarTabela() {
         let quarto_html = '';
         if (!dado.idTransacaoExterna) {
             quarto_html = `<td>
-                <select class="" id="listaFormasPagamento${dado.id}">
+                <select class="formasPagamento" id="listaFormasPagamento${dado.id}">
                     <option value="PIX">Pix</option>
                     <option value="DINHEIRO">Dinheiro</option>
                     <option value="FIADO">Fiado</option>
                 </select>
             </td>
             <td class="areaStatus">
-                <select class="StatusPagamento" id="listaStatusPagamentoPossiveis${dado.id}">
+                <select class="statusPagamento id="listaStatusPagamentoPossiveis${dado.id}">
                     <option value="PENDENTE">Pendente</option>
                     <option value="PAGO">Pago</option>
                 </select>
@@ -73,7 +73,7 @@ async function AtualizarTabela() {
         };
 
         let cinco_html = `<td class="areaBotoes">
-                <select id="listaStatusPossiveis${dado.id}">
+                <select class="statusPedido" id="listaStatusPossiveis${dado.id}">
                     <option value="AGUARDANDO">Aguardando</option>
                     <option value="PRONTO">Pronto</option>
                     <option value="RETIRADO">Retirado</option>
