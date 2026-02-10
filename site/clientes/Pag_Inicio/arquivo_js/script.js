@@ -18,9 +18,6 @@ const API_BASE = "https://cantina-api-rlqm.onrender.com";
 // ────────────────────────────────────────────────
 //  Elementos DOM mais usados (cache)
 // ────────────────────────────────────────────────
-const track               = document.querySelector('.carrossel-track');
-const btnEsq              = document.querySelector('.esquerda');
-const btnDir              = document.querySelector('.direita');
 const iconeCarrinho       = document.querySelector(".carrinho img");
 const drawerCarrinho      = document.getElementById("drawer-carrinho");
 const overlayCarrinho     = document.getElementById("overlay-carrinho");
@@ -33,9 +30,17 @@ let carrinho = [];
 let scrollPosition = 0;
 
 
-// ────────────────────────────────────────────────
-//  CARROSSEL
-// ────────────────────────────────────────────────
+let produtosGlobais = [];
+
+/* =========================
+   CARROSSEL
+========================= */
+const track = document.querySelector('.carrossel-track');
+const btnEsq = document.querySelector('.esquerda');
+const btnDir = document.querySelector('.direita');
+
+let scroll = 0;
+
 btnDir.addEventListener('click', () => {
   scrollPosition += 160;
   track.scrollTo({ left: scrollPosition, behavior: 'smooth' });
@@ -384,3 +389,196 @@ async function carregarProdutosCardapio() {
 document.addEventListener("DOMContentLoaded", () => {
   carregarProdutosCardapio();
 });
+
+//Modal do footer que exibe a equipe de desenvolvimento
+
+document.addEventListener("DOMContentLoaded", () => {
+    const abrirEquipe = document.getElementById("abrirEquipe");
+    const modalEquipe = document.getElementById("modal-equipe");
+    const fecharEquipe = document.getElementById("fecharEquipe");
+
+    abrirEquipe.addEventListener("click", () => {
+        modalEquipe.classList.add("ativo");
+    });
+
+    fecharEquipe.addEventListener("click", () => {
+        modalEquipe.classList.remove("ativo");
+    });
+
+    modalEquipe.addEventListener("click", (e) => {
+        if (e.target === modalEquipe) {
+            modalEquipe.classList.remove("ativo");
+        }
+    });
+});
+
+
+/**
+ * # Funções  de renderizar produtos , gerar pedidos e o obj estão abaixo 
+ * 
+ */
+function renderizarProdutosNoMenu(produtos) {
+    const menu = document.getElementById("menu-categorias");
+    menu.innerHTML = "";
+
+    const categorias = {};
+
+    // agrupa produtos por categoria
+    produtos.forEach(prod => {
+        const nomeCategoria = prod.categoria.nome;
+        const idCategoria = nomeCategoria
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/\s+/g, "-");
+
+        if (!categorias[idCategoria]) {
+            categorias[idCategoria] = {
+                nome: nomeCategoria,
+                produtos: []
+            };
+        }
+
+        categorias[idCategoria].produtos.push(prod);
+    });
+
+    // cria o HTML das categorias
+    Object.entries(categorias).forEach(([idCategoria, categoria]) => {
+        const barra = `
+            <div class="menu-bar" onclick="toggleSection('${idCategoria}')">
+                <span class="menu-title">${categoria.nome}</span>
+                <span class="menu-arrow">▼</span>
+            </div>
+            <div id="${idCategoria}" class="menu-items escondido"></div>
+        `;
+
+        menu.innerHTML += barra;
+
+        const containerItens = document.getElementById(idCategoria);
+
+        categoria.produtos.forEach(prod => {
+            containerItens.innerHTML += `
+                <div class="itemcardapio">
+                    <img src="${prod.imagemUrl || 'img/default.png'}">
+                    <div class="itemcardapio-texto">
+                        <h3>${prod.nome}</h3>
+                        <p>${prod.descricao || ""}</p>
+                    </div>
+                    <button class="botao-adicionar"
+                        onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome}', ${prod.preco})">
+                        <img src="img/carrinho.png">
+                    </button>
+                </div>
+            `;
+        });
+    });
+}
+
+
+    
+
+
+    
+
+
+
+
+
+
+// Função para buscar produtos da API
+
+async function carregarProdutosCardapio() {
+    try {
+        //  URL pública para listar produtos
+        const resposta = await fetch(`${API_BASE}/api/public/produtos`);
+        const dados = await resposta.json();
+        
+        
+        // Passamos os dados recebidos para a função  "renderizarProdutosNoMenu"
+
+        produtosGlobais = dados;
+        renderizarProdutosNoMenu(dados);
+    } catch (erro) {
+        console.error("Erro ao carregar cardápio:", erro);
+    }
+}
+
+// Chamar a função assim que a página carregar
+document.addEventListener("DOMContentLoaded", carregarProdutosCardapio);
+
+
+
+//Função que envia o pedido pro BACK
+
+async function enviarPedidoParaAPI() {
+    if (carrinho.length === 0) {
+        alert("O seu carrinho está vazio!");
+        return;
+    }
+
+    // Montando o objeto conforme o Manual 
+
+    const pedido = 
+    {
+    nomeAluno: prompt("Qual o seu nome?"),
+    palavraChave: "teste123", 
+    horarioRetirada: "10:30",
+    formaPagamento: "PIX",
+    observacoes: "Pedido via Site",
+    itens: carrinho.map(item => ({
+    produtoId: item.id,
+    quantidade: 1
+  }))
+};
+
+
+    try {
+        const resposta = await fetch(`${API_BASE}/api/public/pedidos`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(pedido)
+        });
+
+        if (resposta.ok) {
+            const resultado = await resposta.json();
+            alert(`Pedido enviado! Seu número de retirada é: ${resultado.numeroRetirada}`);
+            
+            // Limpa o carrinho após o sucesso
+            carrinho = [];
+            atualizarInterfaceCarrinho();
+            fecharCarrinho();
+        } else {
+            alert("Erro ao enviar pedido. Verifique se a cantina está aberta.");
+        }
+    } catch (erro) {
+        console.error("Erro na conexão:", erro);
+    }
+}
+
+
+
+
+//faz a pesquisa pela barra de pesquisa e filtra de vdd 
+
+const inputPesquisa = document.getElementById("pesquisa-produto");
+
+inputPesquisa.addEventListener("input", () => {
+    const termo = inputPesquisa.value.toLowerCase().trim();
+
+    if (termo === "") {
+        renderizarProdutosNoMenu(produtosGlobais);
+        return;
+    }
+
+    const filtrados = produtosGlobais.filter(prod =>
+        prod.nome.toLowerCase().includes(termo) ||
+        (prod.descricao && prod.descricao.toLowerCase().includes(termo)) ||
+        (prod.categoria?.nome && prod.categoria.nome.toLowerCase().includes(termo))
+    );
+
+    renderizarProdutosNoMenu(filtrados);
+});
+
+
+
+

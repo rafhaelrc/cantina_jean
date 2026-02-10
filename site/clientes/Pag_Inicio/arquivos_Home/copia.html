@@ -25,15 +25,21 @@
          HEADER – Topo verde fixo (logo + busca + carrinho)
     ============================================== -->
     <header class="header-verde">
-        <div class="header-verde-content">
-            <div class="logo">
-                <img src="if_logo.png" alt="Logo IF">
-            </div>
+        <div class="header-verde">
+            <div class="header-verde-content">
+                <div class="logo">
+                    <img src="if_logo.png" alt="Logo" />
+                </div>
 
-            <input type="text" class="pesquisa" placeholder="Pesquisar produto..." />
+                <input type="text" 
+                class="pesquisa" 
+                id="pesquisa-produto"
+                placeholder="Pesquisar produto" />
+                
+                <div class="carrinho">
 
-            <div class="carrinho">
                 <img src="carrinho.png" alt="Ícone do carrinho" />
+                </div>
             </div>
         </div>
     </header>
@@ -80,15 +86,53 @@
 
         <!-- Página: Cardápio -->
         <section id="cardapio" class="pagina">
-            <div class="menu-section">
+    <div class="menu-section" id="menu-categorias">
+        <!-- categorias vão ser criadas via JS -->
+    </div>
+</section>
 
-                <!-- Seção Lanches -->
-                <div class="menu-bar" onclick="toggleSection('lanches')">
-                    <span class="menu-title">Lanches</span>
-                    <span class="menu-arrow">▼</span>
-                </div>
-                <div id="lanches" class="menu-items escondido">
-                    <!-- Produtos inseridos via JavaScript -->
+    
+<!--Removi estrutura de texto sem javascrit-->
+
+              
+
+
+
+    </div>
+
+
+    <!-- Página Pedido -->
+    <section id="pedido" class="pagina">
+
+        <!-- Painel de status dos pedidos -->
+        <div class="painel-status">
+            <!-- Coluna PREPARANDO -->
+            <div class="coluna-pedidos preparando">
+                <h3>PREPARANDO</h3>
+                <ul id="lista-preparo">
+                    >
+                </ul>
+            </div>
+
+            <!-- Coluna PRONTO -->
+            <div class="coluna-pedidos pronto">
+                <h3>PRONTO</h3>
+                <ul id="lista-pronto">
+
+
+                    <
+                </ul>
+            </div>
+        </div>
+
+        <!-- Botões iguais ao painel -->
+        <div class="botoes-status"> <button id="btn-cancelar" class="botao-cancelar">Cancelar Pedido</button> <button
+                id="btn-info" class="botao-info">Informações do Pedido</button> </div>
+        <!-- Modal de Cancelamento -->
+        <div id="modal-cancelar" class="modal-cancelar">
+            <div class="modal-conteudo">
+                <div class="modal-header">
+                    <h2>Cancelamento do pedido</h2>
                 </div>
 
                 <!-- Seção Doces -->
