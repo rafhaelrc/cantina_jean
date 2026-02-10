@@ -115,7 +115,7 @@ async function Salvar() {
 
 // Função de atualização dos dados da tabela
 async function AtualizarTabela() {
-    tabela.innerHTML = 'A carregar ...';
+    tabela.innerHTML = '<td colspan="8" id="linhaCarregamento"><div>A carregar ...</div></td>';
 
     const resposta = await fetch(API_URL, { 
         method: 'GET', 
