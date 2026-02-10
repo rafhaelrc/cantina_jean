@@ -31,14 +31,11 @@
                     <img src="if_logo.png" alt="Logo" />
                 </div>
 
-                <input type="text" 
-                class="pesquisa" 
-                id="pesquisa-produto"
-                placeholder="Pesquisar produto" />
-                
+                <input type="text" class="pesquisa" id="pesquisa-produto" placeholder="Pesquisar produto" />
+
                 <div class="carrinho">
 
-                <img src="carrinho.png" alt="Ícone do carrinho" />
+                    <img src="carrinho.png" alt="Ícone do carrinho" />
                 </div>
             </div>
         </div>
@@ -86,105 +83,44 @@
 
         <!-- Página: Cardápio -->
         <section id="cardapio" class="pagina">
-    <div class="menu-section" id="menu-categorias">
-        <!-- categorias vão ser criadas via JS -->
-    </div>
-</section>
-
-    
-<!--Removi estrutura de texto sem javascrit-->
-
-              
-
-
-
-    </div>
-
-
-    <!-- Página Pedido -->
-    <section id="pedido" class="pagina">
-
-        <!-- Painel de status dos pedidos -->
-        <div class="painel-status">
-            <!-- Coluna PREPARANDO -->
-            <div class="coluna-pedidos preparando">
-                <h3>PREPARANDO</h3>
-                <ul id="lista-preparo">
-                    >
-                </ul>
-            </div>
-
-            <!-- Coluna PRONTO -->
-            <div class="coluna-pedidos pronto">
-                <h3>PRONTO</h3>
-                <ul id="lista-pronto">
-
-
-                    <
-                </ul>
-            </div>
-        </div>
-
-        <!-- Botões iguais ao painel -->
-        <div class="botoes-status"> <button id="btn-cancelar" class="botao-cancelar">Cancelar Pedido</button> <button
-                id="btn-info" class="botao-info">Informações do Pedido</button> </div>
-        <!-- Modal de Cancelamento -->
-        <div id="modal-cancelar" class="modal-cancelar">
-            <div class="modal-conteudo">
-                <div class="modal-header">
-                    <h2>Cancelamento do pedido</h2>
-                </div>
-
-                <!-- Seção Doces -->
-                <div class="menu-bar" onclick="toggleSection('doces')">
-                    <span class="menu-title">Doces</span>
-                    <span class="menu-arrow">▼</span>
-                </div>
-                <div id="doces" class="menu-items escondido">
-                    <!-- Produtos inseridos via JavaScript -->
-                </div>
-
-                <!-- Seção Bebidas -->
-                <div class="menu-bar" onclick="toggleSection('bebidas')">
-                    <span class="menu-title">Bebidas</span>
-                    <span class="menu-arrow">▼</span>
-                </div>
-                <div id="bebidas" class="menu-items escondido">
-                    <!-- Produtos inseridos via JavaScript -->
-                </div>
-
+            <div class="menu-section" id="menu-categorias">
+                <!-- categorias vão ser criadas via JS -->
             </div>
         </section>
 
-        <!-- Página: Pedido -->
+
+        <!--Removi estrutura de texto sem javascrit-->
+
+
+
+
+
+        </div>
+
+
+        <!-- Página Pedido -->
         <section id="pedido" class="pagina">
 
-            <!-- Painel de status (visual – valores estáticos por enquanto) -->
+            <!-- Painel de status dos pedidos -->
             <div class="painel-status">
+                <!-- Coluna PREPARANDO -->
                 <div class="coluna-pedidos preparando">
                     <h3>PREPARANDO</h3>
                     <ul id="lista-preparo">
-                        <li>132</li>
-                        <li>312</li>
-                        <li>847</li>
-                        <li>213</li>
-                        <li>384</li>
-                        <li>948</li>
+                        >
                     </ul>
                 </div>
 
+                <!-- Coluna PRONTO -->
                 <div class="coluna-pedidos pronto">
                     <h3>PRONTO</h3>
                     <ul id="lista-pronto">
-                        <li>142</li>
-                        <li>612</li>
-                        <li>828</li>
-                        <li>280</li>
-                        <li>839</li>
-                        <li>248</li>
-                    </ul>
+
+
+                        < </ul>
                 </div>
             </div>
+
 
             <!-- Ações do usuário -->
             <div class="botoes-status">
@@ -268,73 +204,73 @@
     </footer>
 
 
-<!-- DRAWER DO CARRINHO -->
-<div id="drawer-carrinho" class="drawer-carrinho">
-  <!-- Cabeçalho fixo -->
-  <div class="drawer-header">
-    <h3>Detalhes do Pedido</h3>
-    <button id="fecharDrawer">✖</button>
-  </div>
+    <!-- DRAWER DO CARRINHO -->
+    <div id="drawer-carrinho" class="drawer-carrinho">
+        <!-- Cabeçalho fixo -->
+        <div class="drawer-header">
+            <h3>Detalhes do Pedido</h3>
+            <button id="fecharDrawer">✖</button>
+        </div>
 
-  <!-- Área rolável: itens + seções -->
-  <div class="drawer-content-scroll">
-    <!-- Título "Detalhes do Pedido" (verde, como na imagem) -->
-    <div class="detalhes-titulo">
-      <h4>Detalhes do Pedido</h4>
+        <!-- Área rolável: itens + seções -->
+        <div class="drawer-content-scroll">
+            <!-- Título "Detalhes do Pedido" (verde, como na imagem) -->
+            <div class="detalhes-titulo">
+                <h4>Detalhes do Pedido</h4>
+            </div>
+
+            <!-- Itens do carrinho (gerados pelo JS) -->
+            <div class="drawer-itens"></div>
+
+            <!-- Informações Pessoais -->
+            <div class="drawer-section">
+                <h4>Informações Pessoais</h4>
+                <div class="form-group">
+                    <label for="nomeAluno">Nome:</label>
+                    <input type="text" id="nomeAluno" placeholder="Digite seu nome">
+                </div>
+                <div class="form-group">
+                    <label for="palavra-chave">Palavra chave:</label>
+                    <input type="text" id="palavra-chave" placeholder="Usado para o possível cancelamento">
+                </div>
+                <div class="form-group">
+                    <label for="horarioRetirada">Horário de Retirada:</label>
+                    <input type="time" id="horarioRetirada">
+                </div>
+            </div>
+
+            <!-- Pagamento -->
+            <div class="drawer-section">
+                <h4>Pagamento</h4>
+                <div class="radio-group">
+                    <label><input type="radio" name="pagamento" value="PIX" checked> Pix no app</label>
+                    <label><input type="radio" name="pagamento" value="Balcao"> Balcão</label>
+                </div>
+            </div>
+
+            <!-- Resumo -->
+            <div class="drawer-section">
+                <h4>Resumo</h4>
+                <div class="form-group">
+                    <label for="observacoes">Observações:</label>
+                    <textarea id="observacoes" rows="3" placeholder="Alguma observação?"></textarea>
+                </div>
+                <div class="total-line">
+                    <span>Total do Pedido:</span>
+                    <strong id="valor-total-carrinho">R$ 0,00</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rodapé fixo com botões (fica sempre visível na parte de baixo) -->
+        <div class="drawer-footer">
+            <button onclick="enviarPedido()" class="btn-fazer">Fazer Pedido</button>
+            <button onclick="limparCarrinho()" class="btn-limpar">Limpar Carrinho</button>
+        </div>
     </div>
 
-    <!-- Itens do carrinho (gerados pelo JS) -->
-    <div class="drawer-itens"></div>
-
-    <!-- Informações Pessoais -->
-    <div class="drawer-section">
-      <h4>Informações Pessoais</h4>
-      <div class="form-group">
-        <label for="nomeAluno">Nome:</label>
-        <input type="text" id="nomeAluno" placeholder="Digite seu nome">
-      </div>
-      <div class="form-group">
-        <label for="palavra-chave">Palavra chave:</label>
-        <input type="text" id="palavra-chave" placeholder="Usado para o possível cancelamento">
-      </div>
-      <div class="form-group">
-        <label for="horarioRetirada">Horário de Retirada:</label>
-        <input type="time" id="horarioRetirada">
-      </div>
-    </div>
-
-    <!-- Pagamento -->
-    <div class="drawer-section">
-      <h4>Pagamento</h4>
-      <div class="radio-group">
-        <label><input type="radio" name="pagamento" value="PIX" checked> Pix no app</label>
-        <label><input type="radio" name="pagamento" value="Balcao"> Balcão</label>
-      </div>
-    </div>
-
-    <!-- Resumo -->
-    <div class="drawer-section">
-      <h4>Resumo</h4>
-      <div class="form-group">
-        <label for="observacoes">Observações:</label>
-        <textarea id="observacoes" rows="3" placeholder="Alguma observação?"></textarea>
-      </div>
-      <div class="total-line">
-        <span>Total do Pedido:</span>
-        <strong id="valor-total-carrinho">R$ 0,00</strong>
-      </div>
-    </div>
-  </div>
-
-  <!-- Rodapé fixo com botões (fica sempre visível na parte de baixo) -->
-  <div class="drawer-footer">
-    <button onclick="enviarPedido()" class="btn-fazer">Fazer Pedido</button>
-    <button onclick="limparCarrinho()" class="btn-limpar">Limpar Carrinho</button>
-  </div>
-</div>
-
-<!-- Overlay -->
-<div id="overlay-carrinho"></div>
+    <!-- Overlay -->
+    <div id="overlay-carrinho"></div>
 
     <!-- =============================================
          MODAL – Equipe de Desenvolvimento

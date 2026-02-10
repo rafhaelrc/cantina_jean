@@ -170,35 +170,32 @@ function toggleSection(id) {
 }
 
 // ────────────────────────────────────────────────
-//  MODAL – Cancelar Pedido 
+//  MODAL – Cancelar Pedido
 // ────────────────────────────────────────────────
 const btnCancelar     = document.getElementById("btn-cancelar");
 const modalCancelar   = document.getElementById("modal-cancelar");
-const btnSairCancelar = document.getElementById("btn-sair");
+const btnSair         = document.getElementById("btn-sair");  // só esse agora
 const btnConfirmar    = document.getElementById("btn-confirmar");
 
-// Abre o modal ao clicar em "Cancelar Pedido"
 if (btnCancelar) {
   btnCancelar.addEventListener("click", () => {
-    modalCancelar.style.display = "flex";
+    if (modalCancelar) modalCancelar.style.display = "flex";
   });
 }
 
-// Fecha o modal ao clicar em "Sair"
-if (btnSairCancelar) {
-  btnSairCancelar.addEventListener("click", () => {
-    modalCancelar.style.display = "none";
+if (btnSair) {
+  btnSair.addEventListener("click", () => {
+    if (modalCancelar) modalCancelar.style.display = "none";
   });
 }
 
-// Confirma cancelamento via API
 if (btnConfirmar) {
   btnConfirmar.addEventListener("click", async () => {
-    const numero = document.getElementById("numero-pedido")?.value;
-    const chave  = document.getElementById("palavra-chave")?.value;
+    const numero = document.getElementById("numero-pedido")?.value?.trim();
+    const chave  = document.getElementById("palavra-chave")?.value?.trim();
 
     if (!numero || !chave) {
-      alert("Preencha todos os campos!");
+      alert("Preencha o número do pedido e a palavra-chave!");
       return;
     }
 
@@ -216,10 +213,11 @@ if (btnConfirmar) {
         alert("Pedido cancelado com sucesso!");
         modalCancelar.style.display = "none";
       } else {
-        alert("Não foi possível cancelar o pedido.");
+        const erro = await resposta.text();
+        alert(`Erro: ${erro || "Não foi possível cancelar o pedido."}`);
       }
     } catch (erro) {
-      console.error("Erro ao cancelar pedido:", erro);
+      console.error("Erro ao cancelar:", erro);
       alert("Erro de conexão ao tentar cancelar.");
     }
   });
@@ -233,36 +231,47 @@ const modalInfo       = document.getElementById("modal-info");
 const btnSairInfo     = document.getElementById("btn-sair-info");
 const btnConsultar    = document.getElementById("btn-consultar");
 
-btnInfo.addEventListener("click", () => {
-  modalInfo.style.display = "flex";
-});
+if (btnInfo) {
+  btnInfo.addEventListener("click", () => {
+    if (modalInfo) {
+      modalInfo.style.display = "flex";
+    } else {
+      console.warn("Modal #modal-info não encontrado no HTML");
+    }
+  });
+}
 
-btnSairInfo.addEventListener("click", () => {
-  modalInfo.style.display = "none";
-});
+if (btnSairInfo) {
+  btnSairInfo.addEventListener("click", () => {
+    if (modalInfo) modalInfo.style.display = "none";
+  });
+}
 
-btnConsultar.addEventListener("click", async () => {
-  const numero = document.getElementById("numero-info").value;
+if (btnConsultar) {
+  btnConsultar.addEventListener("click", async () => {
+    const numero = document.getElementById("numero-info")?.value?.trim();
 
-  if (!numero) {
-    alert("Informe o número do pedido!");
-    return;
-  }
-
-  try {
-    const resposta = await fetch(`${API_BASE}/api/public/pedidos/${numero}`);
-    if (!resposta.ok) {
-      alert("Pedido não encontrado!");
+    if (!numero) {
+      alert("Informe o número do pedido!");
       return;
     }
 
-    const pedido = await resposta.json();
-    alert(`Status do pedido: ${pedido.status}`);
-    modalInfo.style.display = "none";
-  } catch (erro) {
-    console.error("Erro ao consultar pedido:", erro);
-  }
-});
+    try {
+      const resposta = await fetch(`${API_BASE}/api/public/pedidos/${numero}`);
+      if (!resposta.ok) {
+        alert("Pedido não encontrado!");
+        return;
+      }
+
+      const pedido = await resposta.json();
+      alert(`Status do pedido: ${pedido.status}`);
+      modalInfo.style.display = "none";
+    } catch (erro) {
+      console.error("Erro ao consultar pedido:", erro);
+      alert("Erro de conexão ao consultar o status.");
+    }
+  });
+}
 
 
 // ────────────────────────────────────────────────
