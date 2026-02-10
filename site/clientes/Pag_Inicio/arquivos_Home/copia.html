@@ -29,8 +29,14 @@
                 <div class="logo">
                     <img src="if_logo.png" alt="Logo" />
                 </div>
-                <input type="text" class="pesquisa" placeholder="Pesquisar produto" />
+
+                <input type="text" 
+                class="pesquisa" 
+                id="pesquisa-produto"
+                placeholder="Pesquisar produto" />
+                
                 <div class="carrinho">
+
                     <img src="images-removebg-preview.png" alt="Carrinho" />
                 </div>
             </div>
@@ -123,29 +129,12 @@
         <!-- Página Cardápio -->
 
         <section id="cardapio" class="pagina">
-    <div class="menu-section">
-
-        <div class="menu-bar" onclick="toggleSection('lanches')">
-            <span class="menu-title">Lanches</span>
-            <span class="menu-arrow">▼</span>
-        </div>
-        <div id="lanches" class="menu-items escondido"></div>
-
-        <div class="menu-bar" onclick="toggleSection('doces')">
-            <span class="menu-title">Doces</span>
-            <span class="menu-arrow">▼</span>
-        </div>
-        <div id="doces" class="menu-items escondido"></div>
-
-        <div class="menu-bar" onclick="toggleSection('bebidas')">
-            <span class="menu-title">Bebidas</span>
-            <span class="menu-arrow">▼</span>
-        </div>
-        <div id="bebidas" class="menu-items escondido"></div>
-
+    <div class="menu-section" id="menu-categorias">
+        <!-- categorias vão ser criadas via JS -->
     </div>
 </section>
 
+    
 <!--Removi estrutura de texto sem javascrit-->
 
               
@@ -164,12 +153,7 @@
             <div class="coluna-pedidos preparando">
                 <h3>PREPARANDO</h3>
                 <ul id="lista-preparo">
-                    <li>132</li>
-                    <li>312</li>
-                    <li>847</li>
-                    <li>213</li>
-                    <li>384</li>
-                    <li>948</li>
+                    >
                 </ul>
             </div>
 
@@ -177,12 +161,9 @@
             <div class="coluna-pedidos pronto">
                 <h3>PRONTO</h3>
                 <ul id="lista-pronto">
-                    <li>142</li>
-                    <li>612</li>
-                    <li>828</li>
-                    <li>280</li>
-                    <li>839</li>
-                    <li>248</li>
+
+
+                    <
                 </ul>
             </div>
         </div>

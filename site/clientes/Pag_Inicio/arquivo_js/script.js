@@ -22,6 +22,8 @@ const API_BASE = "https://cantina-api-rlqm.onrender.com";
 
 
 
+let produtosGlobais = [];
+
 /* =========================
    CARROSSEL
 ========================= */
@@ -295,77 +297,70 @@ document.addEventListener("DOMContentLoaded", () => {
  * # Funções  de renderizar produtos , gerar pedidos e o obj estão abaixo 
  * 
  */
-
 function renderizarProdutosNoMenu(produtos) {
+    const menu = document.getElementById("menu-categorias");
+    menu.innerHTML = "";
 
-  
-const trackCarrossel = document.querySelector('.carrossel-track');
-trackCarrossel.innerHTML = ''; // Limpa os itens estáticos
+    const categorias = {};
 
-
-//# Aqui talvez tenha que ser alterado para exibir oq esta só em ofertas
-//no carrocel
-produtos.forEach(prod => {
-
-    // Se o produto estiver em promoção
-    //  (ou apenas para preencher o carrossel)
-
-    if (prod.promocao === true || prod.preco < 10) { 
-       const htmlOferta = `
-  <div class="item">
-    <img src="${prod.imagemUrl || 'img/default.png'}" alt="${prod.nome}" style="width:100px">
-
-    <div class="separador"></div>
-
-    <p class="legenda-item">${prod.nome}</p>
-
-    <button class="btn-carrinho" onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome}', ${prod.preco})">
-      <img src="img/carrinho.png">
-    </button>
-  </div>
-`;
-        trackCarrossel.innerHTML += htmlOferta;
-    }
-    
-
-});
-    // Limpa todos os containers primeiro
-    const containerLanches = document.getElementById('lanches');
-    const containerDoces = document.getElementById('doces');
-    const containerBebidas = document.getElementById('bebidas');
-    
-    containerLanches.innerHTML = '';
-    containerDoces.innerHTML = '';
-    containerBebidas.innerHTML = '';
-
+    // agrupa produtos por categoria
     produtos.forEach(prod => {
-        // Cria o HTML do item 
-        const htmlItem = `
-            <div class="itemcardapio">
-                <img src="${prod.imagemUrl || 'img/default.png'}" alt="${prod.nome}">
-                <div class="itemcardapio-texto">
-                    <h3>${prod.nome}</h3>
-                    <p>${prod.descricao}</p>
-                    
-                </div>
-                <button class="botao-adicionar" onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome}', ${prod.preco})"> 
-                    <img src="img/carrinho.png" alt="Carrinho"> 
-                </button>
+        const nomeCategoria = prod.categoria.nome;
+        const idCategoria = nomeCategoria
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/\s+/g, "-");
+
+        if (!categorias[idCategoria]) {
+            categorias[idCategoria] = {
+                nome: nomeCategoria,
+                produtos: []
+            };
+        }
+
+        categorias[idCategoria].produtos.push(prod);
+    });
+
+    // cria o HTML das categorias
+    Object.entries(categorias).forEach(([idCategoria, categoria]) => {
+        const barra = `
+            <div class="menu-bar" onclick="toggleSection('${idCategoria}')">
+                <span class="menu-title">${categoria.nome}</span>
+                <span class="menu-arrow">▼</span>
             </div>
+            <div id="${idCategoria}" class="menu-items escondido"></div>
         `;
 
+        menu.innerHTML += barra;
 
-        //  Qual a Lógica  do if? Se o produto for da categoria 1, vai para lanches, etc.
-        // *** NOTA: Verificar no  banco quais são os nomes ou IDs das categorias ***
-        if (prod.categoria.nome === 'Lanches') {
-            containerLanches.innerHTML += htmlItem;
-        } else if (prod.categoria.nome === 'Doces') {
-            containerDoces.innerHTML += htmlItem;
-        } else if (prod.categoria.nome === 'Bebidas') {
-            containerBebidas.innerHTML += htmlItem;
-        }
+        const containerItens = document.getElementById(idCategoria);
+
+        categoria.produtos.forEach(prod => {
+            containerItens.innerHTML += `
+                <div class="itemcardapio">
+                    <img src="${prod.imagemUrl || 'img/default.png'}">
+                    <div class="itemcardapio-texto">
+                        <h3>${prod.nome}</h3>
+                        <p>${prod.descricao || ""}</p>
+                    </div>
+                    <button class="botao-adicionar"
+                        onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome}', ${prod.preco})">
+                        <img src="img/carrinho.png">
+                    </button>
+                </div>
+            `;
+        });
     });
 }
+
+
+    
+
+
+    
+
+
 
 
 
@@ -378,7 +373,10 @@ async function carregarProdutosCardapio() {
         const resposta = await fetch(`${API_BASE}/api/public/produtos`);
         const dados = await resposta.json();
         
-        //  Passamos os dados recebidos para a função  "renderizarProdutosNoMenu"
+        
+        // Passamos os dados recebidos para a função  "renderizarProdutosNoMenu"
+
+        produtosGlobais = dados;
         renderizarProdutosNoMenu(dados);
     } catch (erro) {
         console.error("Erro ao carregar cardápio:", erro);
@@ -436,5 +434,31 @@ async function enviarPedidoParaAPI() {
         console.error("Erro na conexão:", erro);
     }
 }
+
+
+
+
+//faz a pesquisa pela barra de pesquisa e filtra de vdd 
+
+const inputPesquisa = document.getElementById("pesquisa-produto");
+
+inputPesquisa.addEventListener("input", () => {
+    const termo = inputPesquisa.value.toLowerCase().trim();
+
+    if (termo === "") {
+        renderizarProdutosNoMenu(produtosGlobais);
+        return;
+    }
+
+    const filtrados = produtosGlobais.filter(prod =>
+        prod.nome.toLowerCase().includes(termo) ||
+        (prod.descricao && prod.descricao.toLowerCase().includes(termo)) ||
+        (prod.categoria?.nome && prod.categoria.nome.toLowerCase().includes(termo))
+    );
+
+    renderizarProdutosNoMenu(filtrados);
+});
+
+
 
 
