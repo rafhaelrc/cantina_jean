@@ -319,139 +319,68 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// ==================================================================
+//  NOVAS FUNÇÕES CORRIGIDAS 
+// ==================================================================
 
-// ────────────────────────────────────────────────
-//  CARDÁPIO – Renderização de produtos
-// ────────────────────────────────────────────────
-function renderizarProdutosNoMenu(produtos) {
-  const trackCarrossel = document.querySelector('.carrossel-track');
-  trackCarrossel.innerHTML = ''; // Limpa itens estáticos
-
-  // Carrossel – apenas promoções ou preço < 10   # revisar critério
-  produtos.forEach(prod => {
-    if (prod.promocao === true || prod.preco < 10) {
-      const htmlOferta = `
-        <div class="item">
-          <img src="${prod.imagemUrl || 'img/default.png'}" alt="${prod.nome}" style="width:100px">
-          <div class="separador"></div>
-          <p class="legenda-item">${prod.nome}</p>
-          <button class="btn-carrinho" onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome.replace(/'/g, "\\'")}', ${prod.preco})">
-            <img src="img/carrinho.png">
-          </button>
-        </div>
-      `;
-      trackCarrossel.innerHTML += htmlOferta;
-    }
-  });
-
-  // Limpa containers de categorias
-  const containerLanches  = document.getElementById('lanches');
-  const containerDoces    = document.getElementById('doces');
-  const containerBebidas  = document.getElementById('bebidas');
-
-  if (!containerLanches || !containerDoces || !containerBebidas) return;
-
-  containerLanches.innerHTML = '';
-  containerDoces.innerHTML   = '';
-  containerBebidas.innerHTML = '';
-
-  produtos.forEach(prod => {
-    const htmlItem = `
-      <div class="itemcardapio">
-        <img src="${prod.imagemUrl || 'img/default.png'}" alt="${prod.nome}">
-        <div class="itemcardapio-texto">
-          <h3>${prod.nome}</h3>
-          <p>${prod.descricao || ''}</p>
-        </div>
-        <button class="botao-adicionar" onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome.replace(/'/g, "\\'")}', ${prod.preco})">
-          <img src="img/carrinho.png" alt="Carrinho">
-        </button>
-      </div>
-    `;
-
-    if (prod.categoria?.nome === 'Lanches') {
-      containerLanches.innerHTML += htmlItem;
-    } else if (prod.categoria?.nome === 'Doces') {
-      containerDoces.innerHTML += htmlItem;
-    } else if (prod.categoria?.nome === 'Bebidas') {
-      containerBebidas.innerHTML += htmlItem;
-    }
-  });
+// Função auxiliar para garantir o caminho da imagem
+function obterCaminhoImagem(nomeArquivo) {
+    if (!nomeArquivo) return 'img/default.png';
+    if (nomeArquivo.startsWith('http')) return nomeArquivo;
+    if (nomeArquivo.startsWith('img/')) return nomeArquivo;
+    return `img/${nomeArquivo}`;
 }
 
-async function carregarProdutosCardapio() {
-  try {
-    const resposta = await fetch(`${API_BASE}/api/public/produtos`);
-    if (!resposta.ok) throw new Error("Falha ao buscar produtos");
-    
-    const dados = await resposta.json();
-    renderizarProdutosNoMenu(dados);
-  } catch (erro) {
-    console.error("Erro ao carregar cardápio:", erro);
-  }
-}
+function renderizarCarrossel(produtos) {
+    const trackCarrossel = document.querySelector('.carrossel-track');
+    if (!trackCarrossel) return;
 
+    trackCarrossel.innerHTML = ''; 
 
-// ────────────────────────────────────────────────
-//  Inicialização
-// ────────────────────────────────────────────────
-document.addEventListener("DOMContentLoaded", () => {
-  carregarProdutosCardapio();
-});
-
-//Modal do footer que exibe a equipe de desenvolvimento
-
-document.addEventListener("DOMContentLoaded", () => {
-    const abrirEquipe = document.getElementById("abrirEquipe");
-    const modalEquipe = document.getElementById("modal-equipe");
-    const fecharEquipe = document.getElementById("fecharEquipe");
-
-    abrirEquipe.addEventListener("click", () => {
-        modalEquipe.classList.add("ativo");
-    });
-
-    fecharEquipe.addEventListener("click", () => {
-        modalEquipe.classList.remove("ativo");
-    });
-
-    modalEquipe.addEventListener("click", (e) => {
-        if (e.target === modalEquipe) {
-            modalEquipe.classList.remove("ativo");
+    produtos.forEach(prod => {
+        const caminhoImg = obterCaminhoImagem(prod.imagemUrl);
+        
+        if (prod.promocao === true || prod.preco < 10) {
+            const htmlOferta = `
+            <div class="item">
+              <img 
+                  src="${caminhoImg}" 
+                  alt="${prod.nome}" 
+                  onerror="this.onerror=null; this.src='img/default.png';"
+              >
+              
+              <div class="legenda-item">${prod.nome}</div>
+              
+              <button class="btn-carrinho" onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome.replace(/'/g, "\\'")}', ${prod.preco})">
+                <img src="img/carrinho.png">
+              </button>
+            </div>
+          `;
+            trackCarrossel.innerHTML += htmlOferta;
         }
     });
-});
+}
 
-
-/**
- * # Funções  de renderizar produtos , gerar pedidos e o obj estão abaixo 
- * 
- */
-function renderizarProdutosNoMenu(produtos) {
+// 3. Renderiza o Cardápio Completo (Acordeão por Categorias)
+function renderizarCardapioCompleto(produtos) {
     const menu = document.getElementById("menu-categorias");
-    menu.innerHTML = "";
+    if (!menu) return;
 
+    menu.innerHTML = "";
     const categorias = {};
 
-    // agrupa produtos por categoria
+    // Agrupa
     produtos.forEach(prod => {
-        const nomeCategoria = prod.categoria.nome;
-        const idCategoria = nomeCategoria
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .replace(/\s+/g, "-");
+        const nomeCategoria = prod.categoria ? prod.categoria.nome : "Outros";
+        const idCategoria = nomeCategoria.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "-");
 
         if (!categorias[idCategoria]) {
-            categorias[idCategoria] = {
-                nome: nomeCategoria,
-                produtos: []
-            };
+            categorias[idCategoria] = { nome: nomeCategoria, produtos: [] };
         }
-
         categorias[idCategoria].produtos.push(prod);
     });
 
-    // cria o HTML das categorias
+    // Cria HTML
     Object.entries(categorias).forEach(([idCategoria, categoria]) => {
         const barra = `
             <div class="menu-bar" onclick="toggleSection('${idCategoria}')">
@@ -460,21 +389,23 @@ function renderizarProdutosNoMenu(produtos) {
             </div>
             <div id="${idCategoria}" class="menu-items escondido"></div>
         `;
-
         menu.innerHTML += barra;
 
         const containerItens = document.getElementById(idCategoria);
 
         categoria.produtos.forEach(prod => {
+            const caminhoImg = obterCaminhoImagem(prod.imagemUrl);
+
             containerItens.innerHTML += `
                 <div class="itemcardapio">
-                    <img src="${prod.imagemUrl || 'img/default.png'}">
+                    <img src="${caminhoImg}" alt="${prod.nome}" onerror="this.src='img/default.png'">
                     <div class="itemcardapio-texto">
                         <h3>${prod.nome}</h3>
                         <p>${prod.descricao || ""}</p>
+                        <p class="preco">R$ ${prod.preco.toFixed(2)}</p>
                     </div>
                     <button class="botao-adicionar"
-                        onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome}', ${prod.preco})">
+                        onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome.replace(/'/g, "\\'")}', ${prod.preco})">
                         <img src="img/carrinho.png">
                     </button>
                 </div>
@@ -483,65 +414,69 @@ function renderizarProdutosNoMenu(produtos) {
     });
 }
 
-
-    
-
-
-    
-
-
-
-
-
-
-// Função para buscar produtos da API
-
+// 4. Busca dados da API e chama as renderizações
 async function carregarProdutosCardapio() {
     try {
-        //  URL pública para listar produtos
         const resposta = await fetch(`${API_BASE}/api/public/produtos`);
         const dados = await resposta.json();
         
+        produtosGlobais = dados; // Salva na global para a pesquisa funcionar
         
-        // Passamos os dados recebidos para a função  "renderizarProdutosNoMenu"
-
-        produtosGlobais = dados;
-        renderizarProdutosNoMenu(dados);
+        // CHAMA AS DUAS FUNÇÕES
+        renderizarCarrossel(dados);
+        renderizarCardapioCompleto(dados);
+        
     } catch (erro) {
         console.error("Erro ao carregar cardápio:", erro);
     }
 }
 
-// Chamar a função assim que a página carregar
+// Inicia ao carregar a página
 document.addEventListener("DOMContentLoaded", carregarProdutosCardapio);
 
 
-
-//Função que envia o pedido pro BACK
-
-async function enviarPedidoParaAPI() {
+// 5. Função de Enviar Pedido (Atualizada para pegar dados dos inputs)
+async function enviarPedido() { // Renomeei para bater com o onclick do HTML "enviarPedido()"
     if (carrinho.length === 0) {
         alert("O seu carrinho está vazio!");
         return;
     }
 
-    // Montando o objeto conforme o Manual 
+    // Pega os valores dos inputs do Drawer
+    const nomeAluno = document.getElementById("nomeAluno").value;
+    const palavraChave = document.getElementById("palavra-chave").value;
+    const horarioRetirada = document.getElementById("horarioRetirada").value;
+    const observacoes = document.getElementById("observacoes").value;
+    
+    // Pega o rádio button selecionado
+    const pagamentoSelecionado = document.querySelector('input[name="pagamento"]:checked');
+    const formaPagamento = pagamentoSelecionado ? pagamentoSelecionado.value : "PIX";
 
-    const pedido = 
-    {
-    nomeAluno: prompt("Qual o seu nome?"),
-    palavraChave: "teste123", 
-    horarioRetirada: "10:30",
-    formaPagamento: "PIX",
-    observacoes: "Pedido via Site",
-    itens: carrinho.map(item => ({
-    produtoId: item.id,
-    quantidade: 1
-  }))
-};
+    // Validação simples
+    if (!nomeAluno || !palavraChave || !horarioRetirada) {
+        alert("Por favor, preencha Nome, Palavra-chave e Horário.");
+        return;
+    }
 
+    const pedido = {
+        nomeAluno: nomeAluno,
+        palavraChave: palavraChave,
+        horarioRetirada: horarioRetirada,
+        formaPagamento: formaPagamento,
+        observacoes: observacoes,
+        itens: carrinho.map(item => ({
+            produtoId: item.id,
+            quantidade: item.quantidade
+        }))
+    };
 
     try {
+        // Botão carregando
+        const btn = document.querySelector(".btn-fazer");
+        const textoOriginal = btn.innerText;
+        btn.innerText = "Enviando...";
+        btn.disabled = true;
+
         const resposta = await fetch(`${API_BASE}/api/public/pedidos`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -550,32 +485,44 @@ async function enviarPedidoParaAPI() {
 
         if (resposta.ok) {
             const resultado = await resposta.json();
-            alert(`Pedido enviado! Seu número de retirada é: ${resultado.numeroRetirada}`);
+            alert(`✅ Pedido realizado com sucesso!\n\nSeu número de retirada é: ${resultado.numeroRetirada}\nGuarde esse número!`);
             
-            // Limpa o carrinho após o sucesso
+            // Limpa tudo
             carrinho = [];
             atualizarInterfaceCarrinho();
             fecharCarrinho();
+            
+            // Limpa os campos
+            document.getElementById("nomeAluno").value = "";
+            document.getElementById("palavra-chave").value = "";
+            document.getElementById("observacoes").value = "";
         } else {
-            alert("Erro ao enviar pedido. Verifique se a cantina está aberta.");
+            const erroTxt = await resposta.text(); // Tenta ler mensagem de erro do backend (ex: loja fechada)
+            if(erroTxt.includes("fechada")) {
+                 alert("⛔ A Cantina está FECHADA no momento.");
+            } else {
+                 alert("Erro ao enviar pedido. Verifique os dados.");
+            }
         }
     } catch (erro) {
         console.error("Erro na conexão:", erro);
+        alert("Erro de conexão com o servidor.");
+    } finally {
+        // Restaura o botão
+        const btn = document.querySelector(".btn-fazer");
+        btn.innerText = "Fazer Pedido";
+        btn.disabled = false;
     }
 }
 
-
-
-
-//faz a pesquisa pela barra de pesquisa e filtra de vdd 
-
+// 6. Pesquisa (Atualizada para usar a nova função de renderizar menu)
 const inputPesquisa = document.getElementById("pesquisa-produto");
 
 inputPesquisa.addEventListener("input", () => {
     const termo = inputPesquisa.value.toLowerCase().trim();
 
     if (termo === "") {
-        renderizarProdutosNoMenu(produtosGlobais);
+        renderizarCardapioCompleto(produtosGlobais); // Volta ao normal
         return;
     }
 
@@ -584,10 +531,7 @@ inputPesquisa.addEventListener("input", () => {
         (prod.descricao && prod.descricao.toLowerCase().includes(termo)) ||
         (prod.categoria?.nome && prod.categoria.nome.toLowerCase().includes(termo))
     );
-
-    renderizarProdutosNoMenu(filtrados);
+    renderizarCardapioCompleto(filtrados); 
 });
-
-
 
 
