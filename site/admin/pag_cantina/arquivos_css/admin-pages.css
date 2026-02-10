@@ -296,14 +296,34 @@ select[multiple] option:hover {
 }
 
 /* Estilização dos selects da tabela de pedidos */
-.formasPagamento {
+.formasPagamento, .areaFormasPagamento ::picker(select), .statusPagamento, .areaPagamento ::picker(select) {
     width: 110px;
 }
 
-.statusPagamento {
-    width: 110px;
-}
-
-.statusPedido {
+.statusPedido, .areaPedido ::picker(select) {
     width: 130px;
+}
+
+/* Animação de carregamento nas tabelas */
+@keyframes animacaoCarregamento {
+    from {
+        color: black;
+        background-color: white;
+    }
+    to {
+        color: grey;
+        background-color: #aaa;
+    }
+}
+
+#linhaCarregamento {
+    padding: 20px;
+    animation: 0.5s linear 0s infinite alternate animacaoCarregamento;
+}
+
+/* Estilos das promoções */
+
+select[multiple] .produtoInativo:checked {
+    background-color: #ffd600;
+    color: black;
 }

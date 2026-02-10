@@ -1,59 +1,15 @@
+const API_URL = 'https://cantina-api-rlqm.onrender.com/api/admin';
+
+const AUTH_HEADER = {
+    'Authorization': 'Basic ' + btoa('admin:123'),
+    'Content-Type': 'application/json'
+};
+
+let dados_produtos;
+
 let tabela = document.getElementById('bodyTabela');
 const select = document.getElementById('listaProdutos');
 let numero_promocoes = 5;
-
-// Lista fictícia de objetos representando os produtos já cadastrados
-let produtos = {
-    0: {
-        id: 0,
-        nome: 'COCA 600 ML',
-        categoria: 2,
-        descricao: 'Garrafa de Coca-Cola de 600 ml',
-        foto: '../imgs/icone-lapis.svg',
-        status: 1,
-        preco: 5,
-    },
-
-    1: {
-        id: 1,
-        nome: 'Torrada completa',
-        categoria: 0,
-        descricao: 'Torrada com ovo, queijo, presunto, salada e tomate',
-        foto: '../imgs/icone-lupa.svg',
-        status: 1,
-        preco: 6,
-    },
-
-    2: {
-        id: 2,
-        nome: 'Coxinha de frango',
-        categoria: 0,
-        descricao: 'Coxinha de frango frita',
-        foto: '../imgs/icone-lapis.svg',
-        status: 1,
-        preco: 5,
-    },
-
-    3: {
-        id: 3,
-        nome: 'Brigadeiro',
-        categoria: 1,
-        descricao: 'Brigadeiro caseiro',
-        foto: '../imgs/foto-padrao-produto.svg',
-        status: 1,
-        preco: 3,
-    },
-
-    4: {
-        id: 4,
-        nome: 'Morango do amorcocacola + refl',
-        categoria: 1,
-        descricao: 'Morango com Cobertura caramelizada',
-        foto: '../imgs/foto-padrao-produto.svg',
-        status: 0,
-        preco: 7,
-    },
-};
 
 // Lista fictícia de objetos representando as promoções já cadastradas
 let promocoes = {
@@ -138,6 +94,7 @@ pesquisarProduto.addEventListener('input', function() {
         }
     });
 
+    // Mensagem se não encontrar resultados
     if (!com_resultados && pesquisarProduto !== '') {
         semResultado.style.display = '';
     } else {
@@ -208,7 +165,7 @@ function Visualizar(num) {
     nome.innerText = promocoes[num].nome;
     descricao.innerText = promocoes[num].descricao;
     disponibilidade.innerText = promocoes[num].status ? "Ativo" : "Inativo";
-    preco.innerText = promocoes[num].preco;
+    preco.innerText = promocoes[num].preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     imgCadastrada.src = promocoes[num].foto;
     titulo.innerText = `Visualização da promoção ${promocoes[num].nome}`;
     validade.innerText = promocoes[num].validade;
@@ -331,6 +288,7 @@ function Salvar() {
 
 // Função de atualização dos dados da tabela
 function AtualizarTabela() {
+    tabela.innerHTML += '<td colspan="8" id="linhaCarregamento"><div>A carregar ...</div></td>';
     let promocoes_html = ``;
 
     // Geração das linhas da tabela
@@ -347,7 +305,7 @@ function AtualizarTabela() {
         promocoes_html += `<tr id="idLinha${i}">
             <input type="number" value='${i}' id="idProduto${i}" hidden>
             <td>${promocoes[i].nome}</td>
-            <td>${promocoes[i].preco}</td>
+            <td>${promocoes[i].preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
             <td class="areaProdutos">${produtos_html}</td>
             <td class="areaStatus"><span style="background-color: ${promocoes[i].status ? "var(--verde-secundario)" : "#ffd600"};">${promocoes[i].status ? "Ativo" : "Inativo"}</span></td>
             <td class="areaBotoes">
@@ -374,13 +332,45 @@ select.addEventListener('mousedown', function (e) {
 });
 
 // Busca e apresenta os produtos já cadastrados
-function ListarProdutos() {
-    for (let kay in Object.keys(produtos)) {
+async function ListarProdutos() {
+    carregamento = document.createElement("option");
+    carregamento.id = "linhaCarregamento";
+    carregamento.textContent = 'A carregar ...';
+    select.appendChild(carregamento);
+
+    const resposta = await fetch(API_URL+'/produtos', { 
+        method: 'GET', 
+        headers: AUTH_HEADER 
+    });
+
+    dados_produtos = await resposta.json();
+    
+    let promocoes_html = ``;
+    let contador_linhas = 0;
+
+    dados_produtos.forEach((dado) => {
+
         const option = document.createElement("option");
-        option.value = produtos[kay].id;
-        option.textContent = produtos[kay].nome;
+        option.value = `
+"ativo": ${dado.ativo},      
+"categoria": ${dado.categoria},
+"descricao": ${dado.descricao},
+"id": ${dado.id},
+"imagemUrl": ${dado.imagemUrl},
+"nome": ${dado.nome},
+"preco": ${dado.preco}`;
+        option.textContent = dado.nome;
+
+        if (!dado.ativo) {
+            option.classList.add("produtoInativo");
+        };
+
         select.appendChild(option);
-    }
+       
+        contador_linhas++;
+    });
+
+    carregamento.remove();
 }
 
 // Reseta a lista de produtos selecionados

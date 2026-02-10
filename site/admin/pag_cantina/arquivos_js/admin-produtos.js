@@ -75,7 +75,7 @@ function Visualizar(num) {
     nome.innerText = dados_produtos[num].nome;
     descricao.innerText = dados_produtos[num].descricao;
     disponibilidade.innerText = dados_produtos[num].ativo ? "Ativo" : "Inativo";
-    preco.innerText = dados_produtos[num].preco;
+    preco.innerText = dados_produtos[num].preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     imgCadastrada.src = dados_produtos[num].imagemUrl;
     categoria.innerHTML = dados_produtos[num].categoria.nome;
     titulo.innerText = `Visualização do produto ${dados_produtos[num].nome}`;
@@ -139,7 +139,7 @@ async function Salvar() {
     enviarFoto = document.getElementById('enviarFoto');
     preco = parseFloat(document.getElementById('preco').value);
     categoria = JSON.parse(document.getElementById('categoria').value); //////
-    imagemUrl = document.getElementById('imgCadastrada').src;
+    imagemUrl = document.getElementById('imgCadastrada').src; // imagemUrl = '../../../clientes/Pag_Inicio/arquivos_Home/img/pastel.png';
     
     // Verifica se foi selecionada uma categoria para o produto
     if (categoria < 0) {
@@ -148,6 +148,7 @@ async function Salvar() {
     } else if (preco < 1) {
         alert('O preço do produto não pode ser 0, selecione um preço valido antes de salvar.');
     } else {
+        // Se as condições forem aceitas, cadastra os dados do produto na lista fictícia de produtos
         const metodo = id ? 'PUT' : 'POST';
         const url = id ? `${API_URL}/produtos/${id}` : API_URL+'/produtos';
 
@@ -177,7 +178,7 @@ async function Salvar() {
 
 // Função de atualização dos dados da tabela
 async function AtualizarTabela() {
-    tabela.innerHTML = 'A carregar ...';
+    tabela.innerHTML += '<td colspan="8" id="linhaCarregamento"><div>A carregar ...</div></td>';
 
     const resposta = await fetch(API_URL+'/produtos', { 
         method: 'GET', 

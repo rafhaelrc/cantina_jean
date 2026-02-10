@@ -11,19 +11,19 @@ let tabela = document.getElementById('bodyTabela');
 
 let status_pagamento_possiveis = ['PENDENTE', 'PAGO'];
 
-// Coloca as promoções já cadastradas para apresentação
+// Coloca os pedidos já enviados para a apresentação
 AtualizarTabela();
 
 // Função de atualização dos dados da tabela
 async function AtualizarTabela() {
-    tabela.innerHTML = 'A carregar ...';
+    tabela.innerHTML += '<td colspan="8" id="linhaCarregamento"><div>A carregar ...</div></td>';
 
     const resposta = await fetch(API_URL+'/admin/pedidos', { 
         method: 'GET', 
         headers: AUTH_HEADER 
     });
 
-    dados_pedidos = await resposta.json();
+     dados_pedidos = await resposta.json();
 
     let pedidos_html = ``;
     let contador_linhas = 0;
@@ -34,11 +34,15 @@ async function AtualizarTabela() {
             <input type="number" value='${dado.id}' id="idPedido${dado.id}" hidden>
             <td>${dado.numeroRetirada}</td>
             <td>${dado.nomeAluno}</td>
-            <td class="areaProdutos">`;
+            <td>`;
 
-        let segundo_html = '';
+        let valor_total = 0;
+
+        let segundo_html = `</td>
+            <td class="areaProdutos">`;
         dado.itens.forEach((produto) => {
             segundo_html += `<p><b>${produto.quantidade} x</b> ${produto.produto.nome}</p>`;
+            valor_total += produto.quantidade*produto.produto.preco;
         });
         
         let terceiro_html = `</td>
@@ -46,14 +50,14 @@ async function AtualizarTabela() {
 
         let quarto_html = '';
         if (!dado.idTransacaoExterna) {
-            quarto_html = `<td>
+            quarto_html = `<td class="areaFormasPagamento">
                 <select class="formasPagamento" id="listaFormasPagamento${dado.id}">
                     <option value="PIX">Pix</option>
                     <option value="DINHEIRO">Dinheiro</option>
                     <option value="FIADO">Fiado</option>
                 </select>
             </td>
-            <td class="areaStatus">
+            <td class="areaPagamento">
                 <select class="statusPagamento id="listaStatusPagamentoPossiveis${dado.id}">
                     <option value="PENDENTE">Pendente</option>
                     <option value="PAGO">Pago</option>
@@ -72,7 +76,7 @@ async function AtualizarTabela() {
             </span></td>`;
         };
 
-        let cinco_html = `<td class="areaBotoes">
+        let cinco_html = `<td class="areaPedido">
                 <select class="statusPedido" id="listaStatusPossiveis${dado.id}">
                     <option value="AGUARDANDO">Aguardando</option>
                     <option value="PRONTO">Pronto</option>
@@ -82,7 +86,7 @@ async function AtualizarTabela() {
             </td>
         </tr>`;
 
-        pedidos_html += primeiro_html + segundo_html + terceiro_html + quarto_html + cinco_html;
+        pedidos_html += primeiro_html + valor_total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + segundo_html + terceiro_html + quarto_html + cinco_html;
     });
 
     // Passagem do texto gerado das linhas da tebela para o html
@@ -115,6 +119,7 @@ async function CarregarEventos() {
                 headers: AUTH_HEADER,
                 body: JSON.stringify({ status })
             });
+            console.log(status);
         });
     });
 };

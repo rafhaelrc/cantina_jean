@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="200mm"
+   height="200mm"
+   viewBox="0 0 200 200"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="fotoPadraoPromocao.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#c8c8c8"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     width="200mm"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:snap-bbox="false"
+     inkscape:zoom="0.5"
+     inkscape:cx="767"
+     inkscape:cy="381"
+     inkscape:window-width="1296"
+     inkscape:window-height="745"
+     inkscape:window-x="62"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0">
+    <sodipodi:guide
+       position="24.51,156.884"
+       orientation="-1,0"
+       id="guide10242"
+       inkscape:label=""
+       inkscape:locked="false"
+       inkscape:color="rgb(0,0,255)" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-9.9175,-19.7965)">
+    <circle
+       style="fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.0973093"
+       id="path8474"
+       cx="57.4175"
+       cy="69.796501"
+       r="35" />
+    <circle
+       style="fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.083408"
+       id="path8474-0"
+       cx="169.9175"
+       cy="119.7965"
+       r="30" />
+    <circle
+       style="fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.0695066"
+       id="path8474-0-8"
+       cx="67.417503"
+       cy="174.79649"
+       r="25" />
+    <text
+       xml:space="preserve"
+       style="font-size:36px;line-height:18px;font-family:Calibri;-inkscape-font-specification:Calibri;text-align:center;text-anchor:middle;white-space:pre;inline-size:88.2357;fill:#ffffff;stroke-width:0.264583"
+       x="97.975616"
+       y="26.722916"
+       id="text495"
+       transform="matrix(1.8833646,0,0,1.8833508,-76.029811,35.575837)"><tspan
+         x="97.975616"
+         y="26.722916"
+         id="tspan5188"><tspan
+   style="font-size:18px"
+   id="tspan5186">Imagem de</tspan><tspan
+   y="26.722916"
+   id="tspan5190"> </tspan></tspan><tspan
+         x="97.975616"
+         y="49.222916"
+         id="tspan5194"><tspan
+   style="font-size:18px"
+   id="tspan5192">promoção</tspan><tspan
+   y="49.222916"
+   id="tspan5196"> </tspan></tspan><tspan
+         x="97.975616"
+         y="71.722916"
+         id="tspan5200"><tspan
+           style="font-size:18px"
+           id="tspan5198">padrão</tspan></tspan></text>
+  </g>
+</svg>
