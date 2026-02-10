@@ -107,13 +107,15 @@ body {
 .nav-botoes button {
     background-color: #1b5e20;
     color: white;
-
-    padding: 12px 22px;      /* MAIS RESPIRO */
-    min-height: 44px;        /* UX padrão ) */
+    padding: 12px 22px;
+    /* MAIS RESPIRO */
+    min-height: 44px;
+    /* UX padrão ) */
 
     font-size: 16px;
-    line-height: 1.2;        /* texto não gruda */
-    
+    line-height: 1.2;
+    /* texto não gruda */
+
     border-radius: 0 0 14px 14px;
     border: 2px solid black;
     cursor: pointer;
@@ -129,7 +131,7 @@ body {
 ========================= */
 .pagina {
     display: none;
-    
+
 }
 
 .pagina.ativa {
@@ -355,12 +357,12 @@ body {
     .nav-botoes {
         flex-wrap: wrap;
         gap: 10px;
-        margin-top: -2px;
+        margin-top: 2px;
         /* 👈 garante espaçamento também no mobile */
     }
 
     .nav-botoes button {
-        width: 22%;
+        width: 10px;
     }
 
     .conteudo-principal {
@@ -379,77 +381,212 @@ body {
     }
 }
 
-/* =========================
-   DRAWER CARRINHO
-========================= */
+/* DRAWER CARRINHO - Layout final ajustado para imagem de referência */
 
 .drawer-carrinho {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 85%;
-    max-width: 360px;
-    height: 100vh;
-    background: #fff;
-    z-index: 2000;
-    transition: right 0.3s ease;
-    display: flex;
-    flex-direction: column;
+  position: fixed;
+  top: 0; right: -100%;
+  width: 90%;
+  max-width: 380px;
+  height: 100vh;
+  background: #fff;
+  z-index: 2000;
+  transition: right 0.35s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-/* quando abre */
-.drawer-carrinho.ativo {
-    right: 0;
-}
+.drawer-carrinho.ativo { right: 0; }
 
-/* header */
 .drawer-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px;
-    border-bottom: 1px solid #ddd;
+  background: #1b5e20;
+  color: white;
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
 }
 
 .drawer-header button {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
 }
 
-/* itens */
 .drawer-itens {
-    flex: 1;
-    padding: 16px;
-    overflow-y: auto;
+  flex: 1;
+  padding: 8px 16px;
+  overflow-y: auto;
 }
 
-/* total */
-.drawer-total {
-    padding: 16px;
-    border-top: 1px solid #ddd;
-    font-size: 18px;
-    padding-bottom: 30px;
+/* Título "Detalhes do Pedido" em verde (como na sua imagem) */
+.detalhes-titulo {
+  background: #1b5e20;
+  color: white;
+  padding: 10px 16px;
+  margin: 0;
 }
 
-/* overlay */
-#overlay-carrinho {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 1999;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+.detalhes-titulo h4 {
+  margin: 0;
+  font-size: 16px;
 }
 
-#overlay-carrinho.ativo {
-    opacity: 1;
-    pointer-events: all;
+.drawer-section {
+  padding: 0 16px 16px;
+}
+
+.drawer-section h4 {
+  background: #1b5e20;
+  color: white;
+  margin: 0 -16px 12px -16px;
+  padding: 10px 16px;
+  font-size: 16px;
+}
+
+.form-row {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+.total-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 17px;
+  font-weight: bold;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.drawer-footer {
+  padding: 16px;
+  border-top: 1px solid #ddd;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-fazer {
+  flex: 1;
+  background: #1b5e20;
+  color: white;
+  border: none;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-limpar {
+  flex: 1;
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 14px;
+  font-size: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ITENS DO CARRINHO (gerados pelo JS) */
+.item-no-carrinho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.item-principal {
+  flex: 1;
+}
+
+.item-nome {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+}
+
+.controle-quantidade {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0;
+}
+
+.btn-menos, .btn-mais {
+  width: 32px;
+  height: 32px;
+  background: #1b5e20;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.btn-menos:hover, .btn-mais:hover {
+  background: #2e7d32;
+}
+
+.qtd-atual {
+  font-size: 16px;
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+}
+
+.item-preco {
+  font-size: 14px;
+  color: #444;
+  margin-top: 4px;
+}
+
+.btn-lixeira {
+  background: none;
+  border: none;
+  font-size: 26px;
+  color: #dc3545;
+  cursor: pointer;
+  padding: 0 10px;
+}
+
+.btn-lixeira:hover {
+  color: #b02a37;
 }
 
 
@@ -657,7 +794,7 @@ body {
 }
 
 /* ========================= 
-MODAL CANCELAR PEDIDO
+MODAL CANCELAR PEDIDO E INFORMAÇÕES
 ========================= */
 .modal-cancelar {
     display: none;
@@ -738,78 +875,73 @@ MODAL CANCELAR PEDIDO
     opacity: 0.9;
 }
 
-/* =========================
-   RESPONSIVO
-========================= */
-
-@media (max-width: 768px) {
-    .header-verde-content {
-        gap: 10px;
-    }
-
-    .nav-botoes {
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: -2px;
-        /* 👈 garante espaçamento também no mobile */
-    }
-
-    .nav-botoes button {
-        width: 22%;
-    }
-
-    .conteudo-principal {
-        flex-direction: column;
-        font-size: 15px;
-    }
-
-    .aviso,
-    .ofertas {
-        width: 100%;
-    }
-
-    .container {
-        flex-direction: column;
-        padding: 20px;
-    }
-
-
-     .modal-equipe-conteudo {
-        width: 92%;
-        max-height: 85vh;
-        border-radius: 14px;
-    }
-
-    .modal-equipe-conteudo h2 {
-        font-size: 16px;
-        padding: 12px;
-    }
-
-    .modal-equipe-conteudo ul {
-        padding: 14px;
-        max-height: 55vh;
-        overflow-y: auto;
-    }
-
-    .modal-equipe-conteudo li {
-        font-size: 14px;
-        padding: 8px 0;
-        line-height: 1.4;
-    }
-
-    .modal-equipe-conteudo p {
-        font-size: 13px;
-        padding: 10px 14px 14px;
-    }
-
-    .fechar-modal {
-        top: 8px;
-        right: 8px;
-        width: 30px;
-        height: 30px;
-        font-size: 18px;
-    }
+.modal-info {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 3000;
+    justify-content: center;
+    align-items: center;
 }
+
+/* =========================
+   FALE CONOSCO
+========================= */
+.contato-container {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  max-width: 600px;
+  margin: auto;
+}
+
+.contato-container h2 {
+  text-align: center;
+  color: #1b5e20;
+  margin-bottom: 15px;
+}
+
+.form-contato {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-contato label {
+  font-weight: bold;
+  color: #333;
+}
+
+.form-contato input,
+.form-contato textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.btn-enviar {
+  background: #1b5e20;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.btn-enviar:hover {
+  background: #2e7d32;
+}
+
+
+
 
 
 /* =========================
@@ -828,7 +960,7 @@ MODAL CANCELAR PEDIDO
     letter-spacing: 1px;
     padding: 12px 20px;
     box-sizing: border-box;
-    z-index: 4000;
+    z-index: 1000;
 }
 
 .footer-conteudo {
@@ -856,7 +988,7 @@ MODAL CANCELAR PEDIDO
 .modal-equipe {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.55);
+    background: rgba(0, 0, 0, 0.55);
     display: none;
     align-items: center;
     justify-content: center;
@@ -874,7 +1006,7 @@ MODAL CANCELAR PEDIDO
     width: 90%;
     max-width: 420px;
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
     animation: modalEntrada 0.25s ease-out;
 }
 
@@ -884,6 +1016,7 @@ MODAL CANCELAR PEDIDO
         opacity: 0;
         transform: translateY(20px) scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -950,4 +1083,77 @@ MODAL CANCELAR PEDIDO
     color: #555;
     text-align: center;
     background: #fafafa;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 768px) {
+    .header-verde-content {
+        gap: 10px;
+    }
+
+    .nav-botoes {
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: -2px;
+        /* 👈 garante espaçamento também no mobile */
+    }
+
+    .nav-botoes button {
+        width: 22%;
+    }
+
+    .conteudo-principal {
+        flex-direction: column;
+        font-size: 15px;
+    }
+
+    .aviso,
+    .ofertas {
+        width: 100%;
+    }
+
+    .container {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+
+    .modal-equipe-conteudo {
+        width: 92%;
+        max-height: 85vh;
+        border-radius: 14px;
+    }
+
+    .modal-equipe-conteudo h2 {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    .modal-equipe-conteudo ul {
+        padding: 14px;
+        max-height: 55vh;
+        overflow-y: auto;
+    }
+
+    .modal-equipe-conteudo li {
+        font-size: 14px;
+        padding: 8px 0;
+        line-height: 1.4;
+    }
+
+    .modal-equipe-conteudo p {
+        font-size: 13px;
+        padding: 10px 14px 14px;
+    }
+
+    .fechar-modal {
+        top: 8px;
+        right: 8px;
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+    }
 }

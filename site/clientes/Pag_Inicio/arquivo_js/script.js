@@ -1,195 +1,243 @@
 /*
-*----------Algumas informações--------:
- onde há # deve-se ser revisado e talvez reajustado 
-*
- Os produtos  vêm do banco de dados através da API, usando um endpoint
-público com método GET (para leitura). 
-O front consome esses dados e monta o HTML dinamicamente com JavaScript.
-
-O carrinho  só serve pra organizar 
-os itens antes de enviar o pedido completo para a API.
-
- o pedido só é salvo no POST,quando o usuário confirma o pedido.
- Antes disso, nada é salvo.”
-
- Cancelamento de pedidos esta na linha ~= 225
-*
-*/
-    
-
+ *---------- Algumas informações --------:
+ * onde há # deve-se ser revisado e talvez reajustado
+ *
+ * Os produtos vêm do banco de dados através da API, usando um endpoint
+ * público com método GET (para leitura).
+ * O front consome esses dados e monta o HTML dinamicamente com JavaScript.
+ *
+ * O carrinho só serve pra organizar os itens antes de enviar o pedido completo para a API.
+ * O pedido só é salvo no POST, quando o usuário confirma o pedido.
+ * Antes disso, nada é salvo.
+ *
+ * Cancelamento de pedidos está na linha ~= 225
+ */
 
 const API_BASE = "https://cantina-api-rlqm.onrender.com";
 
+// ────────────────────────────────────────────────
+//  Elementos DOM mais usados (cache)
+// ────────────────────────────────────────────────
+const track               = document.querySelector('.carrossel-track');
+const btnEsq              = document.querySelector('.esquerda');
+const btnDir              = document.querySelector('.direita');
+const iconeCarrinho       = document.querySelector(".carrinho img");
+const drawerCarrinho      = document.getElementById("drawer-carrinho");
+const overlayCarrinho     = document.getElementById("overlay-carrinho");
+const fecharDrawer        = document.getElementById("fecharDrawer");
+
+// ────────────────────────────────────────────────
+//  Estado global
+// ────────────────────────────────────────────────
+let carrinho = [];
+let scrollPosition = 0;
 
 
-/* =========================
-   CARROSSEL
-========================= */
-const track = document.querySelector('.carrossel-track');
-const btnEsq = document.querySelector('.esquerda');
-const btnDir = document.querySelector('.direita');
-
-let scroll = 0;
-
+// ────────────────────────────────────────────────
+//  CARROSSEL
+// ────────────────────────────────────────────────
 btnDir.addEventListener('click', () => {
-  scroll += 160;
-  track.scrollTo({
-    left: scroll,
-    behavior: 'smooth'
-  });
+  scrollPosition += 160;
+  track.scrollTo({ left: scrollPosition, behavior: 'smooth' });
 });
 
 btnEsq.addEventListener('click', () => {
-  scroll -= 160;
-  if (scroll < 0) scroll = 0;
-  track.scrollTo({
-    left: scroll,
-    behavior: 'smooth'
-  });
+  scrollPosition -= 160;
+  if (scrollPosition < 0) scrollPosition = 0;
+  track.scrollTo({ left: scrollPosition, behavior: 'smooth' });
 });
 
-/* =========================
-   SPA NAVEGAÇÃO
-========================= */
-const botoes = document.querySelectorAll('.nav-botoes button');
-const paginas = document.querySelectorAll('.pagina');
 
-// Função para alternar páginas
+// ────────────────────────────────────────────────
+//  SPA – Navegação entre páginas
+// ────────────────────────────────────────────────
+const botoesNav = document.querySelectorAll('.nav-botoes button');
+const paginas   = document.querySelectorAll('.pagina');
+
 function navegar(paginaId) {
   paginas.forEach(p => p.classList.remove('ativa'));
   document.getElementById(paginaId).classList.add('ativa');
 }
 
-// Liga cada botão a uma página
-botoes[0].addEventListener('click', () => navegar('inicio'));
-botoes[1].addEventListener('click', () => navegar('cardapio'));
-botoes[2].addEventListener('click', () => navegar('pedido'));
-botoes[3].addEventListener('click', () => navegar('contato'));
+botoesNav[0].addEventListener('click', () => navegar('inicio'));
+botoesNav[1].addEventListener('click', () => navegar('cardapio'));
+botoesNav[2].addEventListener('click', () => navegar('pedido'));
+botoesNav[3].addEventListener('click', () => navegar('contato'));
 
 
-
-// CARRINHO 
-
-let carrinho = [];
-
+// ────────────────────────────────────────────────
+//  CARRINHO – Funções principais + Envio do pedido
+// ────────────────────────────────────────────────
 function adicionarAoCarrinho(id, nome, preco) {
-    // Adiciona o item ao array (memória)
-    const itemExistente = carrinho.find(item => item.id === id);
+  const itemExistente = carrinho.find(item => item.id === id);
 
-if (itemExistente) {
+  if (itemExistente) {
     itemExistente.quantidade++;
-} else {
+  } else {
     carrinho.push({ id, nome, preco, quantidade: 1 });
-}
+  }
 
-    
-    // Atualiza a interface (desenha no drawer)
-    atualizarInterfaceCarrinho();
-    
-    // Abre o carrinho para mostrar que funcionou (opcional, mas bom UX)
-    document.getElementById("drawer-carrinho").classList.add("ativo");
-    document.getElementById("overlay-carrinho").classList.add("ativo");
+  atualizarInterfaceCarrinho();
+
+  drawerCarrinho.classList.add("ativo");
+  overlayCarrinho.classList.add("ativo");
 }
 
 function atualizarInterfaceCarrinho() {
-    const containerItens = document.querySelector(".drawer-itens");
-    const totalTexto = document.getElementById("valor-total-carrinho");
-    
-    containerItens.innerHTML = "";
-    let total = 0;
+  const containerItens = document.querySelector(".drawer-itens");
+  const totalTexto     = document.getElementById("valor-total-carrinho");
 
-   carrinho.forEach((item, index) => {
+  containerItens.innerHTML = "";
+  let total = 0;
+
+  carrinho.forEach((item, index) => {
     total += item.preco * item.quantidade;
 
     containerItens.innerHTML += `
-        <div class="item-no-carrinho">
-            <p>
-                ${item.nome} <br>
-                ${item.quantidade}x R$ ${item.preco.toFixed(2)}
-            </p>
-            <button onclick="removerDoCarrinho(${index})">❌</button>
+      <div class="item-no-carrinho">
+        <div class="item-principal">
+          <p class="item-nome">${item.nome}</p>
+          
+          <div class="controle-quantidade">
+            <button class="btn-menos" onclick="alterarQuantidade(${index}, -1)">−</button>
+            <span class="qtd-atual">${item.quantidade}</span>
+            <button class="btn-mais" onclick="alterarQuantidade(${index}, 1)">+</button>
+          </div>
+          
+          <p class="item-preco">R$ ${item.preco.toFixed(2)}</p>
         </div>
+        
+        <button class="btn-lixeira" onclick="removerDoCarrinho(${index})">🗑️</button>
+      </div>
     `;
-});
+  });
 
-    totalTexto.innerText = `Total: R$ ${total.toFixed(2)}`;
+  totalTexto.innerText = `R$ ${total.toFixed(2)}`;
+}
+
+function alterarQuantidade(index, delta) {
+  if (!carrinho[index]) return;
+  carrinho[index].quantidade += delta;
+  if (carrinho[index].quantidade < 1) carrinho[index].quantidade = 1;
+  atualizarInterfaceCarrinho();
 }
 
 function removerDoCarrinho(index) {
-    // Remove 1 item do array na posição (index) clicada
-    carrinho.splice(index, 1);
-    
-    // Desenha a lista novamente para atualizar o valor total e os itens
-    atualizarInterfaceCarrinho();
+  carrinho.splice(index, 1);
+  atualizarInterfaceCarrinho();
 }
 
+function limparCarrinho() {
+  if (confirm("Deseja realmente limpar todo o carrinho?")) {
+    carrinho = [];
+    atualizarInterfaceCarrinho();
+  }
+}
 
-
-const icone_Carrinho = document.querySelector(".carrinho img");
-const painel_oculto = document.getElementById("drawer-carrinho");
-const fecharPainel = document.getElementById("fecharDrawer");
-const overlay = document.getElementById("overlay-carrinho");//overlay melhora a UX do carrinho
-
-
-//ativa ao clicar 
-icone_Carrinho.addEventListener("click", () => {
-    if (painel_oculto.classList.contains("ativo")) {
-        // Fecha se está aberto
-        painel_oculto.classList.remove("ativo");
-        overlay.classList.remove("ativo");
-    }
-    else {
-        // Abre se está fechado
-        painel_oculto.classList.add("ativo");
-        overlay.classList.add("ativo");
-    }
+// ────────────────────────────────────────────────
+//  CARRINHO – Controle de abertura/fechamento
+// ────────────────────────────────────────────────
+iconeCarrinho.addEventListener("click", () => {
+  const estaAberto = drawerCarrinho.classList.contains("ativo");
+  drawerCarrinho.classList.toggle("ativo", !estaAberto);
+  overlayCarrinho.classList.toggle("ativo", !estaAberto);
 });
 
-
-
-//Função que fecha o carrinho 
-
 function fecharCarrinho() {
-    painel_oculto.classList.remove("ativo");
-    overlay.classList.remove("ativo");
+  drawerCarrinho.classList.remove("ativo");
+  overlayCarrinho.classList.remove("ativo");
 }
 
-fecharPainel.addEventListener("click", fecharCarrinho);
-overlay.addEventListener("click", fecharCarrinho);
+fecharDrawer.addEventListener("click", fecharCarrinho);
+overlayCarrinho.addEventListener("click", fecharCarrinho);
 
-/* =========================
-   CARDÁPIO
-========================= */
-
-//Menu Expansivo
-
+// ────────────────────────────────────────────────
+//  CARDÁPIO – Menu expansível 
+// ────────────────────────────────────────────────
 function toggleSection(id) {
   const section = document.getElementById(id);
   section.classList.toggle('escondido');
 
-  // pega a barra anterior à seção
   const bar = section.previousElementSibling;
   const arrow = bar.querySelector('.menu-arrow');
 
-  // troca a seta conforme aberto/fechado
-  if (section.classList.contains('escondido')) {
-    arrow.textContent = '▼'; // fechado
-  } else {
-    arrow.textContent = '▲'; // aberto
-  }
+  arrow.textContent = section.classList.contains('escondido') ? '▼' : '▲';
 }
 
-/* =========================
-   PEDIDO - STATUS
-========================= */
+// ────────────────────────────────────────────────
+//  MODAL – Cancelar Pedido 
+// ────────────────────────────────────────────────
+const btnCancelar     = document.getElementById("btn-cancelar");
+const modalCancelar   = document.getElementById("modal-cancelar");
+const btnSairCancelar = document.getElementById("btn-sair");
+const btnConfirmar    = document.getElementById("btn-confirmar");
 
+// Abre o modal ao clicar em "Cancelar Pedido"
+if (btnCancelar) {
+  btnCancelar.addEventListener("click", () => {
+    modalCancelar.style.display = "flex";
+  });
+}
 
-//  A função consulta no backend o status real de um pedido 
-// usando o número de retirada.
+// Fecha o modal ao clicar em "Sair"
+if (btnSairCancelar) {
+  btnSairCancelar.addEventListener("click", () => {
+    modalCancelar.style.display = "none";
+  });
+}
 
+// Confirma cancelamento via API
+if (btnConfirmar) {
+  btnConfirmar.addEventListener("click", async () => {
+    const numero = document.getElementById("numero-pedido")?.value;
+    const chave  = document.getElementById("palavra-chave")?.value;
 
-document.getElementById("btn-info").addEventListener("click", async () => {
-  const numero = document.getElementById("numero-pedido").value;
+    if (!numero || !chave) {
+      alert("Preencha todos os campos!");
+      return;
+    }
+
+    try {
+      const resposta = await fetch(
+        `${API_BASE}/api/public/pedidos/${numero}/cancelar`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ palavraChave: chave })
+        }
+      );
+
+      if (resposta.ok) {
+        alert("Pedido cancelado com sucesso!");
+        modalCancelar.style.display = "none";
+      } else {
+        alert("Não foi possível cancelar o pedido.");
+      }
+    } catch (erro) {
+      console.error("Erro ao cancelar pedido:", erro);
+      alert("Erro de conexão ao tentar cancelar.");
+    }
+  });
+}
+
+// ────────────────────────────────────────────────
+//  MODAL – Informações / status do pedido
+// ────────────────────────────────────────────────
+const btnInfo         = document.getElementById("btn-info");
+const modalInfo       = document.getElementById("modal-info");
+const btnSairInfo     = document.getElementById("btn-sair-info");
+const btnConsultar    = document.getElementById("btn-consultar");
+
+btnInfo.addEventListener("click", () => {
+  modalInfo.style.display = "flex";
+});
+
+btnSairInfo.addEventListener("click", () => {
+  modalInfo.style.display = "none";
+});
+
+btnConsultar.addEventListener("click", async () => {
+  const numero = document.getElementById("numero-info").value;
 
   if (!numero) {
     alert("Informe o número do pedido!");
@@ -197,10 +245,7 @@ document.getElementById("btn-info").addEventListener("click", async () => {
   }
 
   try {
-    const resposta = await fetch(
-      `${API_BASE}/api/public/pedidos/${numero}`
-    );
-
+    const resposta = await fetch(`${API_BASE}/api/public/pedidos/${numero}`);
     if (!resposta.ok) {
       alert("Pedido não encontrado!");
       return;
@@ -208,233 +253,134 @@ document.getElementById("btn-info").addEventListener("click", async () => {
 
     const pedido = await resposta.json();
     alert(`Status do pedido: ${pedido.status}`);
+    modalInfo.style.display = "none";
   } catch (erro) {
     console.error("Erro ao consultar pedido:", erro);
   }
 });
 
-/* =========================
-   MODAL CANCELAR PEDIDO
-========================= */
-const btnCancelar = document.getElementById("btn-cancelar");
-const modalCancelar = document.getElementById("modal-cancelar");
-const btnSair = document.getElementById("btn-sair");
-const btnConfirmar = document.getElementById("btn-confirmar");
 
-// Abrir modal ao clicar em "Cancelar Pedido"
-btnCancelar.addEventListener("click", () => {
-  modalCancelar.style.display = "flex";
-});
+// ────────────────────────────────────────────────
+//  FORMULÁRIO – Fale Conosco
+// ────────────────────────────────────────────────
+document.getElementById("form-contato").addEventListener("submit", (e) => {
+  e.preventDefault();
 
-// Fechar modal ao clicar em "Sair"
-btnSair.addEventListener("click", () => {
-  modalCancelar.style.display = "none";
-});
+  const nome      = document.getElementById("nome").value;
+  const whatsapp  = document.getElementById("whatsapp").value;
+  const mensagem  = document.getElementById("mensagem").value;
 
-
-
-
-// # Confirmar cancelamento  (atualizado pra API)
-
-btnConfirmar.addEventListener("click", async () => {
-  const numero = document.getElementById("numero-pedido").value;
-  const chave = document.getElementById("palavra-chave").value;
-
-  if (!numero || !chave) {
+  if (!nome || !whatsapp || !mensagem) {
     alert("Preencha todos os campos!");
     return;
   }
 
-  try {
-    const resposta = await fetch(
-      `${API_BASE}/api/public/pedidos/${numero}/cancelar`,
-      {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ palavraChave: chave })
-      }
-    );
+  alert(`Obrigado, ${nome}! Sua mensagem foi enviada.`);
+  e.target.reset(); // limpa o formulário
+});
 
-    if (resposta.ok) {
-      alert("Pedido cancelado com sucesso!");
-      modalCancelar.style.display = "none";
-    } else {
-      alert("Não foi possível cancelar o pedido.");
-    }
-  } catch (erro) {
-    console.error("Erro ao cancelar pedido:", erro);
+
+// ────────────────────────────────────────────────
+//  MODAL – Equipe de desenvolvimento (footer)
+// ────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  const abrirEquipe   = document.getElementById("abrirEquipe");
+  const modalEquipe   = document.getElementById("modal-equipe");
+  const fecharEquipe  = document.getElementById("fecharEquipe");
+
+  if (abrirEquipe && modalEquipe && fecharEquipe) {
+    abrirEquipe.addEventListener("click", () => {
+      modalEquipe.classList.add("ativo");
+    });
+
+    fecharEquipe.addEventListener("click", () => {
+      modalEquipe.classList.remove("ativo");
+    });
+
+    modalEquipe.addEventListener("click", (e) => {
+      if (e.target === modalEquipe) {
+        modalEquipe.classList.remove("ativo");
+      }
+    });
   }
 });
 
 
-
-//Modal do footer que exibe a equipe de desenvolvimento
-
-document.addEventListener("DOMContentLoaded", () => {
-    const abrirEquipe = document.getElementById("abrirEquipe");
-    const modalEquipe = document.getElementById("modal-equipe");
-    const fecharEquipe = document.getElementById("fecharEquipe");
-
-    abrirEquipe.addEventListener("click", () => {
-        modalEquipe.classList.add("ativo");
-    });
-
-    fecharEquipe.addEventListener("click", () => {
-        modalEquipe.classList.remove("ativo");
-    });
-
-    modalEquipe.addEventListener("click", (e) => {
-        if (e.target === modalEquipe) {
-            modalEquipe.classList.remove("ativo");
-        }
-    });
-});
-
-
-/**
- * # Funções  de renderizar produtos , gerar pedidos e o obj estão abaixo 
- * 
- */
-
+// ────────────────────────────────────────────────
+//  CARDÁPIO – Renderização de produtos
+// ────────────────────────────────────────────────
 function renderizarProdutosNoMenu(produtos) {
+  const trackCarrossel = document.querySelector('.carrossel-track');
+  trackCarrossel.innerHTML = ''; // Limpa itens estáticos
 
-  
-const trackCarrossel = document.querySelector('.carrossel-track');
-trackCarrossel.innerHTML = ''; // Limpa os itens estáticos
-
-
-//# Aqui talvez tenha que ser alterado para exibir oq esta só em ofertas
-//no carrocel
-produtos.forEach(prod => {
-
-    // Se o produto estiver em promoção
-    //  (ou apenas para preencher o carrossel)
-
-    if (prod.promocao === true || prod.preco < 10) { 
-       const htmlOferta = `
-  <div class="item">
-    <img src="${prod.imagemUrl || 'img/default.png'}" alt="${prod.nome}" style="width:100px">
-
-    <div class="separador"></div>
-
-    <p class="legenda-item">${prod.nome}</p>
-
-    <button class="btn-carrinho" onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome}', ${prod.preco})">
-      <img src="img/carrinho.png">
-    </button>
-  </div>
-`;
-        trackCarrossel.innerHTML += htmlOferta;
+  // Carrossel – apenas promoções ou preço < 10   # revisar critério
+  produtos.forEach(prod => {
+    if (prod.promocao === true || prod.preco < 10) {
+      const htmlOferta = `
+        <div class="item">
+          <img src="${prod.imagemUrl || 'img/default.png'}" alt="${prod.nome}" style="width:100px">
+          <div class="separador"></div>
+          <p class="legenda-item">${prod.nome}</p>
+          <button class="btn-carrinho" onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome.replace(/'/g, "\\'")}', ${prod.preco})">
+            <img src="img/carrinho.png">
+          </button>
+        </div>
+      `;
+      trackCarrossel.innerHTML += htmlOferta;
     }
-    
+  });
 
-});
-    // Limpa todos os containers primeiro
-    const containerLanches = document.getElementById('lanches');
-    const containerDoces = document.getElementById('doces');
-    const containerBebidas = document.getElementById('bebidas');
-    
-    containerLanches.innerHTML = '';
-    containerDoces.innerHTML = '';
-    containerBebidas.innerHTML = '';
+  // Limpa containers de categorias
+  const containerLanches  = document.getElementById('lanches');
+  const containerDoces    = document.getElementById('doces');
+  const containerBebidas  = document.getElementById('bebidas');
 
-    produtos.forEach(prod => {
-        // Cria o HTML do item 
-        const htmlItem = `
-            <div class="itemcardapio">
-                <img src="${prod.imagemUrl || 'img/default.png'}" alt="${prod.nome}">
-                <div class="itemcardapio-texto">
-                    <h3>${prod.nome}</h3>
-                    <p>${prod.descricao}</p>
-                    
-                </div>
-                <button class="botao-adicionar" onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome}', ${prod.preco})"> 
-                    <img src="img/carrinho.png" alt="Carrinho"> 
-                </button>
-            </div>
-        `;
+  if (!containerLanches || !containerDoces || !containerBebidas) return;
 
+  containerLanches.innerHTML = '';
+  containerDoces.innerHTML   = '';
+  containerBebidas.innerHTML = '';
 
-        //  Qual a Lógica  do if? Se o produto for da categoria 1, vai para lanches, etc.
-        // *** NOTA: Verificar no  banco quais são os nomes ou IDs das categorias ***
-        if (prod.categoria.nome === 'Lanches') {
-            containerLanches.innerHTML += htmlItem;
-        } else if (prod.categoria.nome === 'Doces') {
-            containerDoces.innerHTML += htmlItem;
-        } else if (prod.categoria.nome === 'Bebidas') {
-            containerBebidas.innerHTML += htmlItem;
-        }
-    });
+  produtos.forEach(prod => {
+    const htmlItem = `
+      <div class="itemcardapio">
+        <img src="${prod.imagemUrl || 'img/default.png'}" alt="${prod.nome}">
+        <div class="itemcardapio-texto">
+          <h3>${prod.nome}</h3>
+          <p>${prod.descricao || ''}</p>
+        </div>
+        <button class="botao-adicionar" onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome.replace(/'/g, "\\'")}', ${prod.preco})">
+          <img src="img/carrinho.png" alt="Carrinho">
+        </button>
+      </div>
+    `;
+
+    if (prod.categoria?.nome === 'Lanches') {
+      containerLanches.innerHTML += htmlItem;
+    } else if (prod.categoria?.nome === 'Doces') {
+      containerDoces.innerHTML += htmlItem;
+    } else if (prod.categoria?.nome === 'Bebidas') {
+      containerBebidas.innerHTML += htmlItem;
+    }
+  });
 }
-
-
-
-
-// Função para buscar produtos da API
 
 async function carregarProdutosCardapio() {
-    try {
-        //  URL pública para listar produtos
-        const resposta = await fetch(`${API_BASE}/api/public/produtos`);
-        const dados = await resposta.json();
-        
-        //  Passamos os dados recebidos para a função  "renderizarProdutosNoMenu"
-        renderizarProdutosNoMenu(dados);
-    } catch (erro) {
-        console.error("Erro ao carregar cardápio:", erro);
-    }
-}
-
-// Chamar a função assim que a página carregar
-document.addEventListener("DOMContentLoaded", carregarProdutosCardapio);
-
-
-
-//Função que envia o pedido pro BACK
-
-async function enviarPedidoParaAPI() {
-    if (carrinho.length === 0) {
-        alert("O seu carrinho está vazio!");
-        return;
-    }
-
-    // Montando o objeto conforme o Manual 
-
-    const pedido = 
-    {
-    nomeAluno: prompt("Qual o seu nome?"),
-    palavraChave: "teste123", 
-    horarioRetirada: "10:30",
-    formaPagamento: "PIX",
-    observacoes: "Pedido via Site",
-    itens: carrinho.map(item => ({
-    produtoId: item.id,
-    quantidade: 1
-  }))
-};
-
-
-    try {
-        const resposta = await fetch(`${API_BASE}/api/public/pedidos`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(pedido)
-        });
-
-        if (resposta.ok) {
-            const resultado = await resposta.json();
-            alert(`Pedido enviado! Seu número de retirada é: ${resultado.numeroRetirada}`);
-            
-            // Limpa o carrinho após o sucesso
-            carrinho = [];
-            atualizarInterfaceCarrinho();
-            fecharCarrinho();
-        } else {
-            alert("Erro ao enviar pedido. Verifique se a cantina está aberta.");
-        }
-    } catch (erro) {
-        console.error("Erro na conexão:", erro);
-    }
+  try {
+    const resposta = await fetch(`${API_BASE}/api/public/produtos`);
+    if (!resposta.ok) throw new Error("Falha ao buscar produtos");
+    
+    const dados = await resposta.json();
+    renderizarProdutosNoMenu(dados);
+  } catch (erro) {
+    console.error("Erro ao carregar cardápio:", erro);
+  }
 }
 
 
+// ────────────────────────────────────────────────
+//  Inicialização
+// ────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  carregarProdutosCardapio();
+});
