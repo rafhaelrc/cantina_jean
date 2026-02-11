@@ -327,3 +327,68 @@ select[multiple] .produtoInativo:checked {
     background-color: #ffd600;
     color: black;
 }
+
+
+
+/* --- Melhorias no Modal de Visualização --- */
+
+/* 1. Ajusta o Título Principal do Modal */
+#tituloVisualizar {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--verde-secundario); /* Adiciona uma linha sutil abaixo */
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* 2. Estiliza os Rótulos (Labels) - Deixa em negrito e menor */
+.visualizadorPopup .containerForms label {
+    display: block; /* Garante que fique na linha de cima */
+    font-weight: 600; /* Negrito */
+    font-size: 0.9rem;
+    color: #666; /* Cor cinza um pouco mais claro para o rótulo */
+    margin-bottom: 2px; /* Espaço pequeno entre rótulo e valor */
+    text-align: left; /* Alinha à esquerda para leitura mais fácil */
+}
+
+/* 3. Estiliza os Valores (os <p>) - Remove a cara de "input" */
+.visualizadorPopup .containerForms p[id^="label"] {
+    /* Remove as bordas e fundos que fazem parecer um input */
+    border: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    
+    /* Estilo de texto limpo */
+    font-size: 1.1rem;
+    color: #000; /* Cor preta forte para o valor */
+    padding: 0;
+    margin: 0 0 15px 0; /* Espaço abaixo de cada bloco de informação */
+    text-align: left; /* Alinha à esquerda */
+    font-weight: 500;
+}
+
+/* 4. Ajuste específico para a área da imagem */
+.visualizadorPopup .containerForms:last-child label {
+      text-align: center; /* Mantém o rótulo da imagem centralizado */
+      margin-bottom: 10px;
+}
+
+#visualizarImgCadastrada {
+    /* Adiciona uma sombra suave e uma borda fina na imagem */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
+}
+
+/* (Opcional) Remove a centralização forçada dos containers no modo visualização para ficar mais alinhado */
+.visualizadorPopup .centalizadoForms {
+    text-align: left;
+}
+/* Mas mantém o título principal centralizado se preferir */
+#tituloVisualizar.centalizadoForms {
+    text-align: center;
+    display: block;
+    border-bottom: none; /* Remove a borda se for centralizado */
+}
