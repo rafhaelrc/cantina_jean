@@ -54,3 +54,27 @@
         .login-box button:hover {
             background: #084a11;
         }
+
+        /*Responsivo*/
+        @media (max-width: 768px) {
+            .login-box {
+                width: 90%;
+                max-width: 400px;
+                padding: 30px 20px;
+            }
+
+            .login-box h2 {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+
+            .login-box input {
+                padding: 12px 15px;
+                font-size: 15px;
+            }
+
+            .login-box .entrar {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }

@@ -392,3 +392,81 @@ select[multiple] .produtoInativo:checked {
     display: block;
     border-bottom: none; /* Remove a borda se for centralizado */
 }
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .botaoCadastrar {
+        margin: 15px auto;
+        display: block;
+        width: 80%;
+        padding: 10px;
+    }
+
+    #asideTable {
+        width: 100%;
+        padding: 0 10px;
+        overflow-x: auto;
+        display: block; ;
+    }
+
+    .table-custom {
+        font-size: 14px;
+    }
+
+    .areaBotoes {
+        flex-direction: column;
+        min-width: 100px;
+        justify-self: center;
+        display: flex;
+    }
+
+    .areaBotoes button {
+        margin: 3px 0;
+        padding: 8px;
+        font-size: 14px;
+        
+    }
+
+    .popup-content {
+        max-width: 95%;
+        padding: 15px;
+        margin: 20px auto;
+    }
+
+    .formsPopup, .visualizadorPopup {
+        flex-direction: column;
+        padding: 10px;
+    }
+     
+    #salvarVerificacao {
+        margin-top: 20px;
+    }
+
+    .containerForms {
+        flex: 100%;
+    }
+
+    input[type='text'], input[type='number'], .containerForms p, #descricao, #labelDescricao {
+        width: 90%;
+        
+    }
+
+    select, select[multiple] {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    select[multiple] {
+        height: auto;
+    }
+
+    #labelImgCadastrada img, #visualizarImgCadastrada {
+        width: 150px;
+    }
+
+    .fechar {
+        top: 5px;
+        right: 15px;
+        font-size: 24px;
+    }
+}
