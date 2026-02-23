@@ -429,10 +429,26 @@ body {
   cursor: pointer;
 }
 
-.drawer-itens {
-  flex: 1;
-  padding: 8px 16px;
+.drawer-content-scroll {
+  flex: 1;                /* faz crescer e ocupar o espaço restante */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;    
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;   /* evita scroll extra fora do itens */
+}
+
+.drawer-itens {
+  flex: 1 1 auto; 
+  padding: 8px 16px;
+}
+
+/* Garante que header, footer e seções não sejam comprimidos */
+.drawer-header,
+.detalhes-titulo,
+.drawer-section,
+.drawer-footer {
+  flex-shrink: 0;
 }
 
 /* Título "Detalhes do Pedido" em verde (como na sua imagem) */
@@ -480,6 +496,14 @@ body {
   font-size: 15px;
 }
 
+/* NOVO: Destaque para campos obrigatórios */
+.form-group input:required:invalid,
+.form-group input:required:focus:invalid {
+  border-color: #dc3545;
+  background-color: #fff5f5;
+}
+
+/* Radio group */
 .radio-group {
   display: flex;
   flex-direction: column;
@@ -661,7 +685,6 @@ body {
     /* permite posicionar elementos dentro */
 }
 
-/* Leve destaque ao clicar */
 .itemcardapio:hover {
     background-color: #c7dad1;
 }
@@ -1189,4 +1212,17 @@ MODAL CANCELAR PEDIDO E INFORMAÇÕES
         height: 30px;
         font-size: 18px;
     }
+}
+
+/* Ajustes mínimos no drawer para melhor usabilidade */
+.drawer-section .form-group {
+  margin-bottom: 16px;
+}
+
+.drawer-section label span {
+  font-size: 0.9em;
+}
+
+.radio-group label {
+  cursor: pointer;
 }

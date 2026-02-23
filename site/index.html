@@ -183,16 +183,16 @@
             <div class="drawer-section">
                 <h4>Informações Pessoais</h4>
                 <div class="form-group">
-                    <label for="nomeAluno">Nome:</label>
-                    <input type="text" id="nomeAluno" placeholder="Digite seu nome">
+                    <label for="nomeAluno">Nome: <span style="color:red">*</span></label>
+                    <input type="text" id="nomeAluno" placeholder="Digite seu nome" required>
                 </div>
                 <div class="form-group">
-                    <label for="palavra-chave">Palavra chave:</label>
-                    <input type="text" id="palavra-chave" placeholder="Usado para o possível cancelamento">
+                    <label for="palavra-chave">Palavra chave: <span style="color:red">*</span></label>
+                    <input type="text" id="palavra-chave" placeholder="Usado para o possível cancelamento" required>
                 </div>
                 <div class="form-group">
-                    <label for="horarioRetirada">Horário de Retirada:</label>
-                    <input type="time" id="horarioRetirada">
+                    <label for="horarioRetirada">Horário de Retirada: <span style="color:red">*</span></label>
+                    <input type="time" id="horarioRetirada" required>
                 </div>
             </div>
 
@@ -200,7 +200,7 @@
                 <h4>Pagamento</h4>
                 <div class="radio-group">
                     <label><input type="radio" name="pagamento" value="PIX" checked> Pix no app</label>
-                    <label><input type="radio" name="pagamento" value="Balcao"> Balcão</label>
+                    <label><input type="radio" name="pagamento" value="BALCAO"> Balcão</label>
                 </div>
             </div>
 
@@ -208,7 +208,7 @@
                 <h4>Resumo</h4>
                 <div class="form-group">
                     <label for="observacoes">Observações:</label>
-                    <textarea id="observacoes" rows="3" placeholder="Alguma observação?"></textarea>
+                    <textarea id="observacoes" rows="3" placeholder="Alguma observação? (opcional)"></textarea>
                 </div>
                 <div class="total-line">
                     <span>Total do Pedido:</span>
