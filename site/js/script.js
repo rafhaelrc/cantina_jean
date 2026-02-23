@@ -514,10 +514,13 @@ async function enviarPedido() {
 }
 
 // 6. Pesquisa
+////////////////////
 const inputPesquisa = document.getElementById("pesquisa-produto");
 
 inputPesquisa.addEventListener("input", () => {
     const termo = inputPesquisa.value.toLowerCase().trim();
+
+     navegar('cardapio');
 
     if (termo === "") {
         renderizarCardapioCompleto(produtosGlobais);
