@@ -107,20 +107,17 @@ body {
 .nav-botoes button {
     background-color: #1b5e20;
     color: white;
-    padding: 12px 22px;
-    /* MAIS RESPIRO */
+    padding: 1px 10px;
+    /*deixa mais bonito*/
     min-height: 44px;
     /* UX padrão ) */
-
     font-size: 16px;
     line-height: 1.2;
     /* texto não gruda */
-
     border-radius: 0 0 14px 14px;
     border: 2px solid black;
     cursor: pointer;
 }
-
 
 .nav-botoes button:hover {
     background-color: #2e7d32;
