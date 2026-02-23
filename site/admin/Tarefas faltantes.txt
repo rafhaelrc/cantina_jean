@@ -1,36 +1,146 @@
-Recomendações de melhorias
+============================================================
+📌 RECOMENDAÇÕES DE MELHORIAS
+(Organizado por Categoria e Prioridade — sem alteração do significado das solicitações)
+============================================================
 
-Explicação da estrutura das recomendações:
-nome-arquivo.html
- Alteração (ação - tipo de ação) // [Criação, Edição, Correção] - [Funcionalidade, Estilo, Organização]
- // Comentário do objetivo da alteração
-  Paços da alteração ou sub alteração
 
-admin-promocoes.js
- Adicionar lógica de datas e de tempo (Criação - Funcionalidade)
-  // Para organizar a validade das promoções
+############################################################
+🔴 PRIORIDADE ALTA
+############################################################
 
-admin-pedidos.js
- Adicionar coluna de de valor total do pedido (Criação - Funcionalidade e Estilo)
-  // Garantir controle de valores
- Adicionar PupUp de vizualização detalhada do pedido (Criação - Funcionalidade e Estilo)
-  // Garantir melhor entendimento da venda
- Adicionar cores e estilos dos selects (Criação - Estilo)
- Arrumar estilo dos itens dos pedidos (Edição - Estilo)
- Adicionar evento que ao selecionar 'retirado' ou 'canselado' pede uma confirmação para retira o item da vizualização (Criação - Funcionalidade)
- Adicionar lógica de datas (Criação - Funcionalidade)
-  // Para poder organizar o filtro e as promoções
- Criar filtro (Criação - Funcionalidade)
-  De tempo
-   Dia -> mostra os pedidos atuais do dia
-   Semana -> vizualização semanal
-   Mês -> Vizualização de todo o mês
-   Tudo -> Todos os pedidos em relação ao tempo
-  De características
-   Forma de Pagamento -> Pix, Balcão, Fiado
-   Status do pagamento -> Pendente, Pago
-   Status do pedido -> Aguardando, Pronto, Retirado, Cancelado
- Adicionar lógica e apresentação para quando for uma promoção (Criação - Funcionalidade e Estilo)
-  // Garantir a percepção de que é uma promoção
- Adicionar função para enviar os dados de tempo em tempo para salvar no banco de dados (Criação - Funcionalidade)
-  // Garantir o salvamento dos dados alterados pelo Jean na tabela
+
+------------------------------------------------------------
+🧠 FUNCIONALIDADE
+------------------------------------------------------------
+
+📁 admin-promocoes.js
+------------------------------------------------------------
+Adicionar lógica de datas e de tempo
+(Criação - Funcionalidade)
+→ Para organizar a validade das promoções
+
+
+📁 admin-pedidos.js
+------------------------------------------------------------
+Adicionar coluna de valor total do pedido
+(Criação - Funcionalidade e Estilo)
+→ Garantir controle de valores
+
+------------------------------------------------------------
+
+Adicionar PupUp de visualização detalhada do pedido
+(Criação - Funcionalidade e Estilo)
+→ Garantir melhor entendimento da venda
+
+------------------------------------------------------------
+
+Adicionar evento que ao selecionar "retirado" ou "cancelado" pede uma confirmação para retirar o item da visualização
+(Criação - Funcionalidade)
+
+------------------------------------------------------------
+
+Adicionar lógica de datas
+(Criação - Funcionalidade)
+→ Para poder organizar o filtro e as promoções
+
+------------------------------------------------------------
+
+Criar filtro
+(Criação - Funcionalidade)
+
+Filtro de tempo:
+- Dia → mostra os pedidos atuais do dia
+- Semana → visualização semanal
+- Mês → visualização de todo o mês
+- Tudo → todos os pedidos em relação ao tempo
+
+Filtro de características:
+- Forma de pagamento → Pix, Balcão, Fiado
+- Status do pagamento → Pendente, Pago
+- Status do pedido → Aguardando, Pronto, Retirado, Cancelado
+
+------------------------------------------------------------
+
+Adicionar lógica e apresentação para quando for uma promoção
+(Criação - Funcionalidade e Estilo)
+→ Garantir a percepção de que é uma promoção
+
+------------------------------------------------------------
+
+Adicionar função para enviar os dados de tempo em tempo para salvar no banco de dados
+(Criação - Funcionalidade)
+→ Garantir o salvamento dos dados alterados pelo Jean na tabela
+
+------------------------------------------------------------
+
+Fazer a funcionalidade para os pedidos funcionarem e serem passados para a aba admin
+
+
+------------------------------------------------------------
+🗄 BANCO DE DADOS / INTEGRAÇÃO
+------------------------------------------------------------
+
+Ver por que não está puxando promoções na aba do banco de dados
+
+------------------------------------------------------------
+
+Arrumar os produtos aparecendo no lugar das ofertas
+(Deve estar em branco pela lógica do banco de dados)
+
+
+
+############################################################
+🟡 PRIORIDADE MÉDIA
+############################################################
+
+------------------------------------------------------------
+🎨 ESTILO / INTERFACE
+------------------------------------------------------------
+
+Adicionar cores e estilos dos selects
+(Criação - Estilo)
+
+------------------------------------------------------------
+
+Arrumar estilo dos itens dos pedidos
+(Edição - Estilo)
+
+------------------------------------------------------------
+
+Centralizar texto na popup da categoria de cadastrar produtos
+
+------------------------------------------------------------
+
+Centralizar textos na parte de visualizar as categorias e corrigir o "produro"
+
+------------------------------------------------------------
+
+Arrumar os SVG ícones na aba de cadastrar as categorias
+
+------------------------------------------------------------
+
+Colocar um hover no carrinho do canto superior direito para mostrar que o mouse foi passado por cima
+
+------------------------------------------------------------
+
+Na aba da categoria colocar outra cor diferente na box do ícone do carrinho
+
+
+
+############################################################
+🟢 PRIORIDADE BAIXA / ORGANIZAÇÃO
+############################################################
+
+------------------------------------------------------------
+📄 ESTRUTURA / ORGANIZAÇÃO DE PÁGINAS
+------------------------------------------------------------
+
+Adicionar o botão que leva à página que mostra a central de tickets
+
+------------------------------------------------------------
+
+Fazer a tela de tickets baseada na tela que tem no kalzone da cidade
+
+------------------------------------------------------------
+
+Tomar uma decisão em relação à aba de pesquisas
