@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IF CANTINA ADMIN - LOGIN</title>
+
+  <link rel="stylesheet" type="text/css" href="css/admin-header.css">
+  <link rel="stylesheet" type="text/css" href="css/admin-login.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="navdiv">
+      <div class="logo">
+        <img src="img/if-logo.png" alt="Logo IF">
+        <p>CANTINA - ADMIN</p>
+      </div>
+    </div>
+  </nav>
+
+  <main class="login-wrapper">
+    <div class="login-box" role="region" aria-label="Login administrador">
+      <form id="formLogin" onsubmit="event.preventDefault(); logar();">
+        <h2>Logar como Administrador</h2>
+        <p class="login-subtitulo">Use seu usuário e senha de administrador para acessar o painel.</p>
+
+        <!-- Mensagem de erro/sucesso dentro do card -->
+        <div id="msgLogin" class="msg-login" role="alert" aria-live="polite" style="display:none;"></div>
+
+        <label class="sr-only" for="usuario">Usuário</label>
+        <input type="text" placeholder="Digite seu Usuário" required id="usuario" autocomplete="username">
+
+        <label class="sr-only" for="senha">Senha</label>
+
+        <div class="campo-senha">
+          <input type="password" placeholder="Digite sua Senha" required id="senha" autocomplete="current-password">
+          <button type="button" class="btn-olho" id="btnToggleSenha" aria-label="Mostrar senha">
+            👁
+          </button>
+        </div>
+
+        <button type="submit" id="btnEntrar">ENTRAR</button>
+
+        <p class="login-hint">Dica: se esquecer sua senha, contate os devs!.</p>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/admin-login.js"></script>
+</body>
+
+</html>

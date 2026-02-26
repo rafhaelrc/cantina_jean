@@ -8,147 +8,154 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" href="css/admin-header.css">
-    <link rel="stylesheet" type="text/css" href="css/admin-pages.css">
+    <link rel="stylesheet" type="text/css" href="css/admin-produtos.css">
 
     <title>Produtos - Admin</title>
-
 </head>
 
 <body>
+    <!-- Header de navegação -->
     <nav class="navbar">
         <div class="navdiv">
             <div class="logo">
-                <a href="#"><img
-                        src="img/if-logo.png"
-                        alt="Logo IF"></a>
+                <img src="img/if-logo.png" alt="Logo IF">
                 <p>CANTINA - ADMIN</p>
             </div>
+
+            <!-- Opcional: só coloque quando quiser -->
+            <a id="btnVoltar" href="admin-home.html">VOLTAR</a>
         </div>
-        <div><a id="btnVoltar" href="admin-home.html">VOLTAR</a></div>
     </nav>
 
-    <aside>
-        <button class="botaoCadastrar" onclick="Cadastrar()">Cadastrar produto</button>
-    </aside>
+    <main class="pagina-admin">
+        <header class="cabecalho-pagina">
+            <div class="cabecalho-titulo">
+                <h1 class="titulo-pagina">Produtos</h1>
+                <p class="subtitulo-pagina">Gerencie produtos cadastrados na cantina</p>
+            </div>
 
-    <aside id="asideTable">
-        <table class="table table-hover table-custom" border="1">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="bodyTabela">
+            <div class="cabecalho-acoes">
+                <button class="botaoCadastrar" onclick="Cadastrar()">Cadastrar produto</button>
+            </div>
+        </header>
 
-            </tbody>
-        </table>
-    </aside>
+        <section id="asideTable" class="secao-tabela">
+            <div class="tabela-wrapper">
+                <table class="table table-hover table-custom" border="1">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Status</th>
+                            <th class="col-acoes">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyTabela"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
 
     <div id="popupVerificar" class="popup">
-        <div class="popup-content">
+        <div class="popup-content popup-content--grande">
             <a href="#" class="fechar">&times;</a>
-            <form action="" method="GET" class="formsPopup">
-                <p id="tituloVerificar" class="centalizadoForms">Título</p>
+
+            <form action="" method="GET" class="formsPopup formsPopup--v2">
+                <p id="tituloVerificar" class="centalizadoForms titulo-modal">Cadastrar novo produto</p>
                 <input type="number" id="idVisualizado" hidden>
-                <div style="flex: 66%; display: flex; flex-wrap: wrap;">
-                    <div class="containerForms">
-                        <label for="nome">Nome do produto</label><br>
-                        <input type="text" id="nome" maxlength="30">
+
+                <div class="grid-form">
+                    <div class="campo">
+                        <label for="nome">Nome do produto</label>
+                        <input type="text" id="nome" maxlength="30" placeholder="Ex: Pastel de frango">
                     </div>
 
-                    <div class="containerForms">
-                        <label for="preco">Preço</label><br>
-                        <input type="number" id="preco">
+                    <div class="campo">
+                        <label for="preco">Preço</label>
+                        <input type="number" id="preco" step="0.01" placeholder="Ex: 5.00">
                     </div>
 
-                    <div class="containerForms">
+                    <div class="campo campo--span2">
                         <label for="descricao">Descrição</label>
-                        <input type="text" id="descricao" maxlength="60">
+                        <input type="text" id="descricao" maxlength="60" placeholder="Ex: Pastel recheado com frango">
                     </div>
 
-                    <div class="containerForms">
-                        <label for="disponibilidade">Disponibilidade</label><br>
+                    <div class="campo">
+                        <label for="disponibilidade">Disponibilidade</label>
                         <select id="disponibilidade">
                             <option value="1">Ativo</option>
                             <option value="0">Inativo</option>
                         </select>
                     </div>
 
-                    <div class="containerForms">
-                        <label for="categoria">Categoria</label><br>
+                    <div class="campo">
+                        <label for="categoria">Categoria</label>
                         <select id="categoria">
                             <option value="-1">Selecione</option>
-
                         </select>
                     </div>
-                </div>
 
-                <div style="flex: 33%;">
-                    <div class="containerForms">
+                    <div class="campo campo--imagem">
                         <label for="enviarFoto" id="labelImgCadastrada">
-                            Vizualização da foto<br>
+                            Visualização da foto<br>
                             <img src="" width="200px" id="imgCadastrada"><br>
                             Clique para alterar
                         </label>
                         <input type="file" id="enviarFoto" accept="image/*" hidden>
                     </div>
-                </div>
-                <div class="centalizadoForms">
-                    <button id="salvarVerificacao" onclick="Salvar()">Salvar</button>
-                </div>
 
+                    <div class="acoes-form">
+                        <button type="button" id="salvarVerificacao" onclick="Salvar()">Salvar</button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
 
     <div id="popupVisualizar" class="popup">
-        <div class="popup-content">
+        <div class="popup-content popup-content--grande">
             <a href="#" class="fechar">&times;</a>
-            <div class="visualizadorPopup">
-                <p id="tituloVisualizar" class="centalizadoForms">Título</p>
-                <div style="flex: 66%; display: flex; flex-wrap: wrap;">
-                    <div class="containerForms">
-                        <label>Nome do produto</label> <p id="labelNome"></p>
+
+            <div class="visualizadorPopup visualizadorPopup--v2">
+                <p id="tituloVisualizar" class="centalizadoForms titulo-modal">VISUALIZAÇÃO</p>
+
+                <div class="grid-visualizacao">
+                    <div class="bloco">
+                        <label>Nome do produto</label>
+                        <p id="labelNome"></p>
                     </div>
-                    
-                    <div class="containerForms">
+
+                    <div class="bloco">
                         <label>Preço</label>
                         <p id="labelPreco"></p>
                     </div>
 
-                    <div class="containerForms">
+                    <div class="bloco bloco--span2">
                         <label>Descrição</label>
                         <p id="labelDescricao"></p>
                     </div>
 
-                    <div class="containerForms">
+                    <div class="bloco">
                         <label>Disponibilidade</label>
                         <p id="labelDisponibilidade"></p>
                     </div>
 
-                    <div class="containerForms">
+                    <div class="bloco">
                         <label>Categoria</label>
                         <p id="labelCategoria"></p>
                     </div>
-                </div>
 
-                <div style="flex: 33%;">
-                    <div class="containerForms">
-                        <label>Visualização da foto <img src="" id="visualizarImgCadastrada" style="max-width: 100%; height: auto; border-radius: 8px; margin-top: 10px;">
-                        </label>
+                    <div class="bloco bloco--imagem">
+                        <label>Visualização da foto</label>
+                        <img src="" id="visualizarImgCadastrada"
+                            style="max-width: 100%; height: auto; border-radius: 8px; margin-top: 10px;">
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer>
-
-    </footer>
-
+    <footer></footer>
     <script src="js/admin-produtos.js"></script>
 </body>
 

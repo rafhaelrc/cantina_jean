@@ -1,0 +1,422 @@
+:root{
+  --verde-principal:#004206;
+  --verde-secundario:#349a46;
+  --verde-vivo:#2ab442;
+
+  --bg:#ffffff;
+  --bg-soft:#f6f8fa;
+
+  --texto-1:#111827;
+  --texto-2:#4b5563;
+
+  --borda:rgba(0,0,0,.10);
+
+  --raio:16px;
+  --sombra:0 18px 50px rgba(0,0,0,.14);
+}
+
+*{ box-sizing:border-box; }
+html, body{ height:100%; }
+body{
+  margin:0;
+  background:var(--bg);          /* FUNDO BRANCO LISO */
+  color:var(--texto-1);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+a, button, label, select{ cursor:pointer; }
+img{ max-width:100%; display:block; }
+
+.btn-top{
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  padding:10px 16px;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:700;
+  border:1px solid rgba(255,255,255,.18);
+  transition:.2s ease;
+}
+.btn-top:hover{ transform:translateY(-1px); background:rgba(255,255,255,.18); }
+
+/* ===== Layout página ===== */
+.pagina-admin{
+  width:min(1200px, 92vw);
+  margin:24px auto 40px;
+}
+
+.cabecalho-pagina{
+  display:flex;
+  gap:16px;
+  align-items:flex-end;
+  justify-content:space-between;
+  margin-bottom:18px;
+}
+
+.titulo-pagina{
+  margin:0;
+  font-size:28px;
+  letter-spacing:.2px;
+}
+.subtitulo-pagina{
+  margin:6px 0 0;
+  color:var(--texto-2);
+  font-size:14px;
+}
+
+.btn-primario{
+  background:var(--verde-secundario);
+  color:#fff;
+  border:1px solid rgba(0,0,0,.08);
+  padding:12px 18px;
+  border-radius:999px;
+  font-weight:800;
+  transition:.2s ease;
+}
+.btn-primario:hover{ background:var(--verde-vivo); transform:translateY(-1px); }
+
+.btn-secundario{
+  background:#fff;
+  color:var(--texto-1);
+  border:1px solid var(--borda);
+  padding:12px 18px;
+  border-radius:999px;
+  font-weight:800;
+  text-decoration:none;
+  text-align:center;
+  transition:.2s ease;
+}
+.btn-secundario:hover{ transform:translateY(-1px); background:var(--bg-soft); }
+
+/* ===== Tabela ===== */
+.secao-tabela{ margin-top:14px; }
+
+.tabela-wrapper{
+  border:1px solid var(--borda);
+  border-radius:var(--raio);
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,.06);
+  background:#fff;
+}
+
+.table-custom{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+}
+
+.table-custom thead th{
+  background:linear-gradient(90deg, var(--verde-principal), var(--verde-secundario));
+  color:#fff;
+  text-align:left;
+  padding:14px 14px;
+  font-size:14px;
+  letter-spacing:.2px;
+  white-space:nowrap;
+}
+
+.table-custom tbody td{
+  padding:14px 14px;
+  border-top:1px solid rgba(0,0,0,.06);
+  vertical-align:middle;
+  font-size:14px;
+  color:#111;
+}
+
+.table-custom tbody tr:hover{
+  background:var(--bg-soft);
+}
+
+.col-acoes{ text-align:right; }
+.table-custom .areaStatus span{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  padding:8px 12px;
+  font-weight:800;
+  color:#0b0b0b;
+  border:1px solid rgba(0,0,0,.10);
+}
+
+/* chips/produtos na tabela */
+.table-custom td p{
+  margin:0 6px 6px 0;
+  display:inline-block;
+  background:rgba(52,154,70,.18);
+  color:#0b2b10;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:13px;
+  line-height:1;
+}
+
+/* ===== Popup (modal :target) ===== */
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  visibility:hidden;
+  transition:.25s ease;
+  padding:18px;
+  z-index:999;
+}
+.popup:target{
+  opacity:1;
+  visibility:visible;
+}
+
+.popup-content{
+  width:min(980px, 96vw);
+  background:#fff;
+  border-radius:18px;
+  box-shadow:var(--sombra);
+  border:1px solid rgba(255,255,255,.18);
+  position:relative;
+  overflow:hidden;
+}
+
+.popup-lg{ padding:18px; }
+
+.fechar{
+  position:absolute;
+  top:10px;
+  right:14px;
+  font-size:30px;
+  text-decoration:none;
+  color:#111;
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  transition:.2s ease;
+}
+.fechar:hover{ background:rgba(0,0,0,.06); color:#e11d48; }
+
+.modal-topo{
+  padding:8px 8px 14px;
+  border-bottom:1px solid rgba(0,0,0,.08);
+  margin-bottom:14px;
+}
+.titulo-modal{
+  margin:0;
+  font-size:18px;
+  font-weight:900;
+}
+.modal-subtitulo{
+  margin:6px 0 0;
+  font-size:13px;
+  color:var(--texto-2);
+}
+
+.formsPopup--v2{ margin:0; }
+
+.grid-form-2{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:14px;
+}
+
+.card-form{
+  background:var(--bg-soft);
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:16px;
+  padding:14px;
+}
+
+.card-form-titulo{
+  margin:0 0 10px;
+  font-size:13px;
+  color:#0b2b10;
+  font-weight:900;
+  letter-spacing:.2px;
+}
+
+.campo{ display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
+.campo label{
+  font-size:12px;
+  color:var(--texto-2);
+  font-weight:800;
+}
+
+.campo input,
+.campo select{
+  padding:12px 12px;
+  border-radius:12px;
+  border:1px solid rgba(0,0,0,.12);
+  outline:none;
+  background:#fff;
+  font-size:14px;
+}
+
+.campo input:focus,
+.campo select:focus{
+  border-color:rgba(52,154,70,.55);
+  box-shadow:0 0 0 4px rgba(52,154,70,.14);
+}
+
+.dica{
+  margin-top:4px;
+  font-size:12px;
+  color:var(--texto-2);
+}
+
+.linha-2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.lista-checkbox{
+  margin-top:8px;
+  background:#fff;
+  border:1px solid rgba(0,0,0,.10);
+  border-radius:14px;
+  padding:10px;
+  max-height:260px;
+  overflow:auto;
+}
+
+.item-produto-checkbox{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px;
+  border-radius:12px;
+  border:1px solid rgba(0,0,0,.06);
+  margin-bottom:8px;
+  transition:.15s ease;
+  background:#fff;
+}
+.item-produto-checkbox:hover{ background:var(--bg-soft); transform:translateY(-1px); }
+.item-produto-checkbox input{ transform:scale(1.1); }
+
+.produtoInativoLabel{
+  opacity:.65;
+}
+
+.sem-resultado{
+  margin-top:10px;
+  font-size:13px;
+  color:var(--texto-2);
+}
+
+.card-form--imagem{
+  grid-column:1 / -1;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.drop-imagem{
+  display:grid;
+  place-items:center;
+  text-align:center;
+  gap:10px;
+  padding:16px;
+  border-radius:16px;
+  background:#fff;
+  border:1px dashed rgba(0,0,0,.18);
+  transition:.2s ease;
+}
+.drop-imagem:hover{
+  transform:translateY(-1px);
+  border-color:rgba(52,154,70,.55);
+  box-shadow:0 0 0 4px rgba(52,154,70,.12);
+}
+.drop-titulo{ font-weight:900; color:#0b2b10; }
+.drop-sub{ color:var(--texto-2); font-size:12px; }
+
+#imgCadastrada{
+  width:220px;
+  height:140px;
+  object-fit:contain;
+  border-radius:12px;
+  background:var(--bg-soft);
+  border:1px solid rgba(0,0,0,.08);
+}
+
+/* Ações */
+.acoes-form{
+  grid-column:1 / -1;
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+  padding-top:4px;
+}
+
+/* ===== Visualizador ===== */
+.visualizadorPopup--v2{ padding:8px; }
+
+.grid-visualizacao{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:12px;
+  margin-top:14px;
+}
+
+.bloco{
+  background:var(--bg-soft);
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:16px;
+  padding:14px;
+}
+.bloco label{
+  display:block;
+  font-size:12px;
+  color:var(--texto-2);
+  font-weight:900;
+  margin-bottom:6px;
+}
+.bloco p{
+  margin:0;
+  font-size:15px;
+  font-weight:700;
+  color:#111;
+}
+
+.bloco--span2{ grid-column:1 / -1; }
+
+.chips-produtos p,
+.chips-produtos .itensListados{
+  margin:0 8px 8px 0;
+  display:inline-block;
+  background:rgba(42,180,66,.16);
+  color:#0b2b10;
+  padding:8px 10px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:800;
+}
+
+.bloco--imagem img{
+  margin-top:10px;
+  width:100%;
+  max-width:320px;
+  border-radius:14px;
+  border:1px solid rgba(0,0,0,.10);
+  background:#fff;
+}
+
+/* ===== Responsivo ===== */
+@media (max-width: 900px){
+  .cabecalho-pagina{ align-items:flex-start; flex-direction:column; }
+  .col-acoes{ text-align:left; }
+}
+
+@media (max-width: 768px){
+  .pagina-admin{ width:min(980px, 94vw); }
+  .grid-form-2{ grid-template-columns:1fr; }
+  .linha-2{ grid-template-columns:1fr; }
+
+  .tabela-wrapper{ overflow:auto; }
+  .table-custom{ min-width: 900px; } /* scroll horizontal no celular sem quebrar */
+  .acoes-form{ justify-content:stretch; }
+  .acoes-form .btn-primario,
+  .acoes-form .btn-secundario{ flex:1; }
+}

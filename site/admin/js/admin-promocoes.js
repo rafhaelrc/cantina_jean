@@ -5,197 +5,270 @@ const AUTH_HEADER = {
     'Content-Type': 'application/json'
 };
 
-let dados_produtos;
+let produtos = {};        // { [id]: produto }
+let promocoes = {};       // começa vazio
+let proximoIdPromocao = 0;
 
-let tabela = document.getElementById('bodyTabela');
-const select = document.getElementById('listaProdutos');
-let numero_promocoes = 5;
+const tabela = document.getElementById('bodyTabela');
 
-// Lista fictícia de objetos representando as promoções já cadastradas
-let promocoes = {
-    0: {
-        id: 0,
-        nome: 'cocacola + torrada por 10 reais',
-        descricao: 'Garrafa de Coca-Cola de 200 ml com torrada completa',
-        produtos_lista: ['0','1'], // Lista de produtos da promoção por id
-        validade: 1, // Valor em horas
-        foto: '../imgs/icone-lapis.svg',
-        status: 1,
-        preco: 10,
-    },
-
-    1: {
-        id: 1,
-        nome: 'Torrada completa',
-        descricao: 'Torrada com ovo, queijo, presunto, salada e tomate',
-        produtos_lista: ['2','4'], // Lista de produtos da promoção
-        validade: 1, // Valor em horas
-        foto: '../imgs/icone-lupa.svg',
-        status: 1,
-        preco: 10,
-    },
-
-    2: {
-        id: 2,
-        nome: 'Coxinha de frango',
-        descricao: 'Coxinha de frango frita',
-        produtos_lista: ['4'], // Lista de produtos da promoção
-        validade: 1, // Valor em horas
-        foto: '../imgs/icone-lapis.svg',
-        status: 1,
-        preco: 5,
-    },
-
-    3: {
-        id: 3,
-        nome: 'cocacola + torrada por 10 reais',
-        descricao: 'Lata de Coca-Cola de 200 ml com torrada completa',
-        produtos_lista: ['3'], // Lista de produtos da promoção
-        validade: 1, // Valor em horas
-        foto: '../imgs/foto-padrao-promocao.svg',
-        status: 1,
-        preco: 2,
-    },
-
-    4: {
-        id: 4,
-        nome: 'Morango do amor + Brigadeiro',
-        descricao: 'Morango com Cobertura caramelizada',
-        produtos_lista: ['3','4'], // Lista de produtos da promoção
-        validade: 1, // Valor em horas
-        foto: '../imgs/foto-padrao-promocao.svg',
-        status: 0,
-        preco: 4,
-    },
-};
-
-// Coloca as promoções já cadastradas para apresentação
-AtualizarTabela();
-
-// Busca e apresenta os produtos já cadastrados
-ListarProdutos();
-
+// Lista com checkbox
+const listaCheckbox = document.getElementById('listaProdutosCheckbox');
 const pesquisarProduto = document.getElementById('pesquisarProduto');
-const listaProdutos = document.getElementById('listaProdutos');
-const opcoes = Array.from(listaProdutos.getElementsByTagName('option'));
+const semResultado = document.getElementById('semResultado');
 
-// Evento que possibilita pesquisa de itens
-pesquisarProduto.addEventListener('input', function() {
-    const texto_pesquisado = this.value.toLowerCase();
-    let com_resultados = false;
-    let semResultado = document.getElementById('semResultado');
+// =====================================================
+// DATAS / TEMPO (Controle de início/fim das promoções)
+// =====================================================
 
-    opcoes.forEach(opcao => {
-        if (opcao.textContent.toLowerCase().includes(texto_pesquisado)) {
-            opcao.style.display = '';
-            com_resultados = true;
-        } else {
-            opcao.style.display = 'none';
+/**
+ * Converte o valor de um input datetime-local para Date.
+ * datetime-local vem no formato "YYYY-MM-DDTHH:mm" (sem timezone).
+ * @param {string} valor - valor do input.
+ * @returns {Date|null} Date válida ou null se vazio/inválido.
+ */
+function converterDatetimeLocalParaDate(valor) {
+    if (!valor) return null;
+    const data = new Date(valor);
+    if (isNaN(data.getTime())) return null;
+    return data;
+}
+
+/**
+ * Converte um Date em string no formato aceito pelo input datetime-local.
+ * Ex: "2026-02-24T14:30"
+ * @param {Date} data
+ * @returns {string}
+ */
+function converterDateParaDatetimeLocal(data) {
+    const pad2 = (n) => String(n).padStart(2, '0');
+    const ano = data.getFullYear();
+    const mes = pad2(data.getMonth() + 1);
+    const dia = pad2(data.getDate());
+    const hora = pad2(data.getHours());
+    const min = pad2(data.getMinutes());
+    return `${ano}-${mes}-${dia}T${hora}:${min}`;
+}
+
+/**
+ * Formata uma data para exibição (pt-BR) com dia/mês/ano e hora:minuto.
+ * @param {string|Date} data
+ * @returns {string}
+ */
+function formatarDataHoraPtBR(data) {
+    const d = (data instanceof Date) ? data : new Date(data);
+    if (isNaN(d.getTime())) return "-";
+    return d.toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+/**
+ * Retorna um status temporal baseado em inicio/fim.
+ * @param {object} promocao - Precisa ter inicioEm e fimEm.
+ * @returns {"AGENDADA"|"ATIVA"|"EXPIRADA"}
+ */
+function obterStatusTemporalPromocao(promocao) {
+    const agora = new Date();
+    const inicio = new Date(promocao.inicioEm);
+    const fim = new Date(promocao.fimEm);
+
+    if (agora < inicio) return "AGENDADA";
+    if (agora > fim) return "EXPIRADA";
+    return "ATIVA";
+}
+
+// ==============================
+// LISTA DE PRODUTOS (CHECKBOX)
+// ==============================
+
+function renderListaProdutosCheckbox(filtroTexto = "") {
+    const termo = (filtroTexto || "").toLowerCase().trim();
+
+    // Limpa a lista
+    listaCheckbox.innerHTML = "";
+
+    let encontrou = false;
+
+    Object.values(produtos).forEach((p) => {
+        const nome = (p.nome || "").toLowerCase();
+
+        // filtro
+        if (termo && !nome.includes(termo)) return;
+
+        encontrou = true;
+
+        const label = document.createElement("label");
+        label.className = "item-produto-checkbox";
+
+        if (!p.ativo) {
+            label.classList.add("produtoInativoLabel");
         }
+
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.value = String(p.id);
+        input.className = "chkProduto";
+
+        const span = document.createElement("span");
+        span.textContent = p.nome;
+
+        label.appendChild(input);
+        label.appendChild(span);
+
+        listaCheckbox.appendChild(label);
     });
 
-    // Mensagem se não encontrar resultados
-    if (!com_resultados && pesquisarProduto !== '') {
-        semResultado.style.display = '';
-    } else {
-        semResultado.style.display = 'none';
-    }
+    semResultado.style.display = (!encontrou && termo) ? "" : "none";
+}
+
+function ResetarListaProdutosCheckbox() {
+    const checks = listaCheckbox.querySelectorAll("input.chkProduto");
+    checks.forEach(chk => chk.checked = false);
+}
+
+function ObterProdutosSelecionadosCheckbox() {
+    const checksMarcados = listaCheckbox.querySelectorAll("input.chkProduto:checked");
+    return Array.from(checksMarcados).map(chk => parseInt(chk.value, 10));
+}
+
+function SelecionarProdutosCheckbox(ids) {
+    const setIds = new Set((ids || []).map(n => parseInt(n, 10)));
+    const checks = listaCheckbox.querySelectorAll("input.chkProduto");
+    checks.forEach(chk => {
+        const id = parseInt(chk.value, 10);
+        chk.checked = setIds.has(id);
+    });
+}
+
+// Busca (somente UM listener)
+pesquisarProduto.addEventListener("input", function () {
+    renderListaProdutosCheckbox(this.value);
 });
 
-// Evento que coloca a imagem recem recebida do upload visivel durante uma edição
-document.getElementById('enviarFoto').addEventListener('change', function(event) {
+// ==============================
+// IMAGEM
+// ==============================
+
+document.getElementById('enviarFoto').addEventListener('change', function (event) {
     const arquivo = event.target.files[0];
     const apresentador = document.getElementById('imgCadastrada');
 
-    // Verificação para imagens válidas
-    if (!arquivo.type.startsWith('image/')) {
+    if (!arquivo || !arquivo.type.startsWith('image/')) {
         alert('Selecione um arquivo de imagem válido.');
         event.target.value = '';
         return;
-    } else {
-        apresentador.src = arquivo.name; 
     }
+
+    // OBS: isso só mostra o nome/placeholder. Para preview real, precisaria FileReader/URL.createObjectURL
+    apresentador.src = arquivo.name;
 });
 
-/* Função chamada ao clicar no botão Cadastrar promoção
-   Responsável por identificar os campos e zerar os valores para cadastrar uma promoção */
-function Cadastrar() {
-    // Pega os campos dos Pupup Verificar
-    id = document.getElementById('idVisualizado');
-    nome = document.getElementById('nome');
-    descricao = document.getElementById('descricao');
-    disponibilidade = document.getElementById('disponibilidade'); // => 0 ou 1: Representa status
-    preco = document.getElementById('preco');
-    imgCadastrada = document.getElementById('imgCadastrada');
-    titulo = document.getElementById('tituloVerificar');
-    produtos_lista = document.getElementById('listaProdutos');
-    validade = document.getElementById('validade');
+// ==============================
+// POPUPS / AÇÕES
+// ==============================
 
-    // Coloca os valores do Pupup como iniciais
-    id.value = numero_promocoes;
+function Cadastrar() {
+    const id = document.getElementById('idVisualizado');
+    const nome = document.getElementById('nome');
+    const descricao = document.getElementById('descricao');
+    const disponibilidade = document.getElementById('disponibilidade');
+    const preco = document.getElementById('preco');
+    const imgCadastrada = document.getElementById('imgCadastrada');
+    const titulo = document.getElementById('tituloVerificar');
+
+    // Inputs de data/hora (novo modelo)
+    const inicioInput = document.getElementById('inicioEm');
+    const fimInput = document.getElementById('fimEm');
+
+    id.value = proximoIdPromocao;
     nome.value = '';
     descricao.value = '';
     disponibilidade.value = 1;
     preco.value = 0;
     imgCadastrada.src = '../imgs/foto-padrao-promocao.svg';
     titulo.innerText = 'Cadastrar nova promoção';
-    validade.value = 1;
 
-    // Reseta a lista de produtos selecionados
-    ResetarListaProdutos(produtos_lista.options);
+    // Datas padrão: início agora e fim 1 hora depois (admin pode alterar)
+    const agora = new Date();
+    const fimPadrao = new Date(agora.getTime() + (60 * 60 * 1000));
 
-    // Abre o Pupup Verificar
+    if (inicioInput) inicioInput.value = converterDateParaDatetimeLocal(agora);
+    if (fimInput) fimInput.value = converterDateParaDatetimeLocal(fimPadrao);
+
+    // reset seleção + reset busca
+    ResetarListaProdutosCheckbox();
+    pesquisarProduto.value = "";
+    renderListaProdutosCheckbox("");
+
     window.location.assign("#popupVerificar");
 }
 
-/* Função chamada ao clicar no botão de ação da lupa
-   Responsável por identificar os campos e apresentar os valores cadastrados da promoção */
 function Visualizar(num) {
-    // Pega os campus dos Pupup Visualizar
-    nome = document.getElementById('labelNome');
-    descricao = document.getElementById('labelDescricao');
-    disponibilidade = document.getElementById('labelDisponibilidade'); // => 0 ou 1: Representa status
-    preco = document.getElementById('labelPreco');
-    imgCadastrada = document.getElementById('visualizarImgCadastrada');
-    titulo = document.getElementById('tituloVisualizar');
-    produtos_lista = document.getElementById('labelListaProdutos');
-    validade = document.getElementById('labelValidade');
+    const nome = document.getElementById('labelNome');
+    const descricao = document.getElementById('labelDescricao');
+    const disponibilidade = document.getElementById('labelDisponibilidade');
+    const preco = document.getElementById('labelPreco');
+    const imgCadastrada = document.getElementById('visualizarImgCadastrada');
+    const titulo = document.getElementById('tituloVisualizar');
+    const produtos_lista = document.getElementById('labelListaProdutos');
 
-    // Escreve os dados da promoção no Pupup
+    // Labels novos (se existirem no HTML)
+    const labelInicioEm = document.getElementById('labelInicioEm');
+    const labelFimEm = document.getElementById('labelFimEm');
+    const labelValidade = document.getElementById('labelValidade'); // se você ainda tiver no HTML
+
+    if (!promocoes[num]) return;
+
     nome.innerText = promocoes[num].nome;
     descricao.innerText = promocoes[num].descricao;
     disponibilidade.innerText = promocoes[num].status ? "Ativo" : "Inativo";
     preco.innerText = promocoes[num].preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     imgCadastrada.src = promocoes[num].foto;
     titulo.innerText = `Visualização da promoção ${promocoes[num].nome}`;
-    validade.innerText = promocoes[num].validade;
 
-    // Escreve específicamente os produtos da promoção no Pupup
+    // Se você ainda tiver "Validade" no visualizador, agora ela fica apenas informativa.
+    // Vamos calcular automaticamente (diferença entre fim e início) e mostrar.
+    if (labelValidade && promocoes[num].inicioEm && promocoes[num].fimEm) {
+        const inicio = new Date(promocoes[num].inicioEm);
+        const fim = new Date(promocoes[num].fimEm);
+        const diffHoras = (fim.getTime() - inicio.getTime()) / (1000 * 60 * 60);
+        labelValidade.innerText = isNaN(diffHoras) ? "-" : diffHoras.toFixed(2);
+    }
+
+    // Mostra início/fim (se labels existirem)
+    if (labelInicioEm) labelInicioEm.innerText = formatarDataHoraPtBR(promocoes[num].inicioEm);
+    if (labelFimEm) labelFimEm.innerText = formatarDataHoraPtBR(promocoes[num].fimEm);
+
     let produtos_html = '';
-    promocoes[num].produtos_lista.forEach((produto) => {
-        produtos_html += `<p class="itensListados">${produtos[produto].nome}</p>`;
+    promocoes[num].produtos_lista.forEach((produtoId) => {
+        if (produtos[produtoId]) {
+            produtos_html += `<p class="itensListados">${produtos[produtoId].nome}</p>`;
+        }
     });
-    produtos_lista.innerHTML= produtos_html;
+    produtos_lista.innerHTML = produtos_html;
 
-    // Abre o Pupup Visualizar
     window.location.assign("#popupVisualizar");
 }
 
-/* Função chamada ao clicar no botão de ação do lápis
-   Responsável por identificar os campos e colocar os valores cadastrados nos campos da promoção */
 function Editar(num) {
-    // Pega os campos dos Pupup Verificar
-    id = document.getElementById('idVisualizado');
-    nome = document.getElementById('nome');
-    descricao = document.getElementById('descricao');
-    disponibilidade = document.getElementById('disponibilidade'); // => 0 ou 1: Representa status
-    preco = document.getElementById('preco');
-    imgCadastrada = document.getElementById('imgCadastrada');
-    titulo = document.getElementById('tituloVerificar');
-    produtos_lista = document.getElementById('listaProdutos');
-    validade = document.getElementById('validade');
+    const id = document.getElementById('idVisualizado');
+    const nome = document.getElementById('nome');
+    const descricao = document.getElementById('descricao');
+    const disponibilidade = document.getElementById('disponibilidade');
+    const preco = document.getElementById('preco');
+    const imgCadastrada = document.getElementById('imgCadastrada');
+    const titulo = document.getElementById('tituloVerificar');
 
-    // Escreve os dados da promoção nos campos do Pupup
+    // Inputs de data/hora (novo modelo)
+    const inicioInput = document.getElementById('inicioEm');
+    const fimInput = document.getElementById('fimEm');
+
+    if (!promocoes[num]) return;
+
     id.value = num;
     nome.value = promocoes[num].nome;
     descricao.value = promocoes[num].descricao;
@@ -203,181 +276,242 @@ function Editar(num) {
     preco.value = promocoes[num].preco;
     imgCadastrada.src = promocoes[num].foto;
     titulo.innerText = `Edição da promoção ${promocoes[num].nome}`;
-    validade.value = promocoes[num].validade;
 
-    // Reseta a lista de produtos selecionados
-    ResetarListaProdutos(produtos_lista.options);
-
-    // Seleciona os produtos já cadastrados na propaganda
-    for (let opcao of produtos_lista.options) {
-        for (let produto of promocoes[num].produtos_lista) {
-            if (opcao.value == produto) {
-                opcao.selected = true;
-            }
-        }
+    // Preenche início/fim no formulário
+    if (inicioInput && promocoes[num].inicioEm) {
+        inicioInput.value = converterDateParaDatetimeLocal(new Date(promocoes[num].inicioEm));
+    }
+    if (fimInput && promocoes[num].fimEm) {
+        fimInput.value = converterDateParaDatetimeLocal(new Date(promocoes[num].fimEm));
     }
 
-    // Abre o Pupup Verificar
+    // reset + selecionar
+    ResetarListaProdutosCheckbox();
+    pesquisarProduto.value = "";
+    renderListaProdutosCheckbox("");
+
+    SelecionarProdutosCheckbox(promocoes[num].produtos_lista);
+
     window.location.assign("#popupVerificar");
 }
 
-/* Função chamada ao clicar no botão de ação da lixeira
-   Responsável por deletar uma promoção selecionada */
 function Excluir(num) {
+    if (!promocoes[num]) return;
+
     if (confirm("Tem certeza que deseja excluir essa promoção?")) {
         delete promocoes[num];
-        a = document.getElementById('idLinha' + num);
-        a.innerHTML = '';
+        const linha = document.getElementById('idLinha' + num);
+        if (linha) linha.remove();
     }
 }
 
-/* Função chamada ao clicar no botão salvar de uma edição ou criação de uma promoção
-   Responsável por salvar os dados da promoção editada ou criada */
 function Salvar() {
-    // Pega os campos dos Pupup Verificar
-    num = document.getElementById('idVisualizado');
-    nome = document.getElementById('nome');
-    descricao = document.getElementById('descricao');
-    disponibilidade = document.getElementById('disponibilidade'); // => 0 ou 1: Representa status
-    preco = document.getElementById('preco');
-    imgCadastrada = document.getElementById('imgCadastrada');
-    produtos_lista = document.getElementById('listaProdutos');
-    validade = document.getElementById('validade');
+    const num = document.getElementById('idVisualizado');
+    const nome = document.getElementById('nome');
+    const descricao = document.getElementById('descricao');
+    const disponibilidade = document.getElementById('disponibilidade');
+    const preco = document.getElementById('preco');
+    const imgCadastrada = document.getElementById('imgCadastrada');
 
-    // Cria uma lista com os id's dos produtos da promoção e calcula o preço máximo da promoção
-    let produtosSelecionados = [];
+    // Inputs de data/hora (novo modelo)
+    const inicioInput = document.getElementById('inicioEm');
+    const fimInput = document.getElementById('fimEm');
+
+    const produtosSelecionados = ObterProdutosSelecionadosCheckbox();
+
+    // Calcula preço máximo com base na soma dos produtos selecionados
     let preco_maximo = 0;
-    for (let opcao of produtos_lista.options) {
-        if (opcao.selected) {
-            produtosSelecionados.push(opcao.value);
-            preco_maximo = preco_maximo + parseFloat(produtos[opcao.value].preco);
+    produtosSelecionados.forEach((idProduto) => {
+        if (produtos[idProduto]) {
+            preco_maximo += parseFloat(produtos[idProduto].preco);
         }
-    }
+    });
 
-    // Verifica se foram selecionados produtos para a promoção
+    // Validação: precisa ter pelo menos 1 produto
     if (!produtosSelecionados.length) {
         alert('Nenhum produto selecionado para a promoção, selecione um produto antes de salvar.');
-    // Verifica se o preço escolhido é maior que o preço maximo da promoção 
-    } else if (preco.value > preco_maximo){
-        alert(`O preço escolhido é maior que a soma dos valores dos produtos da promoção (R$ ${parseFloat(preco_maximo)}).`);
-    // Se as condições forem aceitas, cadastra os dados da promoção na lista fictícia de promoções
-    } else {
-        promocoes[parseInt(num.value)] = {
-            id: parseInt(num.value),
-            nome: nome.value,
-            descricao: descricao.value ,
-            foto: imgCadastrada.src,
-            status: parseInt(disponibilidade.value),
-            preco: parseFloat(preco.value),
-            produtos_lista: produtosSelecionados,
-            validade: parseFloat(validade.value),
-        };
-
-        // Aumenta o contador de quantidade de promoções se for uma criação de promoção
-        if (numero_promocoes == parseInt(num.value)) {
-            numero_promocoes++;
-        }
-
-        // Fecha o Pupup atual
-        window.location.assign("#");
-
-        // Atualiza as promoções cadastradas para apresentação
-        AtualizarTabela();
+        return;
     }
-}
 
-// Função de atualização dos dados da tabela
-function AtualizarTabela() {
-    tabela.innerHTML += '<td colspan="8" id="linhaCarregamento"><div>A carregar ...</div></td>';
-    let promocoes_html = ``;
+    // Validação: preço da promoção não pode ser maior que a soma dos produtos
+    if (parseFloat(preco.value) > preco_maximo) {
+        alert(`O preço escolhido é maior que a soma dos valores dos produtos da promoção (R$ ${parseFloat(preco_maximo)}).`);
+        return;
+    }
 
-    // Geração das linhas da tabela
-    for (let key in Object.keys(promocoes)) {
-        let i = Object.keys(promocoes)[key];
+    // ==============================
+    // DATAS / TEMPO (controle manual)
+    // ==============================
 
-        // Html do dos produtos da promoção
-        let produtos_html = '';
-        promocoes[i].produtos_lista.forEach((produto) => {
-            produtos_html += `<p>${produtos[produto].nome}</p>`;
-        });
+    // Lê o início e fim definidos pelo admin
+    const inicioDate = converterDatetimeLocalParaDate(inicioInput ? inicioInput.value : "");
+    const fimDate = converterDatetimeLocalParaDate(fimInput ? fimInput.value : "");
 
-        // Html da linha de uma promoção
-        promocoes_html += `<tr id="idLinha${i}">
-            <input type="number" value='${i}' id="idProduto${i}" hidden>
-            <td>${promocoes[i].nome}</td>
-            <td>${promocoes[i].preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-            <td class="areaProdutos">${produtos_html}</td>
-            <td class="areaStatus"><span style="background-color: ${promocoes[i].status ? "var(--verde-secundario)" : "#ffd600"};">${promocoes[i].status ? "Ativo" : "Inativo"}</span></td>
-            <td class="areaBotoes">
-                <button class="botaoVisualizar" onclick="Visualizar(${i})"><img src="../imgs/icone-lupa.svg" alt="Visualizar" width="25px" height="25px"></button>
-                <button class="botaoEditar" onclick="Editar(${i})"><img src="../imgs/icone-lapis.svg" alt="Editar" width="25px" height="25px"></button>
-                <button class="botaoExcluir" onclick="Excluir(${i})"><img src="../imgs/icone-lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
-            </td>
-        </tr>`
+    // Validação: início e fim obrigatórios
+    if (!inicioDate || !fimDate) {
+        alert("Preencha a data/hora de Início e a data/hora de Fim.");
+        return;
+    }
+
+    // Validação: fim precisa ser maior que início
+    if (fimDate.getTime() <= inicioDate.getTime()) {
+        alert("A data/hora de Fim precisa ser maior que a data/hora de Início.");
+        return;
+    }
+
+    // Calcula validade (apenas informativa, já que você pediu para remover o campo de validade do controle)
+    const validadeHoras = (fimDate.getTime() - inicioDate.getTime()) / (1000 * 60 * 60);
+
+    // Salva a promoção com início e fim em ISO
+    promocoes[parseInt(num.value, 10)] = {
+        id: parseInt(num.value, 10),
+        nome: nome.value,
+        descricao: descricao.value,
+        foto: imgCadastrada.src,
+        status: parseInt(disponibilidade.value, 10),
+        preco: parseFloat(preco.value),
+        produtos_lista: produtosSelecionados,
+
+        // Campo opcional/informativo (mantido para você usar no visualizador, se quiser)
+        validade: validadeHoras,
+
+        inicioEm: inicioDate.toISOString(),
+        fimEm: fimDate.toISOString(),
     };
 
-    // Passagem do texto gerado das linhas da tebela para o html
-    tabela.innerHTML = promocoes_html;
+    if (parseInt(num.value, 10) === proximoIdPromocao) {
+        proximoIdPromocao++;
+    }
+
+    window.location.assign("#");
+    AtualizarTabela();
 }
 
-// Possibilita a seleção de multiplas opções sem o uso do control e 
-select.addEventListener('mousedown', function (e) {
-    e.preventDefault();
-    const opcao = e.target;
+// ==============================
+// TABELA
+// ==============================
 
-    // Arruma a função de deselecionar
-    if (opcao.tagName.toLowerCase() === 'option') {
-        opcao.selected = !opcao.selected;
+/**
+ * Monta o texto e a cor do status mostrado na tabela,
+ * combinando o "status" manual (ativo/inativo) com o tempo (inicio/fim).
+ * @param {object} promocao
+ * @returns {{texto: string, cor: string, tooltip: string}}
+ */
+function obterStatusParaTabela(promocao) {
+    // Se o admin marcou como inativo, sempre inativo
+    if (!promocao.status) {
+        return {
+            texto: "Inativa",
+            cor: "#ffd600", // amarelo (mesmo padrão do seu CSS/JS antigo)
+            tooltip: "Promoção desativada pelo admin."
+        };
     }
+
+    // Se estiver ativo, avalia pelo tempo
+    const statusTemporal = obterStatusTemporalPromocao(promocao);
+
+    if (statusTemporal === "AGENDADA") {
+        return {
+            texto: "Agendada",
+            cor: "#00a1ff", // azul
+            tooltip: `Começa em: ${formatarDataHoraPtBR(promocao.inicioEm)}\nTermina em: ${formatarDataHoraPtBR(promocao.fimEm)}`
+        };
+    }
+
+    if (statusTemporal === "EXPIRADA") {
+        return {
+            texto: "Expirada",
+            cor: "#ff0000", // vermelho
+            tooltip: `Começou em: ${formatarDataHoraPtBR(promocao.inicioEm)}\nTerminou em: ${formatarDataHoraPtBR(promocao.fimEm)}`
+        };
+    }
+
+    // ATIVA
+    return {
+        texto: "Ativa",
+        cor: "var(--verde-secundario)",
+        tooltip: `Começou em: ${formatarDataHoraPtBR(promocao.inicioEm)}\nTermina em: ${formatarDataHoraPtBR(promocao.fimEm)}`
+    };
+}
+
+function AtualizarTabela() {
+    tabela.innerHTML = "";
+
+    for (let id in promocoes) {
+        const promocao = promocoes[id];
+
+        // Lista de produtos exibida na tabela
+        let produtos_html = "";
+        promocao.produtos_lista.forEach((produtoId) => {
+            if (produtos[produtoId]) {
+                produtos_html += `<p>${produtos[produtoId].nome}</p>`;
+            }
+        });
+
+        // Status automático (manual + tempo)
+        const statusTabela = obterStatusParaTabela(promocao);
+
+        tabela.innerHTML += `
+      <tr id="idLinha${id}">
+        <td>${promocao.nome}</td>
+        <td>${promocao.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+        <td>${produtos_html}</td>
+        <td class="areaStatus">
+          <span title="${statusTabela.tooltip.replaceAll('"', '&quot;')}"
+                style="background-color: ${statusTabela.cor};">
+            ${statusTabela.texto}
+          </span>
+        </td>
+        <td>
+          <button onclick="Visualizar(${id})">👁</button>
+          <button onclick="Editar(${id})">✏</button>
+          <button onclick="Excluir(${id})">🗑</button>
+        </td>
+      </tr>
+    `;
+    }
+}
+
+// ==============================
+// API: PRODUTOS
+// ==============================
+
+async function ListarProdutos() {
+    produtos = {};
+
+    // feedback visual simples (opcional)
+    listaCheckbox.innerHTML = `<div style="padding:8px;">A carregar ...</div>`;
+    semResultado.style.display = "none";
+
+    const resposta = await fetch(API_URL + "/produtos", {
+        method: "GET",
+        headers: AUTH_HEADER
+    });
+
+    if (!resposta.ok) {
+        listaCheckbox.innerHTML = `<div style="padding:8px;">Erro ao carregar produtos (HTTP ${resposta.status})</div>`;
+        return;
+    }
+
+    const dados = await resposta.json();
+
+    dados.forEach((dado) => {
+        produtos[dado.id] = dado;
+    });
+
+    renderListaProdutosCheckbox("");
+}
+
+// ==============================
+// INIT
+// ==============================
+
+window.addEventListener("DOMContentLoaded", async () => {
+    await ListarProdutos();
+    AtualizarTabela();
 });
 
-// Busca e apresenta os produtos já cadastrados
-async function ListarProdutos() {
-    carregamento = document.createElement("option");
-    carregamento.id = "linhaCarregamento";
-    carregamento.textContent = 'A carregar ...';
-    select.appendChild(carregamento);
-
-    const resposta = await fetch(API_URL+'/produtos', { 
-        method: 'GET', 
-        headers: AUTH_HEADER 
-    });
-
-    dados_produtos = await resposta.json();
-    
-    let promocoes_html = ``;
-    let contador_linhas = 0;
-
-    dados_produtos.forEach((dado) => {
-
-        const option = document.createElement("option");
-        option.value = `
-"ativo": ${dado.ativo},      
-"categoria": ${dado.categoria},
-"descricao": ${dado.descricao},
-"id": ${dado.id},
-"imagemUrl": ${dado.imagemUrl},
-"nome": ${dado.nome},
-"preco": ${dado.preco}`;
-        option.textContent = dado.nome;
-
-        if (!dado.ativo) {
-            option.classList.add("produtoInativo");
-        };
-
-        select.appendChild(option);
-       
-        contador_linhas++;
-    });
-
-    carregamento.remove();
-}
-
-// Reseta a lista de produtos selecionados
-function ResetarListaProdutos(lista_produtos) {
-    for (let opcao of lista_produtos) {
-        if (opcao.selected) {
-            opcao.selected = false;
-        }
-    }
-}
+// Atualiza a tabela de tempos em tempos para refletir expiração/agendamento automaticamente
+setInterval(() => {
+    AtualizarTabela();
+}, 30000); // a cada 30s

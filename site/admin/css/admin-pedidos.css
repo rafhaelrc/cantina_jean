@@ -1,0 +1,318 @@
+/* =========================================================
+   PEDIDOS (V2) — admin-pedidos.css
+   - Sem Bootstrap
+   - Tabela moderna + Mobile em cards
+   - Padrão visual alinhado ao login V2
+   ========================================================= */
+
+:root {
+  --verde-principal: #004206;
+  --verde-secundario: #349a46;
+  --verde-vivo: #2ab442;
+
+  --bg-1: #f3f4f6;
+  --bg-2: #e9eef0;
+
+  --texto-1: #111827;
+  --texto-2: #4b5563;
+
+  --borda: rgba(0, 0, 0, .10);
+  --raio: 16px;
+  --sombra: 0 18px 50px rgba(0, 0, 0, .14);
+
+  --card-bg: rgba(255, 255, 255, .92);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: var(--texto-1);
+  background:
+    radial-gradient(900px 500px at 15% 20%, rgba(52, 154, 70, .16), transparent 60%),
+    radial-gradient(900px 500px at 85% 10%, rgba(0, 66, 6, .14), transparent 55%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-2));
+}
+
+a, button, #labelImgCadastrada, select { cursor: pointer; }
+
+/* =========================
+   Top actions (Filtro)
+   ========================= */
+aside {
+  width: min(1200px, 92vw);
+  margin: 18px auto 10px auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Botão "Filtro" (V2) */
+.botaoCadastrar {
+  background: linear-gradient(135deg, var(--verde-secundario), var(--verde-vivo));
+  color: white;
+  font-weight: 900;
+  letter-spacing: .4px;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 18px;
+  margin: 0;
+
+  box-shadow: 0 14px 28px rgba(0, 0, 0, .16);
+  transition: transform .12s ease, box-shadow .2s ease, filter .2s ease, opacity .2s ease;
+}
+
+.botaoCadastrar:hover {
+  filter: saturate(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, .20);
+}
+
+.botaoCadastrar:active {
+  transform: translateY(0);
+  opacity: .95;
+}
+
+/* =========================
+   Wrapper da tabela
+   ========================= */
+#asideTable {
+  width: min(1200px, 92vw);
+  margin: 0 auto 40px auto;
+
+  background: var(--card-bg);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  overflow: hidden; /* arredondamento funcionar */
+}
+
+/* Tabela base (sem bootstrap) */
+.table-custom {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: none;
+  font-size: 14px;
+}
+
+.table-custom thead th {
+  position: sticky; /* ajuda muito em tabelas longas */
+  top: 0;
+  z-index: 2;
+
+  background: linear-gradient(90deg, var(--verde-principal), var(--verde-secundario));
+  color: white;
+
+  text-align: left;
+  vertical-align: middle;
+  padding: 14px 12px;
+  font-weight: 900;
+  letter-spacing: .2px;
+  border-bottom: 1px solid rgba(255, 255, 255, .20);
+}
+
+/* separadores sutis */
+.table-custom thead th + th {
+  border-left: 1px solid rgba(255, 255, 255, .14);
+}
+
+.table-custom tbody td {
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, .06);
+  vertical-align: middle;
+  color: var(--texto-1);
+}
+
+/* Zebra + hover */
+.table-custom tbody tr:nth-child(even) td {
+  background: rgba(0, 0, 0, .02);
+}
+
+.table-custom tbody tr:hover td {
+  background: rgba(52, 154, 70, .06);
+}
+
+/* coluna observações: melhora leitura */
+.table-custom td:nth-child(5) {
+  color: var(--texto-2);
+  line-height: 1.25;
+}
+
+/* =========================
+   Chips / Itens (já existe no JS: .areaProdutos p)
+   ========================= */
+.areaProdutos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-start;
+}
+
+.areaProdutos p {
+  background: rgba(42, 180, 66, .14);
+  color: #064e3b;
+  border: 1px solid rgba(16, 185, 129, .35);
+  padding: 6px 10px;
+  margin: 0;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* =========================
+   Status (span vem do JS com background)
+   ========================= */
+.areaStatus span {
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-weight: 900;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: 0 10px 18px rgba(0,0,0,.08);
+}
+
+/* =========================
+   Selects dentro da tabela (pagamento / status)
+   ========================= */
+select {
+  background: white;
+  padding: 10px 10px;
+  border: 2px solid rgba(0, 0, 0, .12);
+  border-radius: 12px;
+  outline: none;
+  font-weight: 700;
+  color: var(--texto-1);
+  transition: border-color .2s ease, box-shadow .2s ease, transform .05s ease;
+}
+
+select:focus {
+  border-color: rgba(52, 154, 70, .65);
+  box-shadow: 0 0 0 4px rgba(52, 154, 70, .18);
+}
+
+select:active { transform: scale(0.998); }
+
+/* larguras padrões (mantive tua intenção) */
+.formasPagamento, .statusPagamento { width: 120px; }
+.statusPedido { width: 140px; }
+
+/* =========================
+   Linha de carregamento
+   ========================= */
+@keyframes animacaoCarregamento {
+  from { color: #111; background-color: rgba(0,0,0,.02); }
+  to   { color: #6b7280; background-color: rgba(0,0,0,.06); }
+}
+
+#linhaCarregamento {
+  padding: 20px;
+  animation: 0.6s linear 0s infinite alternate animacaoCarregamento;
+}
+
+/* =========================
+   MOBILE: tabela vira cards por pedido (sem mudar HTML)
+   ========================= */
+@media (max-width: 900px) {
+
+  aside {
+    width: min(1200px, 92vw);
+    margin: 14px auto 10px auto;
+  }
+
+  #asideTable {
+    width: min(1200px, 92vw);
+    border-radius: 18px;
+  }
+
+  /* esconde header e transforma linhas em cards */
+  .table-custom thead {
+    display: none;
+  }
+
+  .table-custom,
+  .table-custom tbody,
+  .table-custom tr,
+  .table-custom td {
+    display: block;
+    width: 100%;
+  }
+
+  .table-custom tbody tr {
+    border-bottom: 1px solid rgba(0,0,0,.08);
+    padding: 14px 14px 10px 14px;
+    background: transparent;
+  }
+
+  .table-custom tbody tr:nth-child(even) td {
+    background: transparent;
+  }
+
+  .table-custom tbody td {
+    border: none;
+    padding: 8px 0;
+  }
+
+  /* Cada "td" vira linha: label à esquerda, conteúdo à direita */
+  .table-custom tbody td {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 10px;
+    align-items: center;
+  }
+
+  /* Labels automáticos por coluna (sem mexer no HTML) */
+  .table-custom tbody td:nth-child(1)::before { content: "Nº Pedido"; font-weight: 900; color: var(--texto-2); }
+  .table-custom tbody td:nth-child(2)::before { content: "Nome"; font-weight: 900; color: var(--texto-2); }
+  .table-custom tbody td:nth-child(3)::before { content: "Valor total"; font-weight: 900; color: var(--texto-2); }
+  .table-custom tbody td:nth-child(4)::before { content: "Itens"; font-weight: 900; color: var(--texto-2); }
+  .table-custom tbody td:nth-child(5)::before { content: "Observações"; font-weight: 900; color: var(--texto-2); }
+  .table-custom tbody td:nth-child(6)::before { content: "Pagamento"; font-weight: 900; color: var(--texto-2); }
+  .table-custom tbody td:nth-child(7)::before { content: "Status pgto"; font-weight: 900; color: var(--texto-2); }
+  .table-custom tbody td:nth-child(8)::before { content: "Status pedido"; font-weight: 900; color: var(--texto-2); }
+
+  /* Itens e observações ficam melhores empilhados */
+  .table-custom tbody td:nth-child(4),
+  .table-custom tbody td:nth-child(5) {
+    align-items: start;
+  }
+
+  .areaProdutos {
+    justify-content: flex-start;
+  }
+
+  /* selects ocuparem a largura no mobile */
+  .formasPagamento, .statusPagamento, .statusPedido,
+  select {
+    width: 100%;
+    max-width: 260px;
+  }
+}
+/* ===== FIX 1: fundo totalmente branco (sem faixas/gradientes) ===== */
+body {
+  background: #fff !important;
+}
+
+/* ===== FIX 2: remover bordas pretas do border="1" da tabela ===== */
+.table-custom,
+.table-custom thead th,
+.table-custom tbody td,
+.table-custom tr {
+  border: none !important;
+}
+
+/* opcional: separadores suaves (substitui o border preto) */
+.table-custom tbody td {
+  border-bottom: 1px solid rgba(0,0,0,.06) !important;
+}
+
+/* opcional: sombra do card mais suave (menos “pesada”) */
+#asideTable {
+  box-shadow: 0 14px 35px rgba(0,0,0,.10) !important;
+}

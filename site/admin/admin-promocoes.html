@@ -1,165 +1,216 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="stylesheet" type="text/css" href="css\admin-header.css">
-    <link rel="stylesheet" type="text/css" href="css\admin-pages.css">
-    
-    <title>Promoções - Admin</title>
+  <link rel="stylesheet" href="css/admin-header.css" />
+  <link rel="stylesheet" href="css/admin-promocoes.css" />
 
+  <title>Promoções - Admin</title>
 </head>
+
 <body>
-    <nav class="navbar">
-        <div class="navdiv">
-            <div class="logo">
-                <a href="#"><img src="img\if-logo.png"
-                    alt="Logo IF"></a>
-                <p>CANTINA - ADMIN</p>
-            </div>
-        </div>
-        <div><a id="btnVoltar" href="admin-home.html">VOLTAR</a></div>
-    </nav>
+  <!-- Header -->
+  <nav class="navbar">
+    <div class="navdiv">
+      <div class="logo">
+        <img src="img/if-logo.png" alt="Logo IF" />
+        <p>CANTINA - ADMIN</p>
+      </div>
 
-    <aside>
-        <button class="botaoCadastrar" onclick="Cadastrar()">Cadastrar promoção</button>
-    </aside>
+      <a id="btnVoltar" href="admin-home.html" class="btn-top">VOLTAR</a>
+    </div>
+  </nav>
 
-    <aside id="asideTable">
-        <table class="table table-hover table-custom" border="1">
-            <thead>
-                <tr>
-                    <th>Nome da promoção</th>
-                    <th>Valor da promoção</th>
-                    <th>Produtos da promoção</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="bodyTabela">
-                
-            </tbody>
+  <!-- Conteúdo -->
+  <main class="pagina-admin">
+    <header class="cabecalho-pagina">
+      <div class="cabecalho-titulo">
+        <h1 class="titulo-pagina">Promoções</h1>
+        <p class="subtitulo-pagina">Agende e gerencie promoções por data e hora</p>
+      </div>
+
+      <div class="cabecalho-acoes">
+        <button class="btn-primario" onclick="Cadastrar()">Cadastrar promoção</button>
+      </div>
+    </header>
+
+    <section class="secao-tabela">
+      <div class="tabela-wrapper">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Nome da promoção</th>
+              <th style="width: 160px;">Valor</th>
+              <th>Produtos</th>
+              <th style="width: 150px;">Status</th>
+              <th class="col-acoes" style="width: 170px;">Ações</th>
+            </tr>
+          </thead>
+
+          <tbody id="bodyTabela"></tbody>
         </table>
-    </aside>
+      </div>
+    </section>
+  </main>
 
-    <div id="popupVerificar" class="popup">
-        <div class="popup-content">
-            <a href="#" class="fechar">&times;</a>
-            <form action="" method="GET" class="formsPopup">
-                <p id="tituloVerificar" class="centalizadoForms">Título</p>
-                <input type="number" id="idVisualizado" hidden>
-                <div style="flex: 66%; display: flex; flex-wrap: wrap;">
-                    <div class="containerForms">
-                        <label for="nome">Nome da promoção</label>
-                        <input type="text" id="nome" maxlength="50">
-                    </div>
-                    
-                    <div class="containerForms">
-                        <label for="preco">Preço</label>
-                        <input type="number" id="preco">
-                    </div>
+  <!-- MODAL: CADASTRAR / EDITAR -->
+  <div id="popupVerificar" class="popup">
+    <div class="popup-content popup-lg">
+      <a href="#" class="fechar" aria-label="Fechar">&times;</a>
 
-                    <div class="containerForms">
-                        <label for="descricao">Descrição</label>
-                        <input type="text" id="descricao" maxlength="60">
-                    </div>
-                    
-                    <div class="containerForms">
-                        <label for="listaProdutos">Produtos</label><br>
-                        <input type="text" id="pesquisarProduto" placeholder="Pesquisar...">
-                        <select id="listaProdutos" multiple>
-                            <span id="semResultado" style="display: none;">Nenhum resultado encontrado</span>
-                        </select>
-                    </div>
-                </div>
-
-                <div style="flex: 33%;">
-                    <div class="containerForms">
-                        <label for="validade">Validade (em horas)</label>
-                        <input type="number" id="validade" maxlength="4">
-                    </div>
-                    
-                    <div class="containerForms">
-                        <label for="disponibilidade">Disponibilidade</label><br>
-                        <select id="disponibilidade">
-                            <option value="1">Ativo</option>
-                            <option value="0">Inativo</option>
-                        </select>
-                    </div>
-
-                    <div class="containerForms">
-                        <label for="enviarFoto" id="labelImgCadastrada">
-                            Vizualização da foto<br>
-                            <img src="" width="200px" id="imgCadastrada"><br>
-                            Clique para alterar
-                        </label>
-                        <input type="file" id="enviarFoto" accept="image/*" hidden>
-                    </div>
-                </div>
-                <div class="centalizadoForms">
-                   <button id="salvarVerificacao" onclick="Salvar()">Salvar</button>
-                </div>
-
-            </form>
+      <form class="formsPopup formsPopup--v2" onsubmit="return false;">
+        <div class="modal-topo">
+          <p id="tituloVerificar" class="titulo-modal">Cadastrar nova promoção</p>
+          <p class="modal-subtitulo">Defina período, produtos e preço.</p>
         </div>
-    </div>
 
-    <div id="popupVisualizar" class="popup">
-        <div class="popup-content">
-            <a href="#" class="fechar">&times;</a>
-            <div class="visualizadorPopup">
-                <p id="tituloVisualizar" class="centalizadoForms">Título</p>
-                <div style="flex: 66%; display: flex; flex-wrap: wrap;">
-                    <div class="containerForms">
-                        <label>Nome do produro</label>
-                        <p id="labelNome"></p>
-                    </div>
-                    
-                    <div class="containerForms">
-                        <label>Preço</label>
-                        <p id="labelPreco"></p>
-                    </div>
+        <input type="number" id="idVisualizado" hidden />
 
-                    <div class="containerForms">
-                        <label>Descrição</label>
-                        <p id="labelDescricao"></p>
-                    </div>
-                    
-                    <div class="containerForms">
-                        <label>Produtos</label><br>
-                        <div id="labelListaProdutos">
+        <div class="grid-form-2">
+          <!-- Coluna esquerda -->
+          <section class="card-form">
+            <h3 class="card-form-titulo">Dados da promoção</h3>
 
-                        </div>
-                    </div>
-
-                    <div class="containerForms">
-                        <label>Validade (em horas)</label>
-                        <p id="labelValidade"></p>
-                    </div>
-                </div>
-
-                <div style="flex: 33%;">
-                    <div class="containerForms">
-                        <label>Disponibilidade</label>
-                        <p id="labelDisponibilidade"></p>
-                    </div>
-
-                    <div class="containerForms">
-                        <label>Vizualização da foto
-                            <img src="" id="visualizarImgCadastrada">
-                        </label>
-                    </div>
-                </div>
+            <div class="campo">
+              <label for="nome">Nome da promoção</label>
+              <input type="text" id="nome" maxlength="50" placeholder="Ex: Combo café + torrada" />
             </div>
+
+            <div class="campo">
+              <label for="preco">Preço</label>
+              <input type="number" id="preco" step="0.01" placeholder="Ex: 7.50" />
+              <small class="dica">Dica: o preço não pode ser maior que a soma dos produtos.</small>
+            </div>
+
+            <div class="campo">
+              <label for="descricao">Descrição</label>
+              <input type="text" id="descricao" maxlength="60" placeholder="Ex: Café com leite + torrada completa" />
+            </div>
+
+            <div class="campo">
+              <label for="disponibilidade">Disponibilidade</label>
+              <select id="disponibilidade">
+                <option value="1">Ativo</option>
+                <option value="0">Inativo</option>
+              </select>
+            </div>
+          </section>
+
+          <!-- Coluna direita -->
+          <section class="card-form">
+            <h3 class="card-form-titulo">Período e produtos</h3>
+
+            <div class="linha-2">
+              <div class="campo">
+                <label for="inicioEm">Início (data e hora)</label>
+                <input type="datetime-local" id="inicioEm" />
+              </div>
+
+              <div class="campo">
+                <label for="fimEm">Fim (data e hora)</label>
+                <input type="datetime-local" id="fimEm" />
+              </div>
+            </div>
+
+            <div class="campo">
+              <label for="pesquisarProduto">Produtos da promoção</label>
+              <input type="text" id="pesquisarProduto" placeholder="Pesquisar produto..." />
+            </div>
+
+            <div class="lista-checkbox" id="listaProdutosCheckbox" aria-label="Lista de produtos"></div>
+            <div id="semResultado" class="sem-resultado" style="display:none;">Nenhum resultado encontrado</div>
+          </section>
+
+          <!-- Imagem -->
+          <section class="card-form card-form--imagem">
+            <h3 class="card-form-titulo">Imagem</h3>
+
+            <label for="enviarFoto" id="labelImgCadastrada" class="drop-imagem">
+              <span class="drop-titulo">Visualização da foto</span>
+              <img src="" width="220" id="imgCadastrada" alt="Prévia da promoção" />
+              <span class="drop-sub">Clique para alterar</span>
+            </label>
+            <input type="file" id="enviarFoto" accept="image/*" hidden />
+          </section>
+
+          <!-- Ações -->
+          <div class="acoes-form">
+            <button type="button" class="btn-primario" id="salvarVerificacao" onclick="Salvar()">Salvar</button>
+            <a href="#" class="btn-secundario">Cancelar</a>
+          </div>
         </div>
+      </form>
     </div>
+  </div>
 
-    <footer>
-        
-    </footer>
+  <!-- MODAL: VISUALIZAR -->
+  <div id="popupVisualizar" class="popup">
+    <div class="popup-content popup-lg">
+      <a href="#" class="fechar" aria-label="Fechar">&times;</a>
 
-    <script src="js\admin-promocoes.js"></script>
+      <div class="visualizadorPopup visualizadorPopup--v2">
+        <div class="modal-topo">
+          <p id="tituloVisualizar" class="titulo-modal">Visualização</p>
+          <p class="modal-subtitulo">Confira os dados da promoção.</p>
+        </div>
+
+        <div class="grid-visualizacao">
+          <div class="bloco">
+            <label>Nome</label>
+            <p id="labelNome"></p>
+          </div>
+
+          <div class="bloco">
+            <label>Preço</label>
+            <p id="labelPreco"></p>
+          </div>
+
+          <div class="bloco bloco--span2">
+            <label>Descrição</label>
+            <p id="labelDescricao"></p>
+          </div>
+
+          <div class="bloco">
+            <label>Início</label>
+            <p id="labelInicioEm"></p>
+          </div>
+
+          <div class="bloco">
+            <label>Fim</label>
+            <p id="labelFimEm"></p>
+          </div>
+
+          <div class="bloco">
+            <label>Disponibilidade</label>
+            <p id="labelDisponibilidade"></p>
+          </div>
+
+          <div class="bloco bloco--span2">
+            <label>Produtos</label>
+            <div id="labelListaProdutos" class="chips-produtos"></div>
+          </div>
+
+          <!-- opcional (JS preenche se existir) -->
+          <div class="bloco">
+            <label>Validade (horas)</label>
+            <p id="labelValidade">-</p>
+          </div>
+
+          <div class="bloco bloco--imagem">
+            <label>Imagem</label>
+            <img src="" id="visualizarImgCadastrada" alt="Imagem da promoção" />
+          </div>
+        </div>
+
+        <div class="acoes-form">
+          <a href="#" class="btn-secundario">Fechar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/admin-promocoes.js"></script>
 </body>
 </html>

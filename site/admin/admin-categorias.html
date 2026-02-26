@@ -8,29 +8,30 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" href="css\admin-header.css">
-    <link rel="stylesheet" type="text/css" href="css\admin-pages.css">
+    <link rel="stylesheet" type="text/css" href="css\admin-categorias.css">
 
     <title>Categorias - Admin</title>
 
 </head>
 
 <body>
+    <!-- Header de navegação -->
     <nav class="navbar">
         <div class="navdiv">
             <div class="logo">
-                <a href="#"><img
-                        src="img\if-logo.png"
-                        alt="Logo IF"></a>
-                <p href="#">CANTINA - ADMIN</p>
+                <img src="img/if-logo.png" alt="Logo IF">
+                <p>CANTINA - ADMIN</p>
             </div>
+
+            <!-- Opcional: só coloque quando quiser -->
+            <a id="btnVoltar" href="admin-home.html">VOLTAR</a>
         </div>
-        <div><a id="btnVoltar" href="admin-home.html">VOLTAR</a></div>
     </nav>
 
     <aside>
         <button class="botaoCadastrar" onclick="Cadastrar()">Cadastrar categoria</button>
     </aside>
-<!-- Tabela de categorias -->
+    <!-- Tabela de categorias -->
     <aside id="asideTable">
         <table class="table table-hover table-custom" border="1">
             <thead>
@@ -45,7 +46,7 @@
             </tbody>
         </table>
     </aside>
-<!-- Popup de verificação e visualização -->
+    <!-- Popup de verificação e visualização -->
     <div id="popupVerificar" class="popup">
         <div class="popup-content">
             <a href="#" class="fechar">&times;</a>
@@ -75,7 +76,7 @@
             </form>
         </div>
     </div>
-<!-- Popup de visualização -->
+    <!-- Popup de visualização -->
     <div id="popupVisualizar" class="popup">
         <div class="popup-content">
             <a href="#" class="fechar">&times;</a>
