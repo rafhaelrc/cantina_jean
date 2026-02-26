@@ -5,11 +5,11 @@ const token = sessionStorage.getItem("tokenAdmin");
 if (!token) {
     alert("Acesso negado! Você precisa fazer login.");
     // Redireciona para o index.html (que é a tela de login)
-    window.location.href = "index.html"; 
+    window.location.href = "admin-login.html"; 
 }
 
 // 3. (Opcional) Função de Sair para usar nos botões de Logout
 function sair() {
     sessionStorage.removeItem("tokenAdmin");
-    window.location.href = "index.html";
+    window.location.href = "admin-login.html";
 }
