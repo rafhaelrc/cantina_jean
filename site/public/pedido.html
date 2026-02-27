@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cantina Jean</title>
+
+    <!-- ============================================= -->
+    <!--               ESTILOS GLOBAIS                -->
+    <!-- header, navegação, rodapé, reset, etc        -->
+    <!-- ============================================= -->
+    <link rel="stylesheet" href="css/global.css">
+
+    <!-- ============================================= -->
+    <!--      ESTILOS ESPECÍFICOS DA PÁGINA INICIAL    -->
+    <!-- ============================================= -->
+    <link rel="stylesheet" href="css/pedido.css">
+
+</head>
+
+<body>
+    <!-- ============================================= -->
+    <!--           HEADER VERDE FIXO NO TOPO           -->
+    <!-- ============================================= -->
+    <header class="header-verde">
+        <div class="header-verde">
+            <div class="header-verde-content">
+                <!-- Logo do IF no canto esquerdo -->
+                <div class="logo">
+                    <img src="img/if_logo.png" alt="Logo" />
+                </div>
+
+                <!-- Campo de pesquisa de produtos -->
+                <input type="text" class="pesquisa" id="pesquisa-produto" placeholder="Pesquisar produto" />
+
+                <!-- Ícone do carrinho → agora link para página carrinho.html -->
+                <div class="carrinho">
+                    <a href="carrinho.html">
+                        <img src="img/carrinho.png" alt="Ícone do carrinho" />
+                        <!-- Espaço para badge de quantidade (atualizado via global.js) -->
+                        <span class="carrinho-contador"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Linha divisória abaixo do header -->
+    <hr class="linha-topo">
+
+    <!-- ============================================= -->
+    <!--           NAVEGAÇÃO PRINCIPAL                 -->
+    <!-- agora usando links comuns (sem SPA)           -->
+    <!-- ============================================= -->
+    <nav class="nav-botoes">
+        <a href="index.html"><button><strong>Início</strong></button></a>
+        <a href="cardapio.html"><button><strong>Cardápio</strong></button></a>
+        <a href="pedido.html"><button><strong>Pedido</strong></button></a>
+        <a href="contato.html"><button style="color: rgb(231, 231, 79);"><strong>Fale Conosco</strong></button></a>
+    </nav>
+
+    <!-- ============================================= -->
+    <!--               CONTEÚDO DA PÁGINA INICIAL      -->
+    <!-- (exatamente a parte que era #cardapio)          -->
+    <!-- ============================================= -->
+
+
+
+    <main class="conteudo-principal container">
+        <section id="pedido">  <!-- Removida a classe "pagina" para não ficar escondido -->
+
+            <div class="painel-status">
+                <div class="coluna-pedidos preparando">
+                    <h3>PREPARANDO</h3>
+                    <ul id="lista-preparo">
+                        <!-- Itens em PREPARANDO vão ser inseridos aqui pelo JS -->
+                    </ul>
+                </div>
+
+                <div class="coluna-pedidos pronto">
+                    <h3>PRONTO</h3>
+                    <ul id="lista-pronto">
+                        <!-- Itens em PRONTO vão ser inseridos aqui pelo JS -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="botoes-status">
+                <button id="btn-cancelar" class="botao-cancelar">Cancelar Pedido</button>
+                <button id="btn-info" class="botao-info">Informações do Pedido</button>
+            </div>
+
+            <div id="modal-cancelar" class="modal-cancelar">
+                <div class="modal-conteudo">
+                    <div class="modal-header">
+                        <h2>Cancelamento do pedido</h2>
+                    </div>
+                    <p>Para cancelar o pedido digite seu número de retirada e sua palavra chave</p>
+
+                    <label for="numero-pedido">Número do pedido</label>
+                    <input type="text" id="numero-pedido" placeholder="Digite o número">
+
+                    <label for="palavra-chave">Palavra chave</label>
+                    <input type="password" id="palavra-chave" placeholder="Digite a palavra chave">
+
+                    <div class="modal-botoes">
+                        <button id="btn-sair" class="btn-sair">✖ Sair</button>
+                        <button id="btn-confirmar" class="btn-confirmar">✔ Confirmar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modal-info" class="modal-info">
+                <div class="modal-conteudo">
+                    <div class="modal-header">
+                        <h2>Informações do Pedido</h2>
+                    </div>
+                    <p>Digite o número do pedido para consultar seu status.</p>
+
+                    <label for="numero-info">Número do pedido</label>
+                    <input type="text" id="numero-info" placeholder="Digite o número">
+
+                    <div class="modal-botoes">
+                        <button id="btn-sair-info" class="btn-sair">✖ Sair</button>
+                        <button id="btn-consultar" class="btn-confirmar">✔ Consultar</button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+        
+
+    <!-- ============================================= -->
+    <!--               RODAPÉ FIXO EMBAIXO             -->
+    <!-- ============================================= -->
+
+    <footer class="rodape">
+        <div class="footer-conteudo">
+            <span>© 2026 - Cantina Jean</span>
+            <span id="abrirEquipe" class="link-equipe">Equipe de devs</span>
+        </div>
+    </footer>
+
+    <div id="modal-equipe" class="modal-equipe">
+        <div class="modal-equipe-conteudo">
+            <button id="fecharEquipe" class="fechar-modal">✖</button>
+
+            <h2>Equipe de Desenvolvimento</h2>
+
+            <ul>
+                <li><strong>Matheus L. Paganella</strong><br>Front-end — Página do Usuário</li>
+                <li><strong>Gabriel Athaydes</strong><br>Front-end — Página Administrativa</li>
+                <li><strong>Marcelli Masson</strong><br>Front-end — Página do Usuário</li>
+                <li><strong>Murilo Nunes</strong><br>Front-end — Página Administrativa</li>
+                <li><strong>João Augusto Crestani</strong><br>Front-end — Página Administrativa e Usuário</li>
+                <li><strong>Rafael Cunha</strong><br>Orientador — Full Stack</li>
+            </ul>
+
+            <p>Projeto desenvolvido para a Cantina Jean 🚀</p>
+        </div>
+    </div>
+
+
+    <!-- ============================================= -->
+    <!--               SCRIPTS GLOBAIS                 -->
+    <!-- (carrinho persistente, contador, modal equipe)-->
+    <!-- ============================================= -->
+    <script src="js/global.js"></script>
+
+    <!-- ============================================= -->
+    <!--     SCRIPTS ESPECÍFICOS DA PÁGINA CARPADIO    -->
+    <!-- ============================================= -->
+    <script src="js/pedido.js"></script>
+
+</body>
+
+</html>

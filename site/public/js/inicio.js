@@ -5,20 +5,8 @@
 /* renderização dos produtos em oferta              */
 /* ================================================ */
 
-/* ================================================ */
-/* CONFIGURAÇÕES GLOBAIS (API e funções auxiliares) */
-/* ================================================ */
-
-// Função auxiliar para caminho de imagem (usada na renderização)
-function obterCaminhoImagem(nomeArquivo) {
-  if (!nomeArquivo) return 'img/default.png';
-  if (nomeArquivo.startsWith('http')) return nomeArquivo;
-  if (nomeArquivo.startsWith('img/')) return nomeArquivo;
-  return `img/${nomeArquivo}`;
-}
-
 /* ============================================= */
-/*               CONTROLE DO CARROSSEL           */
+/* CONTROLE DO CARROSSEL (setas esquerda/direita) */
 /* ============================================= */
 const track = document.querySelector('.carrossel-track');
 const btnEsq = document.querySelector('.esquerda');
@@ -70,23 +58,32 @@ function renderizarCarrossel(produtos) {
   });
 }
 
-// ================================================
-// CARREGA OS PRODUTOS DA API E MOSTRA NO CARROSSEL
-// (exatamente como estava no código original)
-// ================================================
+/* ================================================ */
+/* CARREGA OS PRODUTOS DA API E MOSTRA NO CARROSSEL */
+/* ================================================ */
 async function carregarProdutosParaInicio() {
   try {
+    // Mostra o spinner de loading imediatamente (melhora experiência durante o delay da API)
+    const loading = document.getElementById("loading-ofertas");
+    if (loading) loading.style.display = "block";
+
     const resposta = await fetch(`${API_BASE}/api/public/produtos`);
     const dados = await resposta.json();
-
-    // Salva globalmente se precisar usar em outros lugares depois
-    // produtosGlobais = dados;   ← opcional, pode comentar se não usar
 
     // Chama a função que já existe para preencher o carrossel
     renderizarCarrossel(dados);
 
+    // Esconde o loading assim que os itens aparecerem
+    if (loading) loading.style.display = "none";
+
   } catch (erro) {
     console.error("Erro ao carregar produtos para o carrossel:", erro);
+    
+    // Se der erro, mostra mensagem no lugar do loading
+    const loading = document.getElementById("loading-ofertas");
+    if (loading) {
+      loading.innerHTML = '<p style="color:#c62828; font-weight:bold;">Não foi possível carregar as ofertas. Tente novamente.</p>';
+    }
   }
 }
 
@@ -94,3 +91,13 @@ async function carregarProdutosParaInicio() {
 document.addEventListener("DOMContentLoaded", () => {
   carregarProdutosParaInicio();
 });
+
+// ────────────────────────────────────────────────
+// Função auxiliar para caminho de imagem (usada no carrossel)
+// ────────────────────────────────────────────────
+function obterCaminhoImagem(nomeArquivo) {
+  if (!nomeArquivo) return 'img/default.png';
+  if (nomeArquivo.startsWith('http')) return nomeArquivo;
+  if (nomeArquivo.startsWith('img/')) return nomeArquivo;
+  return `img/${nomeArquivo}`;
+}

@@ -114,3 +114,19 @@
     border: none;
     cursor: pointer;
 }
+
+/* ============================================= */
+/* ANIMAÇÃO DO SPINNER DE CARREGAMENTO          */
+/* Faz o círculo girar infinitamente            */
+/* ============================================= */
+@keyframes spin {
+    /* Começa sem rotação */
+    0% { 
+        transform: rotate(0deg); 
+    }
+    
+    /* Termina com rotação completa de 360 graus */
+    100% { 
+        transform: rotate(360deg); 
+    }
+}

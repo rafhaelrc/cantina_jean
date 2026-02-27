@@ -93,7 +93,14 @@
                     <button class="seta esquerda">‹</button>
                     <!-- Faixa que recebe os itens dinamicamente via JS -->
                     <div class="carrossel-track">
-                        <!-- Aqui entram os produtos em oferta (inseridos por inicio.js) -->
+                        <!-- BLOCO DE LOADING – aparece enquanto carrega as ofertas -->
+                        <div id="loading-ofertas"
+                            style="text-align:center; padding: 80px 20px; color:#555; font-size:18px; width:100%;">
+                            Carregando ofertas... <br><br>
+                            <div
+                                style="border: 5px solid #f3f3f3; border-top: 5px solid #1b5e20; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 20px auto;">
+                            </div>
+                        </div>
                     </div>
                     <!-- Seta direita do carrossel -->
                     <button class="seta direita">›</button>
@@ -105,7 +112,7 @@
     <!-- ============================================= -->
     <!--               RODAPÉ FIXO EMBAIXO             -->
     <!-- ============================================= -->
-     
+
     <footer class="rodape">
         <div class="footer-conteudo">
             <span>© 2026 - Cantina Jean</span>
