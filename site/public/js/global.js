@@ -614,14 +614,25 @@ async function enviarPedido() {
     botao.innerText = "Enviando...";
     botao.disabled = true;
 
+    console.log("JSON que vai ser enviado:");
+    console.log(JSON.stringify(pedido, null, 2));
+
     // Faz a requisição POST para a API
-    const resposta = await fetch(`${API_BASE}/api/public/pedidos`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json" // Diz que estamos enviando JSON
-      },
-      body: JSON.stringify(pedido) // Converte o objeto JS em string JSON
-    });
+    const token = localStorage.getItem("authToken") || "";
+
+if (!token) {
+  alert("Não foi possível autenticar. Tente recarregar a página ou falar com o dev.");
+  return;
+}
+
+const resposta = await fetch(`${API_BASE}/api/public/pedidos`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    //"Authorization": `Bearer ${token}`  // agora envia o token corretamente
+  },
+  body: JSON.stringify(pedido)
+});
 
     // Verifica se a resposta foi bem-sucedida (status 200-299)
     if (resposta.ok) {
@@ -688,4 +699,42 @@ inputPesquisa.addEventListener("input", () => {
   renderizarCardapioCompleto(filtrados);
 });
 
+// Função para login com admin/123
+async function loginAdmin() {
+  try {
+    const respostaLogin = await fetch(`${API_BASE}/api/auth/login`, {  // ajuste a rota se não for exatamente essa
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: "admin",
+        password: "123"
+      })
+    });
+
+    if (!respostaLogin.ok) {
+      console.log("Login falhou:", respostaLogin.status);
+      alert("Login falhou! Pergunte ao dev a rota correta ou credenciais.");
+      return;
+    }
+
+    const dados = await respostaLogin.json();
+    const token = dados.token || dados.accessToken || dados.jwt;
+
+    if (token) {
+      localStorage.setItem("authToken", token);
+      console.log("Login OK! Token salvo:", token.substring(0, 20) + "...");
+    } else {
+      alert("Token não veio na resposta do login.");
+    }
+  } catch (erro) {
+    console.error("Erro no login:", erro);
+  }
+}
+
+// Chama o login ao carregar a página (uma vez só)
+// document.addEventListener("DOMContentLoaded", async () => {
+//   if (!localStorage.getItem("authToken")) {
+//     await fazerLoginAutomatico();
+//   }
+// });
 
