@@ -16,7 +16,7 @@
     <!--      ESTILOS ESPECÍFICOS DA PÁGINA INICIAL    -->
     <!-- aviso, ofertas, carrossel                    -->
     <!-- ============================================= -->
-    <link rel="stylesheet" href="css/inicio.css">
+    <link rel="stylesheet" href="css/cardapio.css">
 
     <style>
         .pagina {
@@ -72,36 +72,17 @@
 
     <!-- ============================================= -->
     <!--               CONTEÚDO DA PÁGINA INICIAL      -->
-    <!-- (exatamente a parte que era #inicio)          -->
+    <!-- (exatamente a parte que era #cardapio)          -->
     <!-- ============================================= -->
 
     <main class="conteudo-principal container">
 
-        <section id="inicio" class="pagina ativa">
-
-            <!-- Aviso principal que aparece no topo da home -->
-            <div class="aviso">
-                <p>Irei chegar somente às <strong>15 horas</strong></p>
-            </div>
-
-            <!-- Seção de ofertas em carrossel -->
-            <div class="ofertas">
-                <h2 class="titulo-ofertas">Ofertas</h2>
-
-                <div class="carrossel">
-                    <!-- Seta esquerda do carrossel -->
-                    <button class="seta esquerda">‹</button>
-                    <!-- Faixa que recebe os itens dinamicamente via JS -->
-                    <div class="carrossel-track">
-                        <!-- Aqui entram os produtos em oferta (inseridos por inicio.js) -->
-                    </div>
-                    <!-- Seta direita do carrossel -->
-                    <button class="seta direita">›</button>
-                </div>
+        <section id="cardapio" class="pagina">
+            <div class="menu-section" id="menu-categorias">
             </div>
         </section>
-    </main>
 
+    </main>
     <!-- ============================================= -->
     <!--               RODAPÉ FIXO EMBAIXO             -->
     <!-- ============================================= -->
@@ -143,7 +124,7 @@
     <!--      SCRIPTS ESPECÍFICOS DA PÁGINA INICIAL    -->
     <!-- (setas do carrossel + renderização das ofertas)-->
     <!-- ============================================= -->
-    <script src="js/inicio.js"></script>
+    <script src="js/cardapio.js"></script>
 
 </body>
 
