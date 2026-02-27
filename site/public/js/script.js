@@ -18,10 +18,10 @@ const API_BASE = "https://cantina-api-rlqm.onrender.com";
 // ────────────────────────────────────────────────
 //  Elementos DOM mais usados (cache)
 // ────────────────────────────────────────────────
-const iconeCarrinho       = document.querySelector(".carrinho img");
-const drawerCarrinho      = document.getElementById("drawer-carrinho");
-const overlayCarrinho     = document.getElementById("overlay-carrinho");
-const fecharDrawer        = document.getElementById("fecharDrawer");
+const iconeCarrinho = document.querySelector(".carrinho img");
+const drawerCarrinho = document.getElementById("drawer-carrinho");
+const overlayCarrinho = document.getElementById("overlay-carrinho");
+const fecharDrawer = document.getElementById("fecharDrawer");
 
 // ────────────────────────────────────────────────
 //  Estado global
@@ -57,7 +57,7 @@ btnEsq.addEventListener('click', () => {
 //  SPA – Navegação entre páginas
 // ────────────────────────────────────────────────
 const botoesNav = document.querySelectorAll('.nav-botoes button');
-const paginas   = document.querySelectorAll('.pagina');
+const paginas = document.querySelectorAll('.pagina');
 
 function navegar(paginaId) {
   paginas.forEach(p => p.classList.remove('ativa'));
@@ -90,7 +90,7 @@ function adicionarAoCarrinho(id, nome, preco) {
 
 function atualizarInterfaceCarrinho() {
   const containerItens = document.querySelector(".drawer-itens");
-  const totalTexto     = document.getElementById("valor-total-carrinho");
+  const totalTexto = document.getElementById("valor-total-carrinho");
 
   containerItens.innerHTML = "";
   let total = 0;
@@ -140,6 +140,123 @@ function limparCarrinho() {
 }
 
 // ────────────────────────────────────────────────
+//  ENVIAR PEDIDO – Função principal (compatível com seu HTML e backend)
+// ────────────────────────────────────────────────
+async function enviarPedido() {
+  if (carrinho.length === 0) {
+    alert("Seu carrinho está vazio! Adicione itens antes de enviar.");
+    return;
+  }
+
+  // Pegar valores dos inputs (IDs exatos do seu HTML)
+  const nomeAluno = document.getElementById("nomeAluno")?.value.trim();
+  const palavraChave = document.getElementById("palavra-chave")?.value.trim();
+  const horarioRetirada = document.getElementById("horarioRetirada")?.value;
+  const observacoes = document.getElementById("observacoes")?.value.trim();
+
+  // Forma de pagamento (radio)
+  const pagamentoSelecionado = document.querySelector('input[name="pagamento"]:checked');
+  const formaPagamento = pagamentoSelecionado ? pagamentoSelecionado.value : "PIX";
+
+  // Validação obrigatória (campos que o backend exige)
+  if (!nomeAluno) {
+    alert("Por favor, informe seu nome.");
+    return;
+  }
+  if (!palavraChave) {
+    alert("A palavra-chave é obrigatória (usada para cancelamento futuro).");
+    return;
+  }
+  if (!horarioRetirada) {
+    alert("Informe o horário de retirada desejado.");
+    return;
+  }
+
+  // Montar o objeto no formato exato do backend
+  const pedido = {
+    nomeAluno: nomeAluno,
+    palavraChave: palavraChave,
+    horarioRetirada: horarioRetirada,          // ex: "14:30"
+    formaPagamento: formaPagamento,
+    observacoes: observacoes || null,          // pode ser nulo
+    itens: carrinho.map(item => ({
+      produtoId: item.id,
+      quantidade: item.quantidade
+    }))
+  };
+
+  try {
+    // Feedback visual no botão
+    const botao = document.querySelector(".btn-fazer");
+    const textoOriginal = botao.textContent;
+    botao.textContent = "Enviando...";
+    botao.disabled = true;
+
+    const resposta = await fetch(`${API_BASE}/api/public/pedidos`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(pedido)
+    });
+
+    if (resposta.ok) {
+      const resultado = await resposta.json();
+
+      alert(`✅ Pedido realizado com sucesso!\n\n` +
+        `Número de retirada: ${resultado.numeroRetirada}\n` +
+        `Total: R$ ${resultado.valorTotal.toFixed(2)}\n` +
+        `Status: ${resultado.status}\n\n` +
+        `Guarde o número de retirada!`);
+
+      // Sucesso → limpar tudo
+      carrinho = [];
+      atualizarInterfaceCarrinho();
+      fecharCarrinho();
+
+      // Limpar campos do formulário
+      document.getElementById("nomeAluno").value = "";
+      document.getElementById("palavra-chave").value = "";
+      document.getElementById("horarioRetirada").value = "";
+      document.getElementById("observacoes").value = "";
+
+      // Opcional: desmarcar rádio ou voltar pro PIX
+      const pixRadio = document.querySelector('input[name="pagamento"][value="PIX"]');
+      if (pixRadio) pixRadio.checked = true;
+    }
+    else {
+      let mensagemErro = "Não foi possível enviar o pedido.";
+      try {
+        const erroJson = await resposta.json();
+        mensagemErro = erroJson.message || mensagemErro;
+      } catch {
+        const textoErro = await resposta.text();
+        mensagemErro = textoErro || mensagemErro;
+      }
+
+      // Tratamento específico comum
+      if (mensagemErro.toLowerCase().includes("fechad")) {
+        alert("A Cantina está fechada no momento. Tente novamente em outro horário!");
+      } else if (mensagemErro.includes("horário") || mensagemErro.includes("retirada")) {
+        alert("Horário de retirada inválido ou fora do expediente.");
+      } else {
+        alert(`Erro do servidor: ${mensagemErro}\n\n(Tente novamente ou fale conosco)`);
+      }
+    }
+  }
+  catch (erro) {
+    console.error("Erro ao enviar pedido:", erro);
+    alert("Falha na conexão com o servidor.\nVerifique sua internet e tente novamente.");
+  }
+  finally {
+    // Sempre restaura o botão
+    const botao = document.querySelector(".btn-fazer");
+    botao.textContent = "Fazer Pedido";
+    botao.disabled = false;
+  }
+}
+
+// ────────────────────────────────────────────────
 //  CARRINHO – Controle de abertura/fechamento
 // ────────────────────────────────────────────────
 iconeCarrinho.addEventListener("click", () => {
@@ -172,10 +289,10 @@ function toggleSection(id) {
 // ────────────────────────────────────────────────
 //  MODAL – Cancelar Pedido
 // ────────────────────────────────────────────────
-const btnCancelar     = document.getElementById("btn-cancelar");
-const modalCancelar   = document.getElementById("modal-cancelar");
-const btnSair         = document.getElementById("btn-sair");  // só esse agora
-const btnConfirmar    = document.getElementById("btn-confirmar");
+const btnCancelar = document.getElementById("btn-cancelar");
+const modalCancelar = document.getElementById("modal-cancelar");
+const btnSair = document.getElementById("btn-sair");  // só esse agora
+const btnConfirmar = document.getElementById("btn-confirmar");
 
 if (btnCancelar) {
   btnCancelar.addEventListener("click", () => {
@@ -192,7 +309,7 @@ if (btnSair) {
 if (btnConfirmar) {
   btnConfirmar.addEventListener("click", async () => {
     const numero = document.getElementById("numero-pedido")?.value?.trim();
-    const chave  = document.getElementById("palavra-chave")?.value?.trim();
+    const chave = document.getElementById("palavra-chave")?.value?.trim();
 
     if (!numero || !chave) {
       alert("Preencha o número do pedido e a palavra-chave!");
@@ -226,10 +343,10 @@ if (btnConfirmar) {
 // ────────────────────────────────────────────────
 //  MODAL – Informações / status do pedido
 // ────────────────────────────────────────────────
-const btnInfo         = document.getElementById("btn-info");
-const modalInfo       = document.getElementById("modal-info");
-const btnSairInfo     = document.getElementById("btn-sair-info");
-const btnConsultar    = document.getElementById("btn-consultar");
+const btnInfo = document.getElementById("btn-info");
+const modalInfo = document.getElementById("modal-info");
+const btnSairInfo = document.getElementById("btn-sair-info");
+const btnConsultar = document.getElementById("btn-consultar");
 
 if (btnInfo) {
   btnInfo.addEventListener("click", () => {
@@ -280,9 +397,9 @@ if (btnConsultar) {
 document.getElementById("form-contato").addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const nome      = document.getElementById("nome").value;
-  const whatsapp  = document.getElementById("whatsapp").value;
-  const mensagem  = document.getElementById("mensagem").value;
+  const nome = document.getElementById("nome").value;
+  const whatsapp = document.getElementById("whatsapp").value;
+  const mensagem = document.getElementById("mensagem").value;
 
   if (!nome || !whatsapp || !mensagem) {
     alert("Preencha todos os campos!");
@@ -298,9 +415,9 @@ document.getElementById("form-contato").addEventListener("submit", (e) => {
 //  MODAL – Equipe de desenvolvimento (footer)
 // ────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-  const abrirEquipe   = document.getElementById("abrirEquipe");
-  const modalEquipe   = document.getElementById("modal-equipe");
-  const fecharEquipe  = document.getElementById("fecharEquipe");
+  const abrirEquipe = document.getElementById("abrirEquipe");
+  const modalEquipe = document.getElementById("modal-equipe");
+  const fecharEquipe = document.getElementById("fecharEquipe");
 
   if (abrirEquipe && modalEquipe && fecharEquipe) {
     abrirEquipe.addEventListener("click", () => {
@@ -325,23 +442,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Função auxiliar para garantir o caminho da imagem
 function obterCaminhoImagem(nomeArquivo) {
-    if (!nomeArquivo) return 'img/default.png';
-    if (nomeArquivo.startsWith('http')) return nomeArquivo;
-    if (nomeArquivo.startsWith('img/')) return nomeArquivo;
-    return `img/${nomeArquivo}`;
+  if (!nomeArquivo) return 'img/default.png';
+  if (nomeArquivo.startsWith('http')) return nomeArquivo;
+  if (nomeArquivo.startsWith('img/')) return nomeArquivo;
+  return `img/${nomeArquivo}`;
 }
 
 function renderizarCarrossel(produtos) {
-    const trackCarrossel = document.querySelector('.carrossel-track');
-    if (!trackCarrossel) return;
+  const trackCarrossel = document.querySelector('.carrossel-track');
+  if (!trackCarrossel) return;
 
-    trackCarrossel.innerHTML = ''; 
+  trackCarrossel.innerHTML = '';
 
-    produtos.forEach(prod => {
-        const caminhoImg = obterCaminhoImagem(prod.imagemUrl);
-        
-        if (prod.promocao === true || prod.preco < 10) {
-            const htmlOferta = `
+  produtos.forEach(prod => {
+    const caminhoImg = obterCaminhoImagem(prod.imagemUrl);
+
+    if (prod.promocao === true || prod.preco < 10) {
+      const htmlOferta = `
             <div class="item">
               <img 
                   src="${caminhoImg}" 
@@ -356,47 +473,47 @@ function renderizarCarrossel(produtos) {
               </button>
             </div>
           `;
-            trackCarrossel.innerHTML += htmlOferta;
-        }
-    });
+      trackCarrossel.innerHTML += htmlOferta;
+    }
+  });
 }
 
 // 3. Renderiza o Cardápio Completo (Acordeão por Categorias)
 function renderizarCardapioCompleto(produtos) {
-    const menu = document.getElementById("menu-categorias");
-    if (!menu) return;
+  const menu = document.getElementById("menu-categorias");
+  if (!menu) return;
 
-    menu.innerHTML = "";
-    const categorias = {};
+  menu.innerHTML = "";
+  const categorias = {};
 
-    // Agrupa
-    produtos.forEach(prod => {
-        const nomeCategoria = prod.categoria ? prod.categoria.nome : "Outros";
-        const idCategoria = nomeCategoria.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "-");
+  // Agrupa
+  produtos.forEach(prod => {
+    const nomeCategoria = prod.categoria ? prod.categoria.nome : "Outros";
+    const idCategoria = nomeCategoria.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "-");
 
-        if (!categorias[idCategoria]) {
-            categorias[idCategoria] = { nome: nomeCategoria, produtos: [] };
-        }
-        categorias[idCategoria].produtos.push(prod);
-    });
+    if (!categorias[idCategoria]) {
+      categorias[idCategoria] = { nome: nomeCategoria, produtos: [] };
+    }
+    categorias[idCategoria].produtos.push(prod);
+  });
 
-    // Cria HTML
-    Object.entries(categorias).forEach(([idCategoria, categoria]) => {
-        const barra = `
+  // Cria HTML
+  Object.entries(categorias).forEach(([idCategoria, categoria]) => {
+    const barra = `
             <div class="menu-bar" onclick="toggleSection('${idCategoria}')">
                 <span class="menu-title">${categoria.nome}</span>
                 <span class="menu-arrow">▼</span>
             </div>
             <div id="${idCategoria}" class="menu-items escondido"></div>
         `;
-        menu.innerHTML += barra;
+    menu.innerHTML += barra;
 
-        const containerItens = document.getElementById(idCategoria);
+    const containerItens = document.getElementById(idCategoria);
 
-        categoria.produtos.forEach(prod => {
-            const caminhoImg = obterCaminhoImagem(prod.imagemUrl);
+    categoria.produtos.forEach(prod => {
+      const caminhoImg = obterCaminhoImagem(prod.imagemUrl);
 
-            containerItens.innerHTML += `
+      containerItens.innerHTML += `
                 <div class="itemcardapio">
                     <img src="${caminhoImg}" alt="${prod.nome}" onerror="this.src='img/default.png'">
                     <div class="itemcardapio-texto">
@@ -410,127 +527,165 @@ function renderizarCardapioCompleto(produtos) {
                     </button>
                 </div>
             `;
-        });
     });
+  });
 }
 
 // 4. Busca dados da API e chama as renderizações
 async function carregarProdutosCardapio() {
-    try {
-        const resposta = await fetch(`${API_BASE}/api/public/produtos`);
-        const dados = await resposta.json();
-        
-        produtosGlobais = dados; // Salva na global para a pesquisa funcionar
-        
-        // CHAMA AS DUAS FUNÇÕES
-        renderizarCarrossel(dados);
-        renderizarCardapioCompleto(dados);
-        
-    } catch (erro) {
-        console.error("Erro ao carregar cardápio:", erro);
-    }
+  try {
+    const resposta = await fetch(`${API_BASE}/api/public/produtos`);
+    const dados = await resposta.json();
+
+    produtosGlobais = dados; // Salva na global para a pesquisa funcionar
+
+    // CHAMA AS DUAS FUNÇÕES
+    renderizarCarrossel(dados);
+    renderizarCardapioCompleto(dados);
+
+  } catch (erro) {
+    console.error("Erro ao carregar cardápio:", erro);
+  }
 }
 
 // Inicia ao carregar a página
 document.addEventListener("DOMContentLoaded", carregarProdutosCardapio);
 
 
-// 5. Função de Enviar Pedido (VERSÃO CORRIGIDA - MÍNIMA ALTERAÇÃO)
+// Função principal para enviar o pedido ao backend
 async function enviarPedido() {
-    if (carrinho.length === 0) {
-        alert("O seu carrinho está vazio!");
-        return;
+
+  // Verifica se o carrinho está vazio antes de tentar enviar
+  if (carrinho.length === 0) {
+    alert("O seu carrinho está vazio! Adicione itens antes de enviar.");
+    return; // Sai da função imediatamente se não tiver itens
+  }
+
+  // Pega os valores dos campos do formulário no drawer
+  // Usamos ?. para evitar erro se o elemento não existir
+  // .trim() remove espaços em branco no início e fim
+  const nomeAluno = document.getElementById("nomeAluno")?.value?.trim() || "";
+  const palavraChave = document.getElementById("palavraChave")?.value?.trim() || "";
+  const horarioRetirada = document.getElementById("horarioRetirada")?.value || "";
+  const observacoes = document.getElementById("observacoes")?.value?.trim() || "";
+
+  console.log("=== DEBUG DOS CAMPOS ===");
+  console.log("Nome:", nomeAluno, "(length:", nomeAluno.length, ")");
+  console.log("Palavra-chave raw:", document.getElementById("palavraChave")?.value);
+  console.log("Palavra-chave após trim:", palavraChave, "(length:", palavraChave.length, ")");
+  console.log("Horário:", horarioRetirada);
+
+  // Pega a forma de pagamento escolhida no radio button
+  // Se nenhum estiver marcado (improvável), usa "PIX" como padrão
+  const pagamentoSelecionado = document.querySelector('input[name="pagamento"]:checked');
+  const formaPagamento = pagamentoSelecionado ? pagamentoSelecionado.value : "PIX";
+
+
+
+  // Validação dos campos obrigatórios
+  // Se algum estiver vazio, mostra alerta e sai da função
+  if (!nomeAluno || !palavraChave || !horarioRetirada) {
+    let mensagemErro = "Por favor, preencha os campos obrigatórios:\n";
+    if (!nomeAluno) mensagemErro += "• Nome\n";
+    if (!palavraChave) mensagemErro += "• Palavra-chave\n";
+    if (!horarioRetirada) mensagemErro += "• Horário de Retirada\n";
+    alert(mensagemErro);
+    return;
+  }
+
+  // Monta o objeto JSON que será enviado para o backend
+  // Formato exato que a API espera
+  const pedido = {
+    nomeAluno,          // Nome do aluno/aluno
+    palavraChave,       // Palavra usada para cancelamento futuro
+    horarioRetirada,    // Ex: "14:30"
+    formaPagamento,     // "PIX", "BALCAO", etc.
+    observacoes,        // Pode ser vazio ou nulo
+    itens: carrinho.map(item => ({
+      produtoId: item.id,       // ID do produto vindo do banco
+      quantidade: item.quantidade
+    }))
+  };
+
+  try {
+    // Pega o botão para mostrar "Enviando..." e desabilitar durante a requisição
+    const botao = document.querySelector(".btn-fazer");
+    const textoOriginal = botao.innerText;
+    botao.innerText = "Enviando...";
+    botao.disabled = true;
+
+    // Faz a requisição POST para a API
+    const resposta = await fetch(`${API_BASE}/api/public/pedidos`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json" // Diz que estamos enviando JSON
+      },
+      body: JSON.stringify(pedido) // Converte o objeto JS em string JSON
+    });
+
+    // Verifica se a resposta foi bem-sucedida (status 200-299)
+    if (resposta.ok) {
+      // Converte a resposta do servidor em objeto JavaScript
+      const resultado = await resposta.json();
+
+      // Limpa o carrinho após sucesso
+      carrinho = [];
+      atualizarInterfaceCarrinho();
+      fecharCarrinho();
+
+      // Limpa todos os campos do formulário no drawer
+      document.getElementById("nomeAluno").value = "";
+      document.getElementById("palavra-chave").value = "";
+      document.getElementById("horarioRetirada").value = "";
+      document.getElementById("observacoes").value = "";
+
+      // Abre o modal customizado com o número de retirada
+      document.getElementById("numero-retirada-modal").textContent = resultado.numeroRetirada;
+      document.getElementById("modal-sucesso-pedido").style.display = "flex";
+
+    } else {
+      // Se o servidor respondeu com erro (ex: 400, 500)
+      const erroTexto = await resposta.text();
+
+      // Tratamento específico para quando a cantina está fechada
+      if (erroTexto.toLowerCase().includes("fechada") || erroTexto.toLowerCase().includes("fechado")) {
+        alert("⛔ A Cantina está FECHADA no momento. Tente novamente mais tarde.");
+      } else {
+        alert("Erro ao enviar o pedido. Verifique os dados ou tente novamente.");
+      }
     }
 
-    // Pega os valores dos inputs do Drawer (IDs exatos do HTML)
-    const nomeAluno       = document.getElementById("nomeAluno")?.value.trim();
-    const palavraChave    = document.getElementById("palavra-chave")?.value.trim();
-    const horarioRetirada = document.getElementById("horarioRetirada")?.value;
-    const observacoes     = document.getElementById("observacoes")?.value.trim();
-    
-    // Pega o rádio selecionado
-    const pagamentoSelecionado = document.querySelector('input[name="pagamento"]:checked');
-    const formaPagamento = pagamentoSelecionado ? pagamentoSelecionado.value : "PIX";
+  } catch (erro) {
+    // Erro de rede, servidor offline, CORS, etc.
+    console.error("Erro completo ao enviar pedido:", erro);
+    alert("Falha na conexão com o servidor.\nVerifique sua internet e tente novamente.");
 
-    // Validação mínima
-    if (!nomeAluno || !palavraChave || !horarioRetirada) {
-        alert("Por favor, preencha Nome, Palavra-chave e Horário.");
-        return;
-    }
-
-    const pedido = {
-        nomeAluno,
-        palavraChave,
-        horarioRetirada,
-        formaPagamento,
-        observacoes,
-        itens: carrinho.map(item => ({
-            produtoId: item.id,
-            quantidade: item.quantidade
-        }))
-    };
-
-    try {
-        const btn = document.querySelector(".btn-fazer");
-        const textoOriginal = btn.innerText;
-        btn.innerText = "Enviando...";
-        btn.disabled = true;
-
-        const resposta = await fetch(`${API_BASE}/api/public/pedidos`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(pedido)
-        });
-
-        if (resposta.ok) {
-            const resultado = await resposta.json();
-            alert(`✅ Pedido realizado com sucesso!\n\nSeu número de retirada é: ${resultado.numeroRetirada}\nGuarde esse número!`);
-            
-            carrinho = [];
-            atualizarInterfaceCarrinho();
-            fecharCarrinho();
-            
-            // Limpa campos só após sucesso
-            document.getElementById("nomeAluno").value = "";
-            document.getElementById("palavra-chave").value = "";
-            document.getElementById("horarioRetirada").value = "";
-            document.getElementById("observacoes").value = "";
-        } else {
-            const erroTxt = await resposta.text();
-            if (erroTxt.toLowerCase().includes("fechada")) {
-                alert("⛔ A Cantina está FECHADA no momento.");
-            } else {
-                alert("Erro ao enviar pedido. Verifique os dados.");
-            }
-        }
-    } catch (erro) {
-        console.error("Erro na conexão:", erro);
-        alert("Erro de conexão com o servidor.");
-    } finally {
-        const btn = document.querySelector(".btn-fazer");
-        btn.innerText = "Fazer Pedido";
-        btn.disabled = false;
-    }
+  } finally {
+    // Sempre executa, mesmo dando erro
+    // Restaura o botão para o estado normal
+    const botao = document.querySelector(".btn-fazer");
+    botao.innerText = "Fazer Pedido";
+    botao.disabled = false;
+  }
 }
 
-// 6. Pesquisa
-////////////////////
+// 6. Pesquisa (Atualizada para usar a nova função de renderizar menu)
 const inputPesquisa = document.getElementById("pesquisa-produto");
 
 inputPesquisa.addEventListener("input", () => {
-    const termo = inputPesquisa.value.toLowerCase().trim();
+  const termo = inputPesquisa.value.toLowerCase().trim();
 
-     navegar('cardapio');
+  if (termo === "") {
+    renderizarCardapioCompleto(produtosGlobais); // Volta ao normal
+    return;
+  }
 
-    if (termo === "") {
-        renderizarCardapioCompleto(produtosGlobais);
-        return;
-    }
-
-    const filtrados = produtosGlobais.filter(prod =>
-        prod.nome.toLowerCase().includes(termo) ||
-        (prod.descricao && prod.descricao.toLowerCase().includes(termo)) ||
-        (prod.categoria?.nome && prod.categoria.nome.toLowerCase().includes(termo))
-    );
-    renderizarCardapioCompleto(filtrados); 
+  const filtrados = produtosGlobais.filter(prod =>
+    prod.nome.toLowerCase().includes(termo) ||
+    (prod.descricao && prod.descricao.toLowerCase().includes(termo)) ||
+    (prod.categoria?.nome && prod.categoria.nome.toLowerCase().includes(termo))
+  );
+  renderizarCardapioCompleto(filtrados);
 });
+
+

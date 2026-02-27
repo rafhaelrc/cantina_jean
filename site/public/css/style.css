@@ -626,6 +626,58 @@ body {
   color: #b02a37;
 }
 
+/* Modal de sucesso do pedido - estilo inspirado na sua imagem */
+.modal-sucesso {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 3000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-sucesso-conteudo {
+  background: white;
+  width: 90%;
+  max-width: 420px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  position: relative;
+  text-align: center;
+}
+
+.modal-sucesso-header {
+  background: #1b5e20;
+  color: white;
+  padding: 16px;
+  font-size: 20px;
+}
+
+.modal-sucesso-body {
+  padding: 24px 16px;
+  font-size: 16px;
+}
+
+.modal-sucesso-body strong {
+  font-size: 28px;
+  color: #1b5e20;
+}
+
+.modal-sucesso-fechar {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: #c62828;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+  cursor: pointer;
+}
 
 /* =========================
    CARDÁPIO

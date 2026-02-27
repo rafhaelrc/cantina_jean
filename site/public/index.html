@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cantina Jean</title>
-    
+
     <link rel="stylesheet" href="css/style.css">
 
     <style>
@@ -62,7 +62,7 @@
                     <button class="seta esquerda">‹</button>
 
                     <div class="carrossel-track">
-                        </div>
+                    </div>
 
                     <button class="seta direita">›</button>
                 </div>
@@ -71,7 +71,7 @@
 
         <section id="cardapio" class="pagina">
             <div class="menu-section" id="menu-categorias">
-                </div>
+            </div>
         </section>
 
         <section id="pedido" class="pagina">
@@ -80,14 +80,14 @@
                 <div class="coluna-pedidos preparando">
                     <h3>PREPARANDO</h3>
                     <ul id="lista-preparo">
-                        
+
                     </ul>
                 </div>
 
                 <div class="coluna-pedidos pronto">
                     <h3>PRONTO</h3>
                     <ul id="lista-pronto">
-                        
+
                     </ul>
                 </div>
             </div>
@@ -187,64 +187,82 @@
                     <input type="text" id="nomeAluno" placeholder="Digite seu nome" required>
                 </div>
                 <div class="form-group">
-                    <label for="palavra-chave">Palavra chave: <span style="color:red">*</span></label>
-                    <input type="text" id="palavra-chave" placeholder="Usado para o possível cancelamento" required>
+                    <label for="palavraChave">Palavra chave: <span style="color:red">*</span></label>
+                    <input type="text" id="palavraChave" placeholder="Usado para o possível cancelamento" required>
+                    <div class="form-group">
+                        <label for="horarioRetirada">Horário de Retirada: <span style="color:red">*</span></label>
+                        <input type="time" id="horarioRetirada" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="horarioRetirada">Horário de Retirada: <span style="color:red">*</span></label>
-                    <input type="time" id="horarioRetirada" required>
+
+                <div class="drawer-section">
+                    <h4>Pagamento</h4>
+                    <div class="radio-group">
+                        <label><input type="radio" name="pagamento" value="PIX" checked> Pix no app</label>
+                        <label><input type="radio" name="pagamento" value="BALCAO"> Balcão</label>
+                    </div>
+                </div>
+
+                <div class="drawer-section">
+                    <h4>Resumo</h4>
+                    <div class="form-group">
+                        <label for="observacoes">Observações:</label>
+                        <textarea id="observacoes" rows="3" placeholder="Alguma observação? (opcional)"></textarea>
+                    </div>
+                    <div class="total-line">
+                        <span>Total do Pedido:</span>
+                        <strong id="valor-total-carrinho">R$ 0,00</strong>
+                    </div>
                 </div>
             </div>
 
-            <div class="drawer-section">
-                <h4>Pagamento</h4>
-                <div class="radio-group">
-                    <label><input type="radio" name="pagamento" value="PIX" checked> Pix no app</label>
-                    <label><input type="radio" name="pagamento" value="BALCAO"> Balcão</label>
-                </div>
+            <div class="drawer-footer">
+                <button onclick="enviarPedido()" class="btn-fazer">Fazer Pedido</button>
+                <button onclick="limparCarrinho()" class="btn-limpar">Limpar Carrinho</button>
             </div>
+        </div>
 
-            <div class="drawer-section">
-                <h4>Resumo</h4>
-                <div class="form-group">
-                    <label for="observacoes">Observações:</label>
-                    <textarea id="observacoes" rows="3" placeholder="Alguma observação? (opcional)"></textarea>
+        <div id="overlay-carrinho"></div>
+
+        <!-- Modal de sucesso -->
+        <div id="modal-sucesso-pedido" class="modal-sucesso" style="display: none;">
+            <div class="modal-sucesso-conteudo">
+                <button class="modal-sucesso-fechar"
+                    onclick="document.getElementById('modal-sucesso-pedido').style.display='none'">✖</button>
+
+                <div class="modal-sucesso-header">
+                    <h2>Número de Retirada</h2>
                 </div>
-                <div class="total-line">
-                    <span>Total do Pedido:</span>
-                    <strong id="valor-total-carrinho">R$ 0,00</strong>
+
+                <div class="modal-sucesso-body">
+                    <p>Agradecemos pelo seu pedido!</p>
+                    <p>O número de retirada é: <strong id="numero-retirada-modal">---</strong></p>
+                    <p>Para mais informações sobre o status do seu pedido,<br>clique em "Pedido".</p>
                 </div>
             </div>
         </div>
 
-        <div class="drawer-footer">
-            <button onclick="enviarPedido()" class="btn-fazer">Fazer Pedido</button>
-            <button onclick="limparCarrinho()" class="btn-limpar">Limpar Carrinho</button>
+
+        <div id="modal-equipe" class="modal-equipe">
+            <div class="modal-equipe-conteudo">
+                <button id="fecharEquipe" class="fechar-modal">✖</button>
+
+                <h2>Equipe de Desenvolvimento</h2>
+
+                <ul>
+                    <li><strong>Matheus L. Paganella</strong><br>Front-end — Página do Usuário</li>
+                    <li><strong>Gabriel Athaydes</strong><br>Front-end — Página Administrativa</li>
+                    <li><strong>Marcelli Masson</strong><br>Front-end — Página do Usuário</li>
+                    <li><strong>Murilo Nunes</strong><br>Front-end — Página Administrativa</li>
+                    <li><strong>João Augusto Crestani</strong><br>Front-end — Página Administrativa e Usuário</li>
+                    <li><strong>Rafael Cunha</strong><br>Orientador — Full Stack</li>
+                </ul>
+
+                <p>Projeto desenvolvido para a Cantina Jean 🚀</p>
+            </div>
         </div>
-    </div>
 
-    <div id="overlay-carrinho"></div>
-
-    <div id="modal-equipe" class="modal-equipe">
-        <div class="modal-equipe-conteudo">
-            <button id="fecharEquipe" class="fechar-modal">✖</button>
-
-            <h2>Equipe de Desenvolvimento</h2>
-
-            <ul>
-                <li><strong>Matheus L. Paganella</strong><br>Front-end — Página do Usuário</li>
-                <li><strong>Gabriel Athaydes</strong><br>Front-end — Página Administrativa</li>
-                <li><strong>Marcelli Masson</strong><br>Front-end — Página do Usuário</li>
-                <li><strong>Murilo Nunes</strong><br>Front-end — Página Administrativa</li>
-                <li><strong>João Augusto Crestani</strong><br>Front-end — Página Administrativa e Usuário</li>
-                <li><strong>Rafael Cunha</strong><br>Orientador — Full Stack</li>
-            </ul>
-
-            <p>Projeto desenvolvido para a Cantina Jean 🚀</p>
-        </div>
-    </div>
-
-    <script src="js/script.js"></script>
+        <script src="js/script.js"></script>
 
 </body>
 
