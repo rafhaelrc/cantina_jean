@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cantina Jean</title>
+
+    <!-- ============================================= -->
+    <!--               ESTILOS GLOBAIS                -->
+    <!-- header, navegação, rodapé, reset, etc        -->
+    <!-- ============================================= -->
+    <link rel="stylesheet" href="css/global.css">
+
+    <!-- ============================================= -->
+    <!--      ESTILOS ESPECÍFICOS DA PÁGINA INICIAL    -->
+    <!-- ============================================= -->
+    <link rel="stylesheet" href="css/contato.css">
+
+</head>
+
+<body>
+    <!-- ============================================= -->
+    <!--           HEADER VERDE FIXO NO TOPO           -->
+    <!-- ============================================= -->
+    <header class="header-verde">
+        <div class="header-verde">
+            <div class="header-verde-content">
+                <!-- Logo do IF no canto esquerdo -->
+                <div class="logo">
+                    <img src="img/if_logo.png" alt="Logo" />
+                </div>
+
+                <!-- Campo de pesquisa de produtos -->
+                <input type="text" class="pesquisa" id="pesquisa-produto" placeholder="Pesquisar produto" />
+
+                <!-- Ícone do carrinho → agora link para página carrinho.html -->
+                <div class="carrinho">
+                    <a href="carrinho.html">
+                        <img src="img/carrinho.png" alt="Ícone do carrinho" />
+                        <!-- Espaço para badge de quantidade (atualizado via global.js) -->
+                        <span class="carrinho-contador"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Linha divisória abaixo do header -->
+    <hr class="linha-topo">
+
+    <!-- ============================================= -->
+    <!--           NAVEGAÇÃO PRINCIPAL                 -->
+    <!-- agora usando links comuns (sem SPA)           -->
+    <!-- ============================================= -->
+    <nav class="nav-botoes">
+        <a href="index.html"><button><strong>Início</strong></button></a>
+        <a href="cardapio.html"><button><strong>Cardápio</strong></button></a>
+        <a href="pedido.html"><button><strong>Pedido</strong></button></a>
+        <a href="contato.html"><button style="color: rgb(231, 231, 79);"><strong>Fale Conosco</strong></button></a>
+    </nav>
+
+    <!-- ============================================= -->
+    <!--               CONTEÚDO DA PÁGINA INICIAL      -->
+    <!-- (exatamente a parte que era #cardapio)          -->
+    <!-- ============================================= -->
+
+    <main class="conteudo-principal container">
+      <section id="contato">
+            <div class="contato-container">
+                <h2>Fale Conosco</h2>
+                <p>Envie sua mensagem para a Cantina Jean 🚀</p>
+
+                <form id="form-contato" class="form-contato">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+
+                    <label for="whatsapp">Whatsapp</label>
+                    <input type="text" id="whatsapp" name="whatsapp" placeholder="Digite seu whatsapp" required>
+
+                    <label for="mensagem">Mensagem</label>
+                    <textarea id="mensagem" name="mensagem" rows="5" placeholder="Digite sua mensagem" required></textarea>
+
+                    <button type="submit" class="btn-enviar">Enviar</button>
+                </form>
+            </div>
+        </section>
+    </main>
+        
+
+    <!-- ============================================= -->
+    <!--               RODAPÉ FIXO EMBAIXO             -->
+    <!-- ============================================= -->
+
+    <footer class="rodape">
+        <div class="footer-conteudo">
+            <span>© 2026 - Cantina Jean</span>
+            <span id="abrirEquipe" class="link-equipe">Equipe de devs</span>
+        </div>
+    </footer>
+
+    <div id="modal-equipe" class="modal-equipe">
+        <div class="modal-equipe-conteudo">
+            <button id="fecharEquipe" class="fechar-modal">✖</button>
+
+            <h2>Equipe de Desenvolvimento</h2>
+
+            <ul>
+                <li><strong>Matheus L. Paganella</strong><br>Front-end — Página do Usuário</li>
+                <li><strong>Gabriel Athaydes</strong><br>Front-end — Página Administrativa</li>
+                <li><strong>Marcelli Masson</strong><br>Front-end — Página do Usuário</li>
+                <li><strong>Murilo Nunes</strong><br>Front-end — Página Administrativa</li>
+                <li><strong>João Augusto Crestani</strong><br>Front-end — Página Administrativa e Usuário</li>
+                <li><strong>Rafael Cunha</strong><br>Orientador — Full Stack</li>
+            </ul>
+
+            <p>Projeto desenvolvido para a Cantina Jean 🚀</p>
+        </div>
+    </div>
+
+
+    <!-- ============================================= -->
+    <!--               SCRIPTS GLOBAIS                 -->
+    <!-- (carrinho persistente, contador, modal equipe)-->
+    <!-- ============================================= -->
+    <script src="js/global.js"></script>
+
+    <!-- ============================================= -->
+    <!--     SCRIPTS ESPECÍFICOS DA PÁGINA CARPADIO    -->
+    <!-- ============================================= -->
+    <script src="js/contato.js"></script>
+
+</body>
+
+</html>

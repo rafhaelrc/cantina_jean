@@ -1,0 +1,51 @@
+/* =========================
+   FALE CONOSCO
+========================= */
+.contato-container {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  max-width: 600px;
+  margin: auto;
+}
+
+.contato-container h2 {
+  text-align: center;
+  color: #1b5e20;
+  margin-bottom: 15px;
+}
+
+.form-contato {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-contato label {
+  font-weight: bold;
+  color: #333;
+}
+
+.form-contato input,
+.form-contato textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.btn-enviar {
+  background: #1b5e20;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.btn-enviar:hover {
+  background: #2e7d32;
+}

@@ -66,3 +66,67 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+// ================================================
+// CARRINHO GLOBAL (disponível em todas as páginas)
+// ================================================
+
+// Salva o carrinho sempre que mudar
+function salvarCarrinho() {
+    localStorage.setItem('carrinhoCantina', JSON.stringify(carrinho));
+}
+
+// Atualiza o contador do ícone no header (todas as páginas)
+function atualizarContadorCarrinho() {
+    const contador = document.querySelector('.carrinho-contador');
+    if (contador) {
+        const qtd = carrinho.reduce((total, item) => total + item.quantidade, 0);
+        contador.textContent = qtd > 0 ? qtd : '';
+        contador.style.display = qtd > 0 ? 'flex' : 'none';
+    }
+}
+
+// Adiciona produto ao carrinho (chamado nos botões dos produtos)
+function adicionarAoCarrinho(id, nome, preco) {
+    const itemExistente = carrinho.find(item => item.id === id);
+
+    if (itemExistente) {
+        itemExistente.quantidade++;
+    } else {
+        carrinho.push({ id, nome, preco, quantidade: 1 });
+    }
+
+    salvarCarrinho();
+    atualizarContadorCarrinho();
+
+    // Feedback simples (opcional: pode remover se quiser)
+    alert(`${nome} adicionado ao carrinho!`);
+}
+
+// Atualiza quantidade
+function alterarQuantidade(index, delta) {
+    if (!carrinho[index]) return;
+    carrinho[index].quantidade += delta;
+    if (carrinho[index].quantidade < 1) carrinho[index].quantidade = 1;
+    salvarCarrinho();
+    atualizarContadorCarrinho();
+}
+
+// Remove item
+function removerDoCarrinho(index) {
+    carrinho.splice(index, 1);
+    salvarCarrinho();
+    atualizarContadorCarrinho();
+}
+
+// Limpa carrinho
+function limparCarrinho() {
+    if (confirm("Deseja realmente limpar todo o carrinho?")) {
+        carrinho = [];
+        salvarCarrinho();
+        atualizarContadorCarrinho();
+    }
+}
+
+// Atualiza o contador em todas as páginas ao carregar
+document.addEventListener("DOMContentLoaded", atualizarContadorCarrinho);

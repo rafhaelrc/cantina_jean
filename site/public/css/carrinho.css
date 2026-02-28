@@ -1,0 +1,282 @@
+/* ================================================ */
+/*                 carrinho.css                     */
+/* Estilos da página Carrinho (antigo drawer)       */
+/* ================================================ */
+
+/* Botão vermelho com X para voltar à página anterior */
+.btn-voltar {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 10000;
+    width: 45px;
+    height: 45px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: background 0.2s;
+}
+
+.btn-voltar:hover {
+    background: #c82333;
+}
+
+/* Cabeçalho fixo do carrinho */
+.carrinho-header {
+    background: #1b5e20;
+    color: white;
+    padding: 14px 16px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* Conteúdo principal (rolável) */
+.carrinho-content {
+    padding: 0 16px;
+    min-height: calc(100vh - 60px); /* evita que o footer sobreponha */
+}
+
+/* Título "Detalhes do Pedido" */
+.detalhes-titulo {
+    background: #1b5e20;
+    color: white;
+    padding: 10px 16px;
+    margin: 16px -16px 12px -16px;
+}
+
+.detalhes-titulo h4 {
+    margin: 0;
+    font-size: 16px;
+}
+
+/* Seções do formulário */
+.carrinho-section {
+    margin-bottom: 24px;
+}
+
+.carrinho-section h4 {
+    background: #1b5e20;
+    color: white;
+    margin: 0 -16px 12px -16px;
+    padding: 10px 16px;
+    font-size: 16px;
+}
+
+/* Grupos de formulário */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 9px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+/* Destaque para campos obrigatórios (quando inválidos) */
+.form-group input:required:invalid,
+.form-group input:required:focus:invalid {
+    border-color: #dc3545;
+    background-color: #fff5f5;
+}
+
+/* Grupo de radios de pagamento */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+}
+
+/* Linha do total */
+.total-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+/* Footer com botões Fazer Pedido e Limpar */
+.carrinho-footer {
+    padding: 16px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    gap: 10px;
+    position: sticky;
+    bottom: 0;
+    background: white;
+    z-index: 100;
+}
+
+.btn-fazer {
+    flex: 1;
+    background: #1b5e20;
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-limpar {
+    flex: 1;
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Item no carrinho */
+.item-no-carrinho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.item-principal {
+    flex: 1;
+}
+
+.item-nome {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 6px 0;
+}
+
+.controle-quantidade {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 6px 0;
+}
+
+.btn-menos, .btn-mais {
+    width: 32px;
+    height: 32px;
+    background: #1b5e20;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.btn-menos:hover, .btn-mais:hover {
+    background: #2e7d32;
+}
+
+.qtd-atual {
+    font-size: 16px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+}
+
+.item-preco {
+    font-size: 14px;
+    color: #444;
+    margin-top: 4px;
+}
+
+.btn-lixeira {
+    background: none;
+    border: none;
+    font-size: 26px;
+    color: #dc3545;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.btn-lixeira:hover {
+    color: #b02a37;
+}
+
+/* Modal de sucesso após enviar pedido */
+.modal-sucesso {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 3000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-sucesso-conteudo {
+    background: white;
+    width: 90%;
+    max-width: 420px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    position: relative;
+    text-align: center;
+}
+
+.modal-sucesso-header {
+    background: #1b5e20;
+    color: white;
+    padding: 16px;
+    font-size: 20px;
+}
+
+.modal-sucesso-body {
+    padding: 24px 16px;
+    font-size: 16px;
+}
+
+.modal-sucesso-body strong {
+    font-size: 28px;
+    color: #1b5e20;
+}
+
+.modal-sucesso-fechar {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: #c62828;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+    cursor: pointer;
+}

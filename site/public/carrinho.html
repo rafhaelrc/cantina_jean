@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cantina Jean - Carrinho</title>
+
+    <!-- ============================================= -->
+    <!-- ESTILOS GLOBAIS (header, reset, etc.) -->
+    <!-- ============================================= -->
+    <link rel="stylesheet" href="css/global.css">
+
+    <!-- ============================================= -->
+    <!-- ESTILOS ESPECÍFICOS DO CARRINHO -->
+    <!-- (tudo que era do drawer agora é da página) -->
+    <!-- ============================================= -->
+    <link rel="stylesheet" href="css/carrinho.css">
+</head>
+
+<body>
+
+    <!-- ============================================= -->
+    <!-- BOTÃO DE VOLTAR (X VERMELHO NO TOPO) -->
+    <!-- Fecha a página e volta para onde o usuário estava -->
+    <!-- ============================================= -->
+    <button class="btn-voltar" onclick="history.back()">✖</button>
+
+    <!-- ============================================= -->
+    <!-- CABEÇALHO DO CARRINHO (antigo drawer-header) -->
+    <!-- ============================================= -->
+    <div class="carrinho-header">
+        <h3>Detalhes do Pedido</h3>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- CONTEÚDO PRINCIPAL DO CARRINHO -->
+    <!-- (antigo drawer-content-scroll) -->
+    <!-- ============================================= -->
+    <div class="carrinho-content">
+        <!-- Título "Detalhes do Pedido" -->
+        <div class="detalhes-titulo">
+            <h4>Detalhes do Pedido</h4>
+        </div>
+
+        <!-- Lista de itens do carrinho (gerada pelo JS) -->
+       <div class="carrinho-itens"></div>
+
+        <!-- Informações Pessoais -->
+        <div class="carrinho-section">
+            <h4>Informações Pessoais</h4>
+            <div class="form-group">
+                <label for="nomeAluno">Nome: <span style="color:red">*</span></label>
+                <input type="text" id="nomeAluno" placeholder="Digite seu nome" required>
+            </div>
+            <div class="form-group">
+                <label for="palavraChave">Palavra chave: <span style="color:red">*</span></label>
+                <input type="text" id="palavraChave" placeholder="Usado para o possível cancelamento" required>
+            </div>
+            <div class="form-group">
+                <label for="horarioRetirada">Horário de Retirada: <span style="color:red">*</span></label>
+                <input type="time" id="horarioRetirada" required>
+            </div>
+        </div>
+
+        <!-- Forma de Pagamento -->
+        <div class="carrinho-section">
+            <h4>Pagamento</h4>
+            <div class="radio-group">
+                <label><input type="radio" name="pagamento" value="PIX" checked> Pix no app</label>
+                <label><input type="radio" name="pagamento" value="BALCAO"> Balcão</label>
+            </div>
+        </div>
+
+        <!-- Resumo + Observações + Total -->
+        <div class="carrinho-section">
+            <h4>Resumo</h4>
+            <div class="form-group">
+                <label for="observacoes">Observações:</label>
+                <textarea id="observacoes" rows="3" placeholder="Alguma observação? (opcional)"></textarea>
+            </div>
+            <div class="total-line">
+                <span>Total do Pedido:</span>
+                <strong id="valor-total-carrinho">R$ 0,00</strong>
+            </div>
+        </div>
+
+        <!-- Botões de ação -->
+        <div class="carrinho-footer">
+            <button onclick="enviarPedido()" class="btn-fazer">Fazer Pedido</button>
+            <button onclick="limparCarrinho()" class="btn-limpar">Limpar Carrinho</button>
+        </div>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- MODAL DE SUCESSO DO PEDIDO -->
+    <!-- Aparece após enviar com sucesso -->
+    <!-- ============================================= -->
+    <div id="modal-sucesso-pedido" class="modal-sucesso" style="display: none;">
+        <div class="modal-sucesso-conteudo">
+            <button class="modal-sucesso-fechar" onclick="document.getElementById('modal-sucesso-pedido').style.display='none'">✖</button>
+
+            <div class="modal-sucesso-header">
+                <h2>Número de Retirada</h2>
+            </div>
+
+            <div class="modal-sucesso-body">
+                <p>Agradecemos pelo seu pedido!</p>
+                <p>O número de retirada é: <strong id="numero-retirada-modal">---</strong></p>
+                <p>Para mais informações sobre o status do seu pedido,<br>clique em "Pedido".</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- SCRIPTS -->
+    <!-- ============================================= -->
+    <script src="js/global.js"></script>
+    <script src="js/carrinho.js"></script>
+</body>
+</html>

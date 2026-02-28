@@ -278,6 +278,65 @@ body {
     display: none;
 }
 
+
+/* =========================
+   CONTEÚDO PRINCIPAL
+========================= */
+.conteudo-principal {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 15px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* ───────────────────────────────────────────────────────────────── */
+/* Contador do ícone do carrinho - estilo moderno com círculo branco */
+/* ───────────────────────────────────────────────────────────────── */
+.carrinho-contador {
+    position: absolute;
+    top: 5px;
+    /* Ajusta a posição vertical (quanto mais negativo, mais alto) */
+    right: 18px;
+    /* Ajusta a posição horizontal (quanto mais negativo, mais à direita) */
+    background: #ffffff;
+    /* Roxo/lilás bonito (pode mudar o tom se quiser) */
+    color: rgb(0, 0, 0);
+    font-size: 17px;
+    /* Tamanho do número */
+    font-weight: bold;
+    width: 20px;
+    /* Tamanho do círculo */
+    height: 20px;
+    line-height: 20px;
+    /* Centraliza o número verticalmente */
+    text-align: center;
+    border-radius: 50%;
+    /* Faz o círculo perfeito */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    /* Sombra leve pra destacar */
+    display: none;
+    /* Escondido por padrão */
+}
+
+/* Mostra só quando tem itens (o JS já faz isso) */
+.carrinho-contador:not(:empty) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Se quiser o número um pouco maior ou mais destacado */
+.carrinho-contador {
+    min-width: 20px;
+    /* Garante que 10, 11+ não quebre o círculo */
+    padding: 0 4px;
+    /* Espaço interno para números maiores */
+}
+
 /* ──────────────────────────────────────────────── */
 /* RESPONSIVO                                       */
 /* ──────────────────────────────────────────────── */
@@ -337,17 +396,4 @@ body {
         height: 30px;
         font-size: 18px;
     }
-}
-
-/* =========================
-   CONTEÚDO PRINCIPAL
-========================= */
-.conteudo-principal {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 15px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
 }
