@@ -12,7 +12,7 @@ const overlayCarrinho = document.getElementById("overlay-carrinho");
 // ────────────────────────────────────────────────
 //  Estado global
 // ────────────────────────────────────────────────
-let carrinho = [];
+
 let scrollPosition = 0;
 let produtosGlobais = [];
 
@@ -78,119 +78,6 @@ function limparCarrinho() {
 // ────────────────────────────────────────────────
 //  ENVIAR PEDIDO – Função principal (compatível com seu HTML e backend)
 // ────────────────────────────────────────────────
-async function enviarPedido() {
-  if (carrinho.length === 0) {
-    alert("Seu carrinho está vazio! Adicione itens antes de enviar.");
-    return;
-  }
-
-  // Pegar valores dos inputs (IDs exatos do seu HTML)
-  const nomeAluno = document.getElementById("nomeAluno")?.value.trim();
-  const palavraChave = document.getElementById("palavra-chave")?.value.trim();
-  const horarioRetirada = document.getElementById("horarioRetirada")?.value;
-  const observacoes = document.getElementById("observacoes")?.value.trim();
-
-  // Forma de pagamento (radio)
-  const pagamentoSelecionado = document.querySelector('input[name="pagamento"]:checked');
-  const formaPagamento = pagamentoSelecionado ? pagamentoSelecionado.value : "PIX";
-
-  // Validação obrigatória (campos que o backend exige)
-  if (!nomeAluno) {
-    alert("Por favor, informe seu nome.");
-    return;
-  }
-  if (!palavraChave) {
-    alert("A palavra-chave é obrigatória (usada para cancelamento futuro).");
-    return;
-  }
-  if (!horarioRetirada) {
-    alert("Informe o horário de retirada desejado.");
-    return;
-  }
-
-  // Montar o objeto no formato exato do backend
-  const pedido = {
-    nomeAluno: nomeAluno,
-    palavraChave: palavraChave,
-    horarioRetirada: horarioRetirada,          // ex: "14:30"
-    formaPagamento: formaPagamento,
-    observacoes: observacoes || null,          // pode ser nulo
-    itens: carrinho.map(item => ({
-      produtoId: item.id,
-      quantidade: item.quantidade
-    }))
-  };
-
-  try {
-    // Feedback visual no botão
-    const botao = document.querySelector(".btn-fazer");
-    const textoOriginal = botao.textContent;
-    botao.textContent = "Enviando...";
-    botao.disabled = true;
-
-    const resposta = await fetch(`${API_BASE}/api/public/pedidos`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(pedido)
-    });
-
-    if (resposta.ok) {
-      const resultado = await resposta.json();
-
-      alert(`✅ Pedido realizado com sucesso!\n\n` +
-        `Número de retirada: ${resultado.numeroRetirada}\n` +
-        `Total: R$ ${resultado.valorTotal.toFixed(2)}\n` +
-        `Status: ${resultado.status}\n\n` +
-        `Guarde o número de retirada!`);
-
-      // Sucesso → limpar tudo
-      carrinho = [];
-      atualizarInterfaceCarrinho();
-      fecharCarrinho();
-
-      // Limpar campos do formulário
-      document.getElementById("nomeAluno").value = "";
-      document.getElementById("palavra-chave").value = "";
-      document.getElementById("horarioRetirada").value = "";
-      document.getElementById("observacoes").value = "";
-
-      // Opcional: desmarcar rádio ou voltar pro PIX
-      const pixRadio = document.querySelector('input[name="pagamento"][value="PIX"]');
-      if (pixRadio) pixRadio.checked = true;
-    }
-    else {
-      let mensagemErro = "Não foi possível enviar o pedido.";
-      try {
-        const erroJson = await resposta.json();
-        mensagemErro = erroJson.message || mensagemErro;
-      } catch {
-        const textoErro = await resposta.text();
-        mensagemErro = textoErro || mensagemErro;
-      }
-
-      // Tratamento específico comum
-      if (mensagemErro.toLowerCase().includes("fechad")) {
-        alert("A Cantina está fechada no momento. Tente novamente em outro horário!");
-      } else if (mensagemErro.includes("horário") || mensagemErro.includes("retirada")) {
-        alert("Horário de retirada inválido ou fora do expediente.");
-      } else {
-        alert(`Erro do servidor: ${mensagemErro}\n\n(Tente novamente ou fale conosco)`);
-      }
-    }
-  }
-  catch (erro) {
-    console.error("Erro ao enviar pedido:", erro);
-    alert("Falha na conexão com o servidor.\nVerifique sua internet e tente novamente.");
-  }
-  finally {
-    // Sempre restaura o botão
-    const botao = document.querySelector(".btn-fazer");
-    botao.textContent = "Fazer Pedido";
-    botao.disabled = false;
-  }
-}
 
 // Função principal para enviar o pedido ao backend
 async function enviarPedido() {
@@ -257,13 +144,7 @@ async function enviarPedido() {
     console.log("JSON que vai ser enviado:");
     console.log(JSON.stringify(pedido, null, 2));
 
-    // Faz a requisição POST para a API
-    const token = localStorage.getItem("authToken") || "";
-
-if (!token) {
-  alert("Não foi possível autenticar. Tente recarregar a página ou falar com o dev.");
-  return;
-}
+  
 
 const resposta = await fetch(`${API_BASE}/api/public/pedidos`, {
   method: "POST",
@@ -286,7 +167,7 @@ const resposta = await fetch(`${API_BASE}/api/public/pedidos`, {
 
       // Limpa todos os campos do formulário no drawer
       document.getElementById("nomeAluno").value = "";
-      document.getElementById("palavra-chave").value = "";
+      document.getElementById("palavraChave").value = "";
       document.getElementById("horarioRetirada").value = "";
       document.getElementById("observacoes").value = "";
 

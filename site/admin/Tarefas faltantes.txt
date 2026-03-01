@@ -111,7 +111,7 @@ Centralizar texto na popup da categoria de cadastrar produtos
 
 ------------------------------------------------------------
 
-Centralizar textos na parte de visualizar as categorias e corrigir o "produro"
+Centralizar textos na parte de visualizar as categorias e corrigir o "produto"
 
 ------------------------------------------------------------
 
@@ -143,4 +143,4 @@ Fazer a tela de tickets baseada na tela que tem no kalzone da cidade
 
 ------------------------------------------------------------
 
-Tomar uma decisão em relação à aba de pesquisas
+Tomar uma decisão em relação à aba de pesquisas [x]
