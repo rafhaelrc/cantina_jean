@@ -28,8 +28,44 @@
         </div>
     </nav>
 
+    <!-- Filtro -->
     <aside>
-        <button class="botaoCadastrar" onclick="">Filtro</button>
+        <button id="btnAbrirFiltros" class="botaoFiltro">Filtros</button>
+        <div id="popupFiltros" class="popup" style="display: none;">
+    <div class="popup-content">
+        <span class="popup-fechar">&times;</span>
+        <h4>Filtrar Pedidos</h4>
+        <div class="filtro-group">
+            <label>Forma de Pagamento:</label>
+            <select id="filtroFormaPagamento">
+                <option value="">Todos</option>
+                <option value="PIX">PIX</option>
+                <option value="DINHEIRO">Dinheiro</option>
+                <option value="FIADO">Fiado</option>
+            </select>
+        </div>
+        <div class="filtro-group">
+            <label>Status do Pagamento:</label>
+            <select id="filtroStatusPagamento">
+                <option value="">Todos</option>
+                <option value="PENDENTE">Pendente</option>
+                <option value="PAGO">Pago</option>
+            </select>
+        </div>
+        <div class="filtro-group">
+            <label>Status do Pedido:</label>
+            <select id="filtroStatusPedido">
+                <option value="">Todos</option>
+                <option value="AGUARDANDO">Aguardando</option>
+                <option value="PRONTO">Pronto</option>
+                <option value="RETIRADO">Retirado</option>
+                <option value="CANCELADO">Cancelado</option>
+            </select>
+        </div>
+        <button id="btnFiltrar">Aplicar Filtros</button>
+        <button id="btnLimparFiltros">Limpar Filtros</button>
+    </div>
+</div>
     </aside>
 
     <aside id="asideTable">

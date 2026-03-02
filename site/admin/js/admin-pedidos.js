@@ -47,6 +47,7 @@ async function AtualizarTabela() {
         
         let terceiro_html = `</td>
             <td>${dado.observacoes}</td>`;
+            
 
         let quarto_html = '';
         if (!dado.idTransacaoExterna) {
@@ -124,8 +125,93 @@ async function CarregarEventos() {
     });
 };
 
-// Adicionar evento que ao selecionar retirado ou canselado pede uma confirmação e tira o item da vizualização
+// Adicionar evento que ao selecionar retirado ou cancelado pede uma confirmação e tira o item da vizualização
 
-// Criar filtro
+//Filtro
+function aplicarFiltros() {
+    const filtroForma = document.getElementById('filtroFormaPagamento').value;
+    const filtroStatusPag = document.getElementById('filtroStatusPagamento').value;
+    const filtroStatusPed = document.getElementById('filtroStatusPedido').value;
+
+    const linhas = document.querySelectorAll('#bodyTabela tr');
+
+    linhas.forEach(linha => {
+        if (linha.id === 'linhaCarregamento') return;
+
+        let formaPagamento, statusPagamento, statusPedido;
+
+        // Forma de pagamento
+        const selectForma = linha.querySelector('.formasPagamento');
+        if (selectForma) {
+            formaPagamento = selectForma.value;
+        } else {
+            const pForma = linha.querySelector('td p[id^="listaFormasPagamento"]');
+            formaPagamento = pForma ? pForma.textContent.trim() : '';
+        }
+
+        // Status do pagamento
+        const selectStatusPag = linha.querySelector('.statusPagamento');
+        if (selectStatusPag) {
+            statusPagamento = selectStatusPag.value;
+        } else {
+            const pStatusPag = linha.querySelector('td p[id^="listaStatusPagamento"]');
+            statusPagamento = pStatusPag ? pStatusPag.textContent.trim() : '';
+        }
+
+        // Status do pedido
+        const selectStatusPed = linha.querySelector('.statusPedido');
+        statusPedido = selectStatusPed ? selectStatusPed.value : '';
+
+        const atendeForma = !filtroForma || formaPagamento === filtroForma;
+        const atendeStatusPag = !filtroStatusPag || statusPagamento === filtroStatusPag;
+        const atendeStatusPed = !filtroStatusPed || statusPedido === filtroStatusPed;
+
+        linha.style.display = (atendeForma && atendeStatusPag && atendeStatusPed) ? '' : 'none';
+    });
+
+    //Fecha o popup após aplicar
+    document.getElementById('popupFiltros').style.display = 'none';
+}
+
+function limparFiltros() {
+    document.getElementById('filtroFormaPagamento').value = '';
+    document.getElementById('filtroStatusPagamento').value = '';
+    document.getElementById('filtroStatusPedido').value = '';
+
+    const linhas = document.querySelectorAll('#bodyTabela tr');
+    linhas.forEach(linha => {
+        linha.style.display = '';
+    });
+
+    document.getElementById('popupFiltros').style.display = 'none';
+}
+
+// Inicialização dos eventos do popup e botões
+document.addEventListener('DOMContentLoaded', () => {
+    // Popup
+    const btnAbrir = document.getElementById('btnAbrirFiltros');
+    const popup = document.getElementById('popupFiltros');
+    const btnFechar = document.querySelector('.popup-fechar');
+
+    if (btnAbrir && popup && btnFechar) {
+        btnAbrir.addEventListener('click', () => {
+            popup.style.display = 'block';
+        });
+
+        btnFechar.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === popup) {
+                popup.style.display = 'none';
+            }
+        });
+    }
+
+    // Botões do filtro
+    document.getElementById('btnFiltrar').addEventListener('click', aplicarFiltros);
+    document.getElementById('btnLimparFiltros').addEventListener('click', limparFiltros);
+});
 
 // Arrumar cores dos selects

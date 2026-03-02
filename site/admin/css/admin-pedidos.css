@@ -50,7 +50,7 @@ aside {
 }
 
 /* Botão "Filtro" (V2) */
-.botaoCadastrar {
+#btnAbrirFiltros {
   background: linear-gradient(135deg, var(--verde-secundario), var(--verde-vivo));
   color: white;
   font-weight: 900;
@@ -64,13 +64,13 @@ aside {
   transition: transform .12s ease, box-shadow .2s ease, filter .2s ease, opacity .2s ease;
 }
 
-.botaoCadastrar:hover {
+#btnAbrirFiltros:hover {
   filter: saturate(1.1);
   transform: translateY(-1px);
   box-shadow: 0 18px 34px rgba(0, 0, 0, .20);
 }
 
-.botaoCadastrar:active {
+#btnAbrirFiltros:active {
   transform: translateY(0);
   opacity: .95;
 }
@@ -293,6 +293,14 @@ select:active { transform: scale(0.998); }
     width: 100%;
     max-width: 260px;
   }
+
+  /*Filtro*/
+  .popup-content {
+    justify-content: center;
+    position: relative;
+    
+  }
+
 }
 /* ===== FIX 1: fundo totalmente branco (sem faixas/gradientes) ===== */
 body {
@@ -315,4 +323,116 @@ body {
 /* opcional: sombra do card mais suave (menos “pesada”) */
 #asideTable {
   box-shadow: 0 14px 35px rgba(0,0,0,.10) !important;
+}
+
+/* Botão de abrir filtros */
+.botaoFiltro {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.botaoFiltro:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo do popup filtro */
+.popup {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.popup-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 320px;
+    max-width: 90%;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.popup-fechar {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.popup-fechar:hover,
+.popup-fechar:focus {
+    color: black;
+    text-decoration: none;
+}
+
+.popup h4 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.filtro-group {
+    margin-bottom: 15px;
+}
+
+.filtro-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #555;
+}
+
+.filtro-group select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+#btnLimparFiltros, #btnFiltrar {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+#btnFiltrar {
+  background-color: var(--verde-secundario);
+}
+
+#btnLimparFiltros:hover {
+    background-color: #c82333;
 }
