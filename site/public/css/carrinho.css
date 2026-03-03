@@ -18,7 +18,7 @@
     font-size: 28px;
     line-height: 1;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transition: background 0.2s;
 }
 
@@ -42,7 +42,8 @@
 /* Conteúdo principal (rolável) */
 .carrinho-content {
     padding: 0 16px;
-    min-height: calc(100vh - 60px); /* evita que o footer sobreponha */
+    min-height: calc(100vh - 60px);
+    /* evita que o footer sobreponha */
 }
 
 /* Título "Detalhes do Pedido" */
@@ -131,10 +132,7 @@
     border-top: 1px solid #ddd;
     display: flex;
     gap: 10px;
-    position: sticky;
     bottom: 0;
-    background: white;
-    z-index: 100;
 }
 
 .btn-fazer {
@@ -186,7 +184,8 @@
     margin: 6px 0;
 }
 
-.btn-menos, .btn-mais {
+.btn-menos,
+.btn-mais {
     width: 32px;
     height: 32px;
     background: #1b5e20;
@@ -198,7 +197,8 @@
     cursor: pointer;
 }
 
-.btn-menos:hover, .btn-mais:hover {
+.btn-menos:hover,
+.btn-mais:hover {
     background: #2e7d32;
 }
 
@@ -232,8 +232,11 @@
 .modal-sucesso {
     display: none;
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.6);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
     z-index: 3000;
     justify-content: center;
     align-items: center;
@@ -245,7 +248,7 @@
     max-width: 420px;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     position: relative;
     text-align: center;
 }
@@ -279,4 +282,14 @@
     height: 32px;
     font-size: 20px;
     cursor: pointer;
+}
+
+/* ================================================ */
+/* REMOVER ESPAÇO BRANCO NO TOPO DO CARRINHO      */
+/* ================================================ */
+
+/* Remove margens/paddings indesejados no body e main */
+body {
+    margin: 0;
+    padding: 0;
 }

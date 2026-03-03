@@ -18,18 +18,18 @@ let produtosGlobais = [];
 
 // Atualiza a lista de itens na página carrinho.html
 function atualizarInterfaceCarrinho() {
-    const containerItens = document.querySelector(".carrinho-itens");
-    const totalTexto = document.getElementById("valor-total-carrinho");
+  const containerItens = document.querySelector(".carrinho-itens");
+  const totalTexto = document.getElementById("valor-total-carrinho");
 
-    if (!containerItens || !totalTexto) return;
+  if (!containerItens || !totalTexto) return;
 
-    containerItens.innerHTML = "";
-    let total = 0;
+  containerItens.innerHTML = "";
+  let total = 0;
 
-    carrinho.forEach((item, index) => {
-        total += item.preco * item.quantidade;
+  carrinho.forEach((item, index) => {
+    total += item.preco * item.quantidade;
 
-        containerItens.innerHTML += `
+    containerItens.innerHTML += `
             <div class="item-no-carrinho">
                 <div class="item-principal">
                     <p class="item-nome">${item.nome}</p>
@@ -46,14 +46,14 @@ function atualizarInterfaceCarrinho() {
                 <button class="btn-lixeira" onclick="removerDoCarrinho(${index})">🗑️</button>
             </div>
         `;
-    });
+  });
 
-    totalTexto.innerText = `R$ ${total.toFixed(2)}`;
+  totalTexto.innerText = `R$ ${total.toFixed(2)}`;
 }
 
 // Carrega os itens ao abrir a página carrinho
 document.addEventListener("DOMContentLoaded", () => {
-    atualizarInterfaceCarrinho();
+  atualizarInterfaceCarrinho();
 });
 
 function alterarQuantidade(index, delta) {
@@ -64,19 +64,21 @@ function alterarQuantidade(index, delta) {
 }
 
 function removerDoCarrinho(index) {
-  carrinho.splice(index, 1);
-  atualizarInterfaceCarrinho();
+  carrinho.splice(index, 1);          // Remove o item do array
+  salvarCarrinho();                   // SALVA A MUDANÇA NO LOCALSTORAGE (isso era o que faltava)
+  atualizarInterfaceCarrinho();       // Atualiza a lista na tela
 }
 
 function limparCarrinho() {
   if (confirm("Deseja realmente limpar todo o carrinho?")) {
     carrinho = [];
+    salvarCarrinho();          // ← ADICIONE ESSA LINHA AQUI
     atualizarInterfaceCarrinho();
   }
 }
 
 // ────────────────────────────────────────────────
-//  ENVIAR PEDIDO – Função principal (compatível com seu HTML e backend)
+//  ENVIAR PEDIDO – Função principal 
 // ────────────────────────────────────────────────
 
 // Função principal para enviar o pedido ao backend
@@ -144,26 +146,28 @@ async function enviarPedido() {
     console.log("JSON que vai ser enviado:");
     console.log(JSON.stringify(pedido, null, 2));
 
-  
 
-const resposta = await fetch(`${API_BASE}/api/public/pedidos`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    //"Authorization": `Bearer ${token}`  // agora envia o token corretamente
-  },
-  body: JSON.stringify(pedido)
-});
+
+    const resposta = await fetch(`${API_BASE}/api/public/pedidos`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //"Authorization": `Bearer ${token}`  // agora envia o token corretamente
+      },
+      body: JSON.stringify(pedido)
+    });
 
     // Verifica se a resposta foi bem-sucedida (status 200-299)
     if (resposta.ok) {
       // Converte a resposta do servidor em objeto JavaScript
       const resultado = await resposta.json();
 
-         // Limpa o carrinho após sucesso
+      // Limpa o carrinho após sucesso
       carrinho = [];
       atualizarInterfaceCarrinho();
-      fecharCarrinho();
+      // redireciona para home após 3 segundos
+      
+      //fecharCarrinho();
 
       // Limpa todos os campos do formulário no drawer
       document.getElementById("nomeAluno").value = "";
