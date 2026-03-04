@@ -25,64 +25,40 @@ btnEsq.addEventListener('click', () => {
   track.scrollTo({ left: scroll, behavior: 'smooth' });
 });
 
-/* ============================================= */
-/*        RENDERIZA OS PRODUTOS EM OFERTA        */
-/* ============================================= */
-function renderizarCarrossel(produtos) {
-  const trackCarrossel = document.querySelector('.carrossel-track');
-  if (!trackCarrossel) return;
+console.log("inicio.js carregado com sucesso!");
+console.log("API_BASE:", API_BASE); // deve mostrar a URL completa
 
-  trackCarrossel.innerHTML = '';
-
-  produtos.forEach(prod => {
-    const caminhoImg = obterCaminhoImagem(prod.imagemUrl);
-
-    if (prod.promocao === true || prod.preco < 10) {
-      const htmlOferta = `
-            <div class="item">
-              <img 
-                  src="${caminhoImg}" 
-                  alt="${prod.nome}" 
-                  onerror="this.onerror=null; this.src='img/default.png';"
-              >
-              
-              <div class="legenda-item">${prod.nome}</div>
-              
-              <button class="btn-carrinho" onclick="adicionarAoCarrinho(${prod.id}, '${prod.nome.replace(/'/g, "\\'")}', ${prod.preco})">
-                <img src="img/carrinho.png">
-              </button>
-            </div>
-          `;
-      trackCarrossel.innerHTML += htmlOferta;
-    }
-  });
-}
 
 /* ================================================ */
-/* CARREGA OS PRODUTOS DA API E MOSTRA NO CARROSSEL */
+/* CARREGA AS OFERTAS VIGENTES DA API PÚBLICA      */
+/* Endpoint correto: /api/public/ofertas (conforme manual do professor) */
 /* ================================================ */
 async function carregarProdutosParaInicio() {
   try {
-    // Mostra o spinner de loading imediatamente (melhora experiência durante o delay da API)
     const loading = document.getElementById("loading-ofertas");
     if (loading) loading.style.display = "block";
 
-    const resposta = await fetch(`${API_BASE}/api/public/produtos`);
-    const dados = await resposta.json();
+    console.log("Buscando promoções em:", `${API_BASE}/api/public/ofertas`);
 
-    // Chama a função que já existe para preencher o carrossel
-    renderizarCarrossel(dados);
+    const resposta = await fetch(`${API_BASE}/api/public/ofertas`);
 
-    // Esconde o loading assim que os itens aparecerem
+    if (!resposta.ok) {
+      throw new Error(`Erro HTTP ${resposta.status} - ${await resposta.text()}`);
+    }
+
+    const ofertas = await resposta.json();
+    console.log("Promoções recebidas do backend:", ofertas);
+
+    renderizarCarrossel(ofertas);
+
     if (loading) loading.style.display = "none";
 
   } catch (erro) {
-    console.error("Erro ao carregar produtos para o carrossel:", erro);
+    console.error("Erro ao carregar promoções:", erro);
     
-    // Se der erro, mostra mensagem no lugar do loading
     const loading = document.getElementById("loading-ofertas");
     if (loading) {
-      loading.innerHTML = '<p style="color:#c62828; font-weight:bold;">Não foi possível carregar as ofertas. Tente novamente.</p>';
+      loading.innerHTML = '<p style="color:#c62828; font-weight:bold; text-align:center; padding:40px; font-size:18px;">Não foi possível carregar as promoções. Tente novamente.</p>';
     }
   }
 }
@@ -101,3 +77,48 @@ function obterCaminhoImagem(nomeArquivo) {
   if (nomeArquivo.startsWith('img/')) return nomeArquivo;
   return `img/${nomeArquivo}`;
 }
+
+/* ============================================= */
+/*        RENDERIZA OS PRODUTOS EM OFERTA        */
+/* ============================================= */
+function renderizarCarrossel(ofertas) {
+  const trackCarrossel = document.querySelector('.carrossel-track');
+  if (!trackCarrossel) return;
+
+  trackCarrossel.innerHTML = '';
+
+  if (ofertas.length === 0) {
+    trackCarrossel.innerHTML = '<p style="text-align:center; color:#555; padding:40px; font-size:18px;">Nenhuma promoção vigente no momento.</p>';
+    return;
+  }
+
+  ofertas.forEach(oferta => {
+    const caminhoImg = obterCaminhoImagem(oferta.imagemUrl || oferta.foto || 'img/default.png');
+
+    const htmlOferta = `
+      <div class="item">
+        <img 
+            src="${caminhoImg}" 
+            alt="${oferta.descricao}" 
+            onerror="this.src='img/default.png';"
+        >
+        
+        <div class="legenda-item">
+          ${oferta.descricao}
+          <br>
+          <strong>R$ ${oferta.valorPromocional.toFixed(2)}</strong>
+        </div>
+        
+        <button class="btn-carrinho" onclick="adicionarAoCarrinho(${oferta.id}, '${oferta.descricao.replace(/'/g, "\\'")}', ${oferta.valorPromocional})">
+          <img src="img/carrinho.png">
+        </button>
+      </div>
+    `;
+    trackCarrossel.innerHTML += htmlOferta;
+  });
+}
+
+
+// Força chamada imediata para debug
+console.log("Chamando carregarProdutosParaInicio manualmente para teste");
+carregarProdutosParaInicio();

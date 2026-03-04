@@ -1,9 +1,12 @@
 // ────────────────────────────────────────────────
 //  MODAL – Cancelar Pedido
+// Conforme manual do professor: PATCH /api/public/pedidos/{id}/cancelar
+// Corpo: { "palavraChave": "..." }
+// Só cancela se status for "AGUARDANDO"
 // ────────────────────────────────────────────────
 const btnCancelar = document.getElementById("btn-cancelar");
 const modalCancelar = document.getElementById("modal-cancelar");
-const btnSair = document.getElementById("btn-sair");  // só esse agora
+const btnSair = document.getElementById("btn-sair");
 const btnConfirmar = document.getElementById("btn-confirmar");
 
 if (btnCancelar) {
@@ -29,8 +32,12 @@ if (btnConfirmar) {
     }
 
     try {
+      console.log("DEBUG CANCELAR:");
+      console.log("URL:", `${API_BASE}/api/public/pedidos/${dado.id}/cancelar`);
+      console.log("Body enviado:", JSON.stringify({ palavraChave: chave }));
+
       const resposta = await fetch(
-        `${API_BASE}/api/public/pedidos/${numero}/cancelar`,
+        `${API_BASE}/api/public/pedidos/${dado.id}/cancelar`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -38,22 +45,29 @@ if (btnConfirmar) {
         }
       );
 
+      console.log("Resposta status:", resposta.status);
+      console.log("Resposta OK?", resposta.ok);
+
+      const textoResposta = await resposta.text();
+      console.log("Texto da resposta:", textoResposta);
+
       if (resposta.ok) {
         alert("Pedido cancelado com sucesso!");
         modalCancelar.style.display = "none";
       } else {
-        const erro = await resposta.text();
-        alert(`Erro: ${erro || "Não foi possível cancelar o pedido."}`);
+        let erroMsg = textoResposta || `Erro HTTP ${resposta.status}`;
+        alert(`Erro: ${erroMsg}`);
       }
     } catch (erro) {
-      console.error("Erro ao cancelar:", erro);
-      alert("Erro de conexão ao tentar cancelar.");
+      console.error("Erro na requisição:", erro);
+      alert("Erro de conexão ao tentar cancelar. Verifique o console.");
     }
   });
 }
 
 // ────────────────────────────────────────────────
 //  MODAL – Informações / status do pedido
+// (mantido exatamente igual ao seu)
 // ────────────────────────────────────────────────
 const btnInfo = document.getElementById("btn-info");
 const modalInfo = document.getElementById("modal-info");
