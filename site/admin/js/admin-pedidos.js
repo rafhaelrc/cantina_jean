@@ -23,7 +23,7 @@ async function AtualizarTabela() {
         headers: AUTH_HEADER 
     });
 
-     dados_pedidos = await resposta.json();
+    dados_pedidos = await resposta.json();
 
     let pedidos_html = ``;
     let contador_linhas = 0;
@@ -59,7 +59,7 @@ async function AtualizarTabela() {
                 </select>
             </td>
             <td class="areaPagamento">
-                <select class="statusPagamento id="listaStatusPagamentoPossiveis${dado.id}">
+                <select class="statusPagamento" id="listaStatusPagamentoPossiveis${dado.id}">
                     <option value="PENDENTE">Pendente</option>
                     <option value="PAGO">Pago</option>
                 </select>
@@ -88,6 +88,7 @@ async function AtualizarTabela() {
         </tr>`;
 
         pedidos_html += primeiro_html + valor_total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + segundo_html + terceiro_html + quarto_html + cinco_html;
+    
     });
 
     // Passagem do texto gerado das linhas da tebela para o html
@@ -107,6 +108,7 @@ async function AtualizarTabela() {
     });
     
     CarregarEventos();
+    aplicarFiltros();
 }
 
 // Alterar status pedido
@@ -125,13 +127,71 @@ async function CarregarEventos() {
     });
 };
 
-// Adicionar evento que ao selecionar retirado ou cancelado pede uma confirmação e tira o item da vizualização
+// Adiciona evento que ao selecionar retirado ou cancelado pede uma confirmação e tira o item da vizualização
+function CarregarEventos() {
+    dados_pedidos.forEach((dado) => {
+        let status_pedido = document.getElementById(`listaStatusPossiveis${dado.id}`);
+        if (!status_pedido) return;
+
+        // Salva o valor anterior ao focar no select
+        status_pedido.addEventListener('focus', salvarValorAnterior);
+
+        // Trata a mudança de status
+        status_pedido.addEventListener('change', async function (event) {
+            const novoStatus = this.value;
+            const valorAnterior = this.getAttribute('data-valor-anterior');
+            const pedidoId = dado.id;
+            const numeroRetirada = dado.numeroRetirada;
+
+            // Confirmação para retirado ou cancelado
+            if (novoStatus === 'RETIRADO' || novoStatus === 'CANCELADO') {
+                const confirmacao = confirm(`Tem certeza que deseja marcar o pedido #${numeroRetirada} como "${novoStatus}"? Após confirmar, o pedido será removido da lista.`);
+                if (!confirmacao) {
+                    this.value = valorAnterior;
+                    return;
+                }
+            }
+
+            try {
+                const resposta = await fetch(API_URL + `/admin/pedidos/${pedidoId}/status`, {
+                    method: 'PATCH',
+                    headers: AUTH_HEADER,
+                    body: JSON.stringify({ status: novoStatus })
+                });
+
+                if (resposta.ok) {
+                    console.log(`Pedido ${pedidoId} alterado para ${novoStatus}`);
+                    if (novoStatus === 'RETIRADO' || novoStatus === 'CANCELADO') {
+                        const linha = document.getElementById(`idLinha${pedidoId}`);
+                        if (linha) {
+                            linha.style.display = 'none';
+                        }
+                    }
+                } else {
+                    const erro = await resposta.text();
+                    throw new Error(erro || 'Erro ao atualizar status');
+                }
+            } catch (error) {
+                console.error('Falha na requisição:', error);
+                alert('Erro ao alterar status. Verifique sua conexão e tente novamente.');
+                this.value = valorAnterior;
+            }
+        });
+    });
+}
+
+// Função auxiliar para salvar o valor anterior no foco
+function salvarValorAnterior(event) {
+    const select = event.currentTarget;
+    select.setAttribute('data-valor-anterior', select.value);
+}
 
 //Filtro
 function aplicarFiltros() {
     const filtroForma = document.getElementById('filtroFormaPagamento').value;
     const filtroStatusPag = document.getElementById('filtroStatusPagamento').value;
     const filtroStatusPed = document.getElementById('filtroStatusPedido').value;
+    const ocultarFinalizados = document.getElementById('filtroOcultarFinalizados').checked;
 
     const linhas = document.querySelectorAll('#bodyTabela tr');
 
@@ -166,10 +226,16 @@ function aplicarFiltros() {
         const atendeStatusPag = !filtroStatusPag || statusPagamento === filtroStatusPag;
         const atendeStatusPed = !filtroStatusPed || statusPedido === filtroStatusPed;
 
-        linha.style.display = (atendeForma && atendeStatusPag && atendeStatusPed) ? '' : 'none';
+        // Ocultar finalizados e retirados
+        let atendeFinalizados = true;
+        if (ocultarFinalizados) {
+            atendeFinalizados = (statusPedido !== 'RETIRADO' && statusPedido !== 'CANCELADO');
+        }
+
+        linha.style.display = (atendeForma && atendeStatusPag && atendeStatusPed && atendeFinalizados) ? '' : 'none';
     });
 
-    //Fecha o popup após aplicar
+    // Fecha o popup após aplicar
     document.getElementById('popupFiltros').style.display = 'none';
 }
 
@@ -177,6 +243,7 @@ function limparFiltros() {
     document.getElementById('filtroFormaPagamento').value = '';
     document.getElementById('filtroStatusPagamento').value = '';
     document.getElementById('filtroStatusPedido').value = '';
+    document.getElementById('filtroOcultarFinalizados').checked = false;
 
     const linhas = document.querySelectorAll('#bodyTabela tr');
     linhas.forEach(linha => {

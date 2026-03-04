@@ -436,3 +436,8 @@ body {
 #btnLimparFiltros:hover {
     background-color: #c82333;
 }
+
+#filtroOcultarFinalizados {
+  margin-top: 15px;
+  accent-color: var(--verde-vivo);
+}
