@@ -122,7 +122,7 @@ if (btnConsultar) {
 /* ================================================ */
 async function atualizarPedidosStatus() {
   try {
-    const resposta = await fetch(`${API_BASE}/api/public/pedidos/status`);
+    const resposta = await fetch(`${API_BASE}/api/public/pedidos/painel`);
     if (!resposta.ok) throw new Error("Erro ao buscar status");
 
     const dados = await resposta.json();
@@ -137,7 +137,7 @@ async function atualizarPedidosStatus() {
       const li = document.createElement("li");
       li.textContent = `Pedido #${pedido.numeroRetirada} - ${pedido.nomeAluno}`;
 
-      if (pedido.status === "PREPARANDO") {
+      if (pedido.status === "AGUARDANDO") {
         listaPreparo.appendChild(li);
       } else if (pedido.status === "PRONTO") {
         listaPronto.appendChild(li);
@@ -151,4 +151,5 @@ async function atualizarPedidosStatus() {
 // Inicia o carregamento das listas ao abrir a página
 document.addEventListener("DOMContentLoaded", () => {
   atualizarPedidosStatus();
+  setInterval(atualizarPedidosStatus, 5000);//Atualiza painel de 5 em 5 segundos
 });
