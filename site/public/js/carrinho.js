@@ -164,6 +164,7 @@ async function enviarPedido() {
 
       // Limpa o carrinho após sucesso
       carrinho = [];
+      salvarCarrinho();          // ← ADICIONE ESSA LINHA AQUI
       atualizarInterfaceCarrinho();
       // redireciona para home após 3 segundos
       
