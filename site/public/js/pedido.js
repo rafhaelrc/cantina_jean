@@ -20,7 +20,7 @@ if (btnSair) {
     if (modalCancelar) modalCancelar.style.display = "none";
   });
 }
-
+/*
 if (btnConfirmar) {
   btnConfirmar.addEventListener("click", async () => {
     const numero = document.getElementById("numero-pedido")?.value?.trim();
@@ -33,11 +33,11 @@ if (btnConfirmar) {
 
     try {
       console.log("DEBUG CANCELAR:");
-      console.log("URL:", `${API_BASE}/api/public/pedidos/${dado.id}/cancelar`);
+      console.log("URL:", `${API_BASE}/api/public/pedidos/${numero}/cancelar`);
       console.log("Body enviado:", JSON.stringify({ palavraChave: chave }));
 
       const resposta = await fetch(
-        `${API_BASE}/api/public/pedidos/${dado.id}/cancelar`,
+        `${API_BASE}/api/public/pedidos/${numero}/cancelar`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -63,11 +63,59 @@ if (btnConfirmar) {
       alert("Erro de conexão ao tentar cancelar. Verifique o console.");
     }
   });
+}*/
+
+
+if (btnConfirmar) {
+  btnConfirmar.addEventListener("click", async () => {
+
+    const numero = document.getElementById("numero-pedido")?.value?.trim();
+    const chave = document.getElementById("palavra-chave")?.value?.trim();
+
+    if (!numero || !chave) {
+      alert("Preencha o número do pedido e a palavra-chave!");
+      return;
+    }
+
+    try {
+
+      
+      
+      //  Cancelar usando o ID do pedido
+      const resposta = await fetch(
+        `${API_BASE}/api/public/pedidos/${numero}/cancelar`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ palavraChave: chave })
+        }
+      );
+
+      if (resposta.ok) {
+        alert("Pedido cancelado com sucesso!");
+        modalCancelar.style.display = "none";
+        atualizarPedidosStatus();
+      } else {
+        const erro = await resposta.text();
+        alert(`Erro ao cancelar: ${erro}`);
+      }
+
+    } catch (erro) {
+      console.error("Erro:", erro);
+      alert("Erro de conexão com o servidor.");
+    }
+
+  });
 }
+
+
+
+
+
 
 // ────────────────────────────────────────────────
 //  MODAL – Informações / status do pedido
-// (mantido exatamente igual ao seu)
+// 
 // ────────────────────────────────────────────────
 const btnInfo = document.getElementById("btn-info");
 const modalInfo = document.getElementById("modal-info");
