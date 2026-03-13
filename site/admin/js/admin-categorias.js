@@ -135,9 +135,9 @@ async function AtualizarTabela() {
             <td>${dado.nome}</td>
             <td class="areaStatus"><span style="background-color: ${dado.ativo ? "var(--verde-secundario)" : "#ffd600"};">${dado.ativo ? "Ativo" : "Inativo"}</span></td>
             <td class="areaBotoes">
-                <button class="botaoVisualizar" onclick="Visualizar(${contador_linhas})"><img src="../imgs/icone-lupa.svg" alt="Visualizar" width="25px" height="25px"></button>
-                <button class="botaoEditar" onclick="Editar(${contador_linhas})"><img src="../imgs/icone-lapis.svg" alt="Editar" width="25px" height="25px"></button>
-                <button class="botaoExcluir" onclick="Excluir(${contador_linhas})"><img src="../imgs/icone-lixeira.svg" alt="Excluir" width="25px" height="25px"></button>
+                <button class="botaoVisualizar" onclick="Visualizar(${contador_linhas})"><img src="img/icone-lupa.svg" alt="Visualizar" width="20px"></button>
+                <button class="botaoEditar" onclick="Editar(${contador_linhas})"><img src="img/icone-lapis.svg" alt="Editar" width="20px"></button>
+                <button class="botaoExcluir" onclick="Excluir(${contador_linhas})"><img src="img/icone-lixeira.svg" alt="Excluir" width="20px"></button>
             </td>
         </tr>`
 
